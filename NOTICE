@@ -1,0 +1,27 @@
+   TFS Test Case Automator
+   Copyright 2013 Matthew Hamilton - https://github.com/mthamil/TFSTestCaseAutomator
+
+   For dependency injection, the AutoFac framework is utilized.
+   AutoFac is released dunder the MIT license: 
+        Autofac IoC Container
+        Copyright (c) 2007-2013 Autofac Contributors
+        http://code.google.com/p/autofac/wiki/Contributing
+
+   Attached Behavior and Trigger/Action functionality is provided by
+   System.Windows.Interactivity from the Microsoft Blend SDK:
+        http://www.microsoft.com/en-us/download/details.aspx?id=10801
+
+   The following libraries provide testing support: 
+        xUnit.net is used as the unit testing framework
+        and is released under the Microsoft Public License (Ms-PL):
+            http://xunit.codeplex.com/
+
+        Moq is used for mock objects and is released under the BSD license:
+            Copyright (c) 2007. Clarius Consulting, Manas Technology Solutions, InSTEDD
+            http://code.google.com/p/moq/
+            All rights reserved.
+
+        TheoryDataSet.cs is from ASP.Net, provides theory test support, 
+        and is released under the Apache 2.0 license:
+            Copyright (c) Microsoft Open Technologies, Inc.  All rights reserved.
+            http://aspnetwebstack.codeplex.com/

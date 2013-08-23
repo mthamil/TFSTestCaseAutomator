@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9B948621-F11E-4503-AA62-142128E6BB6A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TestCaseAutomator.Utilities</RootNamespace>
+    <AssemblyName>TestCaseAutomator.Utilities</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Collections\CollectionExtensions.cs" />
+    <Compile Include="Collections\CollectionMirror.cs" />
+    <Compile Include="Collections\DictionaryExtensions.cs" />
+    <Compile Include="Collections\EnumerableExtensions.cs" />
+    <Compile Include="Collections\ReverseComparer.cs" />
+    <Compile Include="Concurrency\Processes\IProcessTaskAdapter.cs" />
+    <Compile Include="Concurrency\Processes\ProcessErrorException.cs" />
+    <Compile Include="Concurrency\Processes\ProcessResult.cs" />
+    <Compile Include="Concurrency\Processes\ProcessTaskAdapter.cs" />
+    <Compile Include="Concurrency\Processes\ProcessTaskExtensions.cs" />
+    <Compile Include="Concurrency\ProgressExtensions.cs" />
+    <Compile Include="Concurrency\ReaderWriterLockSlimExtensions.cs" />
+    <Compile Include="Concurrency\SynchronousSynchronizationContext.cs" />
+    <Compile Include="Concurrency\SynchronousTaskScheduler.cs" />
+    <Compile Include="Concurrency\TaskCompletionSourceExtensions.cs" />
+    <Compile Include="Concurrency\TaskExtensions.cs" />
+    <Compile Include="Concurrency\Tasks.cs" />
+    <Compile Include="DisposableBase.cs" />
+    <Compile Include="DisposableExtensions.cs" />
+    <Compile Include="Mvvm\Commands\AsyncCommandBuilderExtensions.cs" />
+    <Compile Include="Mvvm\Commands\AsyncRelayCommand.cs" />
+    <Compile Include="Mvvm\Commands\BoundRelayCommand.cs" />
+    <Compile Include="Mvvm\Commands\BoundRelayCommandBase.cs" />
+    <Compile Include="Mvvm\Commands\Builder\AsyncCommandCompleterWrapper.cs" />
+    <Compile Include="Mvvm\Commands\Builder\ChildBoundCommandBuilder.cs" />
+    <Compile Include="Mvvm\Commands\Builder\ChildBoundCommandCompleter.cs" />
+    <Compile Include="Mvvm\Commands\Builder\CommandBuilder.cs" />
+    <Compile Include="Mvvm\Commands\Builder\DependentChildPropertyCommandBuilder.cs" />
+    <Compile Include="Mvvm\Commands\Builder\IAsyncCommandCompleter.cs" />
+    <Compile Include="Mvvm\Commands\Builder\ICommandBuilder.cs" />
+    <Compile Include="Mvvm\Commands\Builder\ICommandCompleter.cs" />
+    <Compile Include="Mvvm\Commands\Builder\SimpleBoundCommandBuilder.cs" />
+    <Compile Include="Mvvm\Commands\CancelTaskCommand.cs" />
+    <Compile Include="Mvvm\Commands\ChildPropertyBoundCommand.cs" />
+    <Compile Include="Mvvm\Commands\Command.cs" />
+    <Compile Include="Mvvm\Commands\CommandBase.cs" />
+    <Compile Include="Mvvm\Commands\NamedRelayCommand.cs" />
+    <Compile Include="Mvvm\Commands\RelayCommand.cs" />
+    <Compile Include="Mvvm\ViewModelBase.cs" />
+    <Compile Include="Option.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyNotification\Property.cs" />
+    <Compile Include="PropertyNotification\PropertyChangedNotifier.cs" />
+    <Compile Include="Reflection\Reflect.cs" />
+    <Compile Include="Reflection\ReflectionExtensions.cs" />
+    <Compile Include="WeakEventHandler.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
