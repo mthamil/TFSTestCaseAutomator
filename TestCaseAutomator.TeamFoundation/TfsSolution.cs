@@ -14,8 +14,9 @@ namespace TestCaseAutomator.TeamFoundation
 		/// Initializes a new <see cref="TfsSolution"/>.
 		/// </summary>
 		/// <param name="solutionItem">The source contorlled solution file</param>
-		public TfsSolution(Item solutionItem)
-			: base(solutionItem)
+		/// <param name="versionControl">TFS source control</param>
+		public TfsSolution(Item solutionItem, IVersionControl versionControl)
+			: base(solutionItem, versionControl)
 		{
 		}
 
@@ -25,30 +26,14 @@ namespace TestCaseAutomator.TeamFoundation
 		/// <returns></returns>
 		public IEnumerable<TfsSolutionProject> Projects()
 		{
-			var solutionDir = Path.GetDirectoryName(Item.ServerItem);
-			var contents = Item.DownloadFile();
-			var solutionFolderGuidString = WellKnownProjectTypes.SolutionFolder.ToString("B").ToUpperInvariant();
-			return Lines(contents)
-				.Where(l => l.StartsWith("Project(") && !l.Contains(solutionFolderGuidString))
-				.Select(l => l.Split(',')[1].Trim('"', ' '))
-				.Select(p => Path.Combine(solutionDir, p))
-				.Select(p => Item.VersionControlServer.GetItem(p))
-				.Where(p => p.ItemType == ItemType.File)
-				.Select(p => new TfsSolutionProject(p));
-		}
-
-		/// <summary>
-		/// Returns a stream as a sequence of lines.
-		/// </summary>
-		/// <param name="stream">The stream to iterate over</param>
-		/// <returns>A sequence of lines from the stream</returns>
-		private static IEnumerable<string> Lines(Stream stream)
-		{
-			using (var reader = new StreamReader(stream))
-			{
-				while (!reader.EndOfStream)
-					yield return reader.ReadLine();
-			}
+			var solutionDir = Path.GetDirectoryName(ServerPath);
+			var contents = VersionControl.DownloadFile(Item);
+			var solutionParser = new SolutionFileParser(contents);
+			return solutionParser.GetProjects()
+			                     .Select(p => Path.Combine(solutionDir, p))
+			                     .Select(p => VersionControl.GetItem(p))
+			                     .Where(p => p.ItemType == ItemType.File)
+			                     .Select(p => new TfsSolutionProject(p, VersionControl));
 		}
 	}
 }

@@ -1,3 +1,4 @@
+using System.IO;
 using Microsoft.TeamFoundation.VersionControl.Client;
 
 namespace TestCaseAutomator.TeamFoundation
@@ -11,8 +12,9 @@ namespace TestCaseAutomator.TeamFoundation
 		/// Initializes a new <see cref="TfsFile"/>.
 		/// </summary>
 		/// <param name="fileItem">The source controlled file</param>
-		public TfsFile(Item fileItem)
-			: base(fileItem)
+		/// <param name="versionControl">TFS source control</param>
+		public TfsFile(Item fileItem, IVersionControl versionControl)
+			: base(fileItem, versionControl)
 		{
 		}
 
@@ -20,9 +22,11 @@ namespace TestCaseAutomator.TeamFoundation
 		/// Downloads a file to a given file path.
 		/// </summary>
 		/// <param name="path">The local path to download to</param>
-		public void DownloadTo(string path)
+		public void DownloadToAsync(string path)
 		{
-			Item.DownloadFile(path);
+			var downloadStream = VersionControl.DownloadFile(Item);
+			using (var fileStream = File.OpenWrite(path))
+				downloadStream.CopyTo(fileStream);
 		}
 	}
 }

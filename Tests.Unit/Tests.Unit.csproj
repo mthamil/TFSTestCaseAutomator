@@ -66,6 +66,7 @@
     <Compile Include="MethodRecorder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SynchronousAttribute.cs" />
+    <Compile Include="TestCaseAutomator.TeamFoundation\TfsProjectWorkItemsTests.cs" />
     <Compile Include="TestCaseAutomator.Utilities\Collections\CollectionExtensionTests.cs" />
     <Compile Include="TestCaseAutomator.Utilities\Collections\CollectionMirrorTests.cs" />
     <Compile Include="TestCaseAutomator.Utilities\Collections\DictionaryExtensionsTests.cs" />
@@ -86,12 +87,21 @@
     <Compile Include="TestCaseAutomator.Utilities\PropertyNotification\PropertyTests.cs" />
     <Compile Include="TestCaseAutomator.Utilities\Reflection\ReflectionExtensionsTests.cs" />
     <Compile Include="TestCaseAutomator.Utilities\Reflection\ReflectTests.cs" />
+    <Compile Include="TestCaseAutomator\Configuration\DotNetSettingsTests.cs" />
     <Compile Include="TheoryDataSet.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TestCaseAutomator.TeamFoundation\TestCaseAutomator.TeamFoundation.csproj">
+      <Project>{73169659-abd5-4a80-8c0e-c774ba166519}</Project>
+      <Name>TestCaseAutomator.TeamFoundation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TestCaseAutomator.Utilities\TestCaseAutomator.Utilities.csproj">
       <Project>{9b948621-f11e-4503-aa62-142128e6bb6a}</Project>
       <Name>TestCaseAutomator.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TestCaseAutomator\TestCaseAutomator.csproj">
+      <Project>{2b975523-4319-46bd-9200-5419a57c9fe4}</Project>
+      <Name>TestCaseAutomator</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

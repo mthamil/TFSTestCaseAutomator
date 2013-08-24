@@ -4,31 +4,29 @@ using System.Linq;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.TestManagement.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
+using TestCaseAutomator.Utilities;
 
 namespace TestCaseAutomator.TeamFoundation
 {
 	/// <summary>
 	/// Enables searching and browsing Team Foundation Server objects.
 	/// </summary>
-	public class TfsExplorer : IDisposable
+	public class TfsExplorer : DisposableBase, ITfsExplorer
 	{
 		/// <summary>
 		/// Initializes a new <see cref="TfsExplorer"/>.
 		/// </summary>
-		/// <param name="tfsServer">The TFS server to connect to</param>
-		public TfsExplorer(Uri tfsServer)
-			: this(tfsServer, TfsTeamProjectCollectionFactory.GetTeamProjectCollection)
+		/// <param name="tfsConnection">Enables access to a TFS server</param>
+		/// <param name="workItemsFactory">Factory that creates <see cref="ITfsProjectWorkItemCollection"/></param>
+		/// <param name="versionControlFactory">Factory that creates <see cref="IVersionControl"/>s</param>
+		public TfsExplorer(
+			TfsConnection tfsConnection,
+			Func<ITestManagementTeamProject, ITfsProjectWorkItemCollection> workItemsFactory,
+			Func<TfsConnection, IVersionControl> versionControlFactory)
 		{
-		}
-
-		/// <summary>
-		/// Initializes a new <see cref="TfsExplorer"/>.
-		/// </summary>
-		/// <param name="tfsServer">The TFS server to connect to</param>
-		/// <param name="tfsConnectionFactory">Factory that creates <see cref="TfsConnection"/>s</param>
-		internal TfsExplorer(Uri tfsServer, Func<Uri, TfsConnection> tfsConnectionFactory)
-		{
-			_tfsConnection = tfsConnectionFactory(tfsServer);
+			_tfsConnection = tfsConnection;
+			_workItemsFactory = workItemsFactory;
+			_versionControlFactory = versionControlFactory;
 		}
 
 		/// <summary>
@@ -36,11 +34,11 @@ namespace TestCaseAutomator.TeamFoundation
 		/// </summary>
 		/// <param name="projectName">The TFS project to access</param>
 		/// <returns>An object providing access to a project's child objects</returns>
-		public TfsProjectWorkItems WorkItems(string projectName)
+		public ITfsProjectWorkItemCollection WorkItems(string projectName)
 		{
 			var testService = _tfsConnection.GetService<ITestManagementService>();
 			var project = testService.GetTeamProject(projectName);
-			return new TfsProjectWorkItems(project);
+			return _workItemsFactory(project);
 		}
 
 		/// <summary>
@@ -48,9 +46,9 @@ namespace TestCaseAutomator.TeamFoundation
 		/// </summary>
 		public IEnumerable<TfsSolution> Solutions()
 		{
-			var sourceControl = _tfsConnection.GetService<VersionControlServer>();
+			var sourceControl = _versionControlFactory(_tfsConnection);
 			var solutions = sourceControl.GetItems("$/*.sln", RecursionType.Full);
-			return solutions.Items.Select(item => new TfsSolution(item));
+			return solutions.Select(item => new TfsSolution(item, sourceControl));
 		}
 
 		/// <summary>
@@ -58,12 +56,14 @@ namespace TestCaseAutomator.TeamFoundation
 		/// </summary>
 		public Uri TfsServer { get { return _tfsConnection.Uri; } }
 
-		/// <see cref="IDisposable.Dispose"/>
-		public void Dispose()
+		/// <see cref="DisposableBase.Dispose"/>
+		protected override void OnDisposing()
 		{
 			_tfsConnection.Dispose();
 		}
 
+		private readonly Func<ITestManagementTeamProject, ITfsProjectWorkItemCollection> _workItemsFactory;
+		private readonly Func<TfsConnection, IVersionControl> _versionControlFactory;
 		private readonly TfsConnection _tfsConnection;
 	}
 }

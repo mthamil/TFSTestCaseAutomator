@@ -8,13 +8,13 @@ namespace TestCaseAutomator.TeamFoundation
 	/// <summary>
 	/// Represents a Team Foundation project's work items.
 	/// </summary>
-	public class TfsProjectWorkItems
+	public class TfsProjectWorkItemCollection : ITfsProjectWorkItemCollection
 	{
 		/// <summary>
-		/// Initializes a new <see cref="TfsProjectWorkItems"/>.
+		/// Initializes a new <see cref="TfsProjectWorkItemCollection"/>.
 		/// </summary>
 		/// <param name="testManagement">The test management project to use</param>
-		public TfsProjectWorkItems(ITestManagementTeamProject testManagement)
+		public TfsProjectWorkItemCollection(ITestManagementTeamProject testManagement)
 		{
 			_testManagement = testManagement;
 		}

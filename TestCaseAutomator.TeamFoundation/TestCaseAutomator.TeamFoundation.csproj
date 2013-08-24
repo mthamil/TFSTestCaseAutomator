@@ -36,6 +36,9 @@
     <DocumentationFile>bin\Release\TestCaseAutomator.TeamFoundation.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\packages\Autofac.3.1.1\lib\net40\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="envdte, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -88,23 +91,34 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Container\TeamFoundationModule.cs" />
+    <Compile Include="ITfsExplorer.cs" />
+    <Compile Include="ITfsProjectWorkItemCollection.cs" />
+    <Compile Include="IVersionControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SolutionFileParser.cs" />
     <Compile Include="TestCaseAssociation\IAutomatedTest.cs" />
     <Compile Include="TestCaseAssociation\TestCaseExtensions.cs" />
     <Compile Include="TestCaseQueryable.cs" />
     <Compile Include="TfsExplorer.cs" />
     <Compile Include="TfsFile.cs" />
-    <Compile Include="TfsProjectWorkItems.cs" />
+    <Compile Include="TfsProjectWorkItemCollection.cs" />
     <Compile Include="TfsSolution.cs" />
     <Compile Include="TfsSolutionProject.cs" />
     <Compile Include="TfsSourceControlledItem.cs" />
+    <Compile Include="VersionControlServerAdapter.cs" />
     <Compile Include="WellKnownProjectTypes.cs" />
     <Compile Include="WorkItemExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TestCaseAutomator.Utilities\TestCaseAutomator.Utilities.csproj">
+      <Project>{9B948621-F11E-4503-AA62-142128E6BB6A}</Project>
+      <Name>TestCaseAutomator.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

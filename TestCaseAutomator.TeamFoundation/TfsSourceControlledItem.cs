@@ -11,10 +11,12 @@ namespace TestCaseAutomator.TeamFoundation
 		/// <summary>
 		/// Initializes a new <see cref="TfsSourceControlledItem"/>.
 		/// </summary>
-		/// <param name="item">he source controlled item.</param>
-		protected TfsSourceControlledItem(Item item)
+		/// <param name="item">The source controlled item.</param>
+		/// <param name="versionControl">The item's associated TFS source control</param>
+		protected TfsSourceControlledItem(Item item, IVersionControl versionControl)
 		{
 			Item = item;
+			VersionControl = versionControl;
 		}
 
 		/// <summary>
@@ -37,6 +39,11 @@ namespace TestCaseAutomator.TeamFoundation
 		/// The source controlled item.
 		/// </summary>
 		protected Item Item { get; private set; }
+
+		/// <summary>
+		/// The item's associated source control.
+		/// </summary>
+		protected IVersionControl VersionControl { get; private set; }
 
 		/// <see cref="object.ToString"/>
 		public override string ToString()

@@ -16,8 +16,9 @@ namespace TestCaseAutomator.TeamFoundation
 		/// Initializes a new <see cref="TfsSolutionProject"/>.
 		/// </summary>
 		/// <param name="projectItem">The source controlled project file</param>
-		public TfsSolutionProject(Item projectItem)
-			: base(projectItem)
+		/// <param name="versionControl">TFS source control</param>
+		public TfsSolutionProject(Item projectItem, IVersionControl versionControl)
+			: base(projectItem, versionControl)
 		{
 			_projectDocument = new Lazy<XDocument>(() =>
 				XDocument.Load(new StreamReader(Item.DownloadFile())));
@@ -49,11 +50,9 @@ namespace TestCaseAutomator.TeamFoundation
 				.Descendants(XName.Get("Compile", ProjectNamespace)).Concat(_projectDocument.Value
 				.Descendants(XName.Get("None", ProjectNamespace)))
 				.Select(e => Path.Combine(projectDir, e.Attribute(XName.Get("Include")).Value))
-				.Select(p => Item.VersionControlServer.GetItem(p))
-				.Select(i => new TfsFile(i));
+				.Select(p => VersionControl.GetItem(p))
+				.Select(i => new TfsFile(i, VersionControl));
 		}
-
-
 
 		private readonly Lazy<IEnumerable<Guid>> _projectTypeGuids; 
 		private readonly Lazy<XDocument> _projectDocument; 

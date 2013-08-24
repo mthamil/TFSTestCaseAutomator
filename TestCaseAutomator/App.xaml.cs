@@ -14,7 +14,7 @@ namespace TFSTestCaseAutomator
 			_errorHandler = new UnhandledErrorHandler(Current, Dispatcher);
 
 			var containerBuilder = new ContainerBuilder();
-			containerBuilder.RegisterModule<MainModule>();
+			containerBuilder.RegisterModule<MasterModule>();
 			_container = containerBuilder.Build();
 		}
 
