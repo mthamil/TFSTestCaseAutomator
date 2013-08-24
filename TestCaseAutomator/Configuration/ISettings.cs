@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace TestCaseAutomator.Configuration
 {
@@ -11,6 +12,11 @@ namespace TestCaseAutomator.Configuration
 		/// The current TFS server URL.
 		/// </summary>
 		Uri TfsServerLocation { get; set; }
+
+		/// <summary>
+		/// The directory where automated test discovery plugins are located.
+		/// </summary>
+		DirectoryInfo TestDiscoveryPluginLocation { get; }
 
 		/// <summary>
 		/// Stores the current settings. 

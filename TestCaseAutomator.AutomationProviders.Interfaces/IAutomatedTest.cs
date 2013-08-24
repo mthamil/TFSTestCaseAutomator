@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace TestCaseAutomator.TeamFoundation.TestCaseAssociation
+namespace TestCaseAutomator.AutomationProviders.Interfaces
 {
 	/// <summary>
 	/// Represents the components of an automated test case.

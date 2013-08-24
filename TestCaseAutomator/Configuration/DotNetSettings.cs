@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using TestCaseAutomator.Utilities.PropertyNotification;
 
 namespace TestCaseAutomator.Configuration
@@ -18,6 +19,7 @@ namespace TestCaseAutomator.Configuration
 			_settings = settings;
 
 			TfsServerLocation = settings.TFSServerUrl;
+			TestDiscoveryPluginLocation = new DirectoryInfo(settings.TestDiscoveryPluginLocation);
 		}
 
 		private DotNetSettings()
@@ -31,6 +33,9 @@ namespace TestCaseAutomator.Configuration
 			get { return _tfsServerLocation.Value; }
 			set { _tfsServerLocation.Value = value; }
 		}
+
+		/// <see cref="ISettings.TestDiscoveryPluginLocation"/>
+		public DirectoryInfo TestDiscoveryPluginLocation { get; private set; }
 
 		/// <see cref="ISettings.Save"/>
 		public void Save()

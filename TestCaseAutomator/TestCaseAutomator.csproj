@@ -113,6 +113,14 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\TestCaseAutomator.AutomationProviders.Interfaces\TestCaseAutomator.AutomationProviders.Interfaces.csproj">
+      <Project>{AD71ADB9-E579-4A13-B3A0-9051FF5B075D}</Project>
+      <Name>TestCaseAutomator.AutomationProviders.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TestCaseAutomator.AutomationProviders\TestCaseAutomator.AutomationProviders.csproj">
+      <Project>{9742CC89-1825-4119-9C4F-DF074070563C}</Project>
+      <Name>TestCaseAutomator.AutomationProviders</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TestCaseAutomator.TeamFoundation\TestCaseAutomator.TeamFoundation.csproj">
       <Project>{73169659-ABD5-4A80-8C0E-C774BA166519}</Project>
       <Name>TestCaseAutomator.TeamFoundation</Name>

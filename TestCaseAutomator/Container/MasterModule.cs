@@ -1,4 +1,7 @@
 ﻿using Autofac;
+using TestCaseAutomator.AutomationProviders;
+using TestCaseAutomator.AutomationProviders.Interfaces;
+using TestCaseAutomator.Configuration;
 using TestCaseAutomator.TeamFoundation.Container;
 
 namespace TFSTestCaseAutomator.Container
@@ -13,6 +16,19 @@ namespace TFSTestCaseAutomator.Container
 		{
 			builder.RegisterModule<CoreModule>();
 			builder.RegisterModule<TeamFoundationModule>();
+
+			builder.RegisterType<PluginComposer>()
+			       .OnActivating(c => c.Instance.PluginLocation = c.Context.Resolve<ISettings>().TestDiscoveryPluginLocation);
+
+			builder.Register(c =>
+					{
+						var composer = c.Resolve<PluginComposer>();
+						composer.Compose();
+						return composer.RootDiscoverer;
+					})
+			       .As<IAutomatedTestDiscoverer>()
+				   .SingleInstance()
+				   .AutoActivate();
 		}
 	}
 }

@@ -11,12 +11,14 @@ namespace Tests.Unit.TestCaseAutomator.Configuration
 		{
 			// Arrange.
 			settings.TFSServerUrl = new Uri("http://testserver/");
+			settings["TestDiscoveryPluginLocation"] = @"C:\Plugins";
 
 			// Act.
 			var appSettings = new DotNetSettings(settings);
 
 			// Assert.
 			Assert.Equal("http://testserver/", appSettings.TfsServerLocation.ToString());
+			Assert.Equal(@"C:\Plugins", appSettings.TestDiscoveryPluginLocation.FullName);
 		}
 
 		[Fact]

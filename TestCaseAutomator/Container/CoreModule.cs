@@ -13,7 +13,8 @@ namespace TFSTestCaseAutomator.Container
 		{
 			builder.Register(c => Settings.Default);
 
-			builder.RegisterType<DotNetSettings>().As<ISettings>()
+			builder.Register(c => new DotNetSettings(c.Resolve<Settings>()))
+			       .As<ISettings>()
 			       .SingleInstance();
 		}
 	}
