@@ -1,8 +1,8 @@
 ﻿using System.Windows;
 using Autofac;
-using TFSTestCaseAutomator.Container;
+using TestCaseAutomator.Container;
 
-namespace TFSTestCaseAutomator
+namespace TestCaseAutomator
 {
 	/// <summary>
 	/// Interaction logic for App.xaml

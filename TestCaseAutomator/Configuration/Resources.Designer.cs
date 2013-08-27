@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TFSTestCaseAutomator.Properties
+namespace TestCaseAutomator.Configuration
 {
 
 
