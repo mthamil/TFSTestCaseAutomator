@@ -1,6 +1,7 @@
 ﻿using System;
 using Autofac;
 using Microsoft.TeamFoundation.Client;
+using Microsoft.TeamFoundation.TestManagement.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
 
 namespace TestCaseAutomator.TeamFoundation.Container
@@ -16,7 +17,10 @@ namespace TestCaseAutomator.TeamFoundation.Container
 			builder.Register((c, p) => TfsTeamProjectCollectionFactory.GetTeamProjectCollection(p.TypedAs<Uri>()))
 			       .As<TfsConnection>();
 
-			builder.RegisterType<TfsExplorer>()
+			builder.Register((c, p) => new TfsExplorer(
+				                           c.Resolve<Func<Uri, TfsConnection>>()(p.TypedAs<Uri>()),
+				                           c.Resolve<Func<ITestManagementTeamProject, ITfsProjectWorkItemCollection>>(),
+				                           c.Resolve<Func<TfsConnection, IVersionControl>>()))
 			       .As<ITfsExplorer>();
 
 			builder.RegisterType<TfsProjectWorkItemCollection>()

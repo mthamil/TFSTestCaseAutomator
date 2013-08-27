@@ -56,7 +56,7 @@ namespace TestCaseAutomator.TeamFoundation
 		/// </summary>
 		public Uri TfsServer { get { return _tfsConnection.Uri; } }
 
-		/// <see cref="DisposableBase.Dispose"/>
+		/// <see cref="DisposableBase.OnDisposing"/>
 		protected override void OnDisposing()
 		{
 			_tfsConnection.Dispose();

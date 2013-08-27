@@ -21,7 +21,7 @@ namespace TestCaseAutomator.TeamFoundation
 			: base(projectItem, versionControl)
 		{
 			_projectDocument = new Lazy<XDocument>(() =>
-				XDocument.Load(new StreamReader(Item.DownloadFile())));
+				XDocument.Load(new StreamReader(versionControl.DownloadFile(Item))));
 
 			_projectTypeGuids = new Lazy<IEnumerable<Guid>>(() =>
 			    new HashSet<Guid>(_projectDocument.Value

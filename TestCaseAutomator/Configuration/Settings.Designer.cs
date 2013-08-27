@@ -42,5 +42,17 @@ namespace TestCaseAutomator.Configuration {
                 return ((string)(this["TestDiscoveryPluginLocation"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string TFSProjectName {
+            get {
+                return ((string)(this["TFSProjectName"]));
+            }
+            set {
+                this["TFSProjectName"] = value;
+            }
+        }
     }
 }

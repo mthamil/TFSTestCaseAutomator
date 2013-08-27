@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Markup;
-using TFSTestCaseAutomator;
-using TFSTestCaseAutomator.ViewModels;
+using TestCaseAutomator.ViewModels;
 
 namespace TestCaseAutomator.Views.MarkupExtensions
 {

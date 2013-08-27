@@ -4,7 +4,7 @@ using System.Windows;
 using Autofac;
 using TestCaseAutomator.Utilities.PropertyNotification;
 
-namespace TFSTestCaseAutomator.ViewModels
+namespace TestCaseAutomator.ViewModels
 {
 	/// <summary>
 	/// Used to retrieve specific view models from an application container. 

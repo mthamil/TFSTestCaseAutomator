@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace TFSTestCaseAutomator
+namespace TestCaseAutomator
 {
 	/// <summary>
 	/// Handles unhandled application exceptions.
