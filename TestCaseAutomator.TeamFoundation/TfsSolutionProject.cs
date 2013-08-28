@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using Microsoft.TeamFoundation.VersionControl.Client;
 
 namespace TestCaseAutomator.TeamFoundation
 {
@@ -17,11 +16,11 @@ namespace TestCaseAutomator.TeamFoundation
 		/// </summary>
 		/// <param name="projectItem">The source controlled project file</param>
 		/// <param name="versionControl">TFS source control</param>
-		public TfsSolutionProject(Item projectItem, IVersionControl versionControl)
+		public TfsSolutionProject(IVersionedItem projectItem, IVersionControl versionControl)
 			: base(projectItem, versionControl)
 		{
 			_projectDocument = new Lazy<XDocument>(() =>
-				XDocument.Load(new StreamReader(versionControl.DownloadFile(Item))));
+				XDocument.Load(new StreamReader(Item.DownloadFile())));
 
 			_projectTypeGuids = new Lazy<IEnumerable<Guid>>(() =>
 			    new HashSet<Guid>(_projectDocument.Value
@@ -41,8 +40,9 @@ namespace TestCaseAutomator.TeamFoundation
 		/// <summary>
 		/// The files in a project.
 		/// </summary>
+		/// <param name="fileExtensionFilter">Any file extensions to filter out. If empty, all file extensions are returned.</param>
 		/// <returns></returns>
-		public IEnumerable<TfsFile> Files()
+		public IEnumerable<TfsFile> Files(IReadOnlyCollection<string> fileExtensionFilter)
 		{
 			var projectDir = Path.GetDirectoryName(Item.ServerItem);
 
@@ -50,6 +50,7 @@ namespace TestCaseAutomator.TeamFoundation
 				.Descendants(XName.Get("Compile", ProjectNamespace)).Concat(_projectDocument.Value
 				.Descendants(XName.Get("None", ProjectNamespace)))
 				.Select(e => Path.Combine(projectDir, e.Attribute(XName.Get("Include")).Value))
+				.Where(p => fileExtensionFilter.Count == 0 || fileExtensionFilter.Contains(Path.GetExtension(p)))
 				.Select(p => VersionControl.GetItem(p))
 				.Select(i => new TfsFile(i, VersionControl));
 		}

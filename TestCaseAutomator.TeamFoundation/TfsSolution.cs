@@ -15,7 +15,7 @@ namespace TestCaseAutomator.TeamFoundation
 		/// </summary>
 		/// <param name="solutionItem">The source contorlled solution file</param>
 		/// <param name="versionControl">TFS source control</param>
-		public TfsSolution(Item solutionItem, IVersionControl versionControl)
+		public TfsSolution(IVersionedItem solutionItem, IVersionControl versionControl)
 			: base(solutionItem, versionControl)
 		{
 		}
@@ -27,7 +27,7 @@ namespace TestCaseAutomator.TeamFoundation
 		public IEnumerable<TfsSolutionProject> Projects()
 		{
 			var solutionDir = Path.GetDirectoryName(ServerPath);
-			var contents = VersionControl.DownloadFile(Item);
+			var contents = Item.DownloadFile();
 			var solutionParser = new SolutionFileParser(contents);
 			return solutionParser.GetProjects()
 			                     .Select(p => Path.Combine(solutionDir, p))

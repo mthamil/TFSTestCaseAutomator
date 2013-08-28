@@ -1,5 +1,4 @@
 using System.IO;
-using Microsoft.TeamFoundation.VersionControl.Client;
 
 namespace TestCaseAutomator.TeamFoundation
 {
@@ -13,7 +12,7 @@ namespace TestCaseAutomator.TeamFoundation
 		/// </summary>
 		/// <param name="fileItem">The source controlled file</param>
 		/// <param name="versionControl">TFS source control</param>
-		public TfsFile(Item fileItem, IVersionControl versionControl)
+		public TfsFile(IVersionedItem fileItem, IVersionControl versionControl)
 			: base(fileItem, versionControl)
 		{
 		}
@@ -22,9 +21,14 @@ namespace TestCaseAutomator.TeamFoundation
 		/// Downloads a file to a given file path.
 		/// </summary>
 		/// <param name="path">The local path to download to</param>
-		public void DownloadToAsync(string path)
+		public void DownloadTo(string path)
 		{
-			var downloadStream = VersionControl.DownloadFile(Item);
+			var downloadStream = Item.DownloadFile();
+
+			var directoryPath = Path.GetDirectoryName(path);
+			if (!Directory.Exists(directoryPath))
+				Directory.CreateDirectory(directoryPath);
+
 			using (var fileStream = File.OpenWrite(path))
 				downloadStream.CopyTo(fileStream);
 		}

@@ -1,6 +1,11 @@
-﻿using Autofac;
+﻿using System;
+using System.Linq;
+using Autofac;
+using TestCaseAutomator.AutomationProviders.Interfaces;
 using TestCaseAutomator.Configuration;
+using TestCaseAutomator.TeamFoundation;
 using TestCaseAutomator.ViewModels;
+using TestCaseAutomator.ViewModels.Browser;
 
 namespace TestCaseAutomator.Container
 {
@@ -20,6 +25,21 @@ namespace TestCaseAutomator.Container
 			       })
 			       .As<MainViewModel, IApplication>()
 				   .SingleInstance();
+
+			builder.RegisterType<TestBrowserViewModel>();
+
+			builder.RegisterType<WorkItemsViewModel>().As<IWorkItems>();
+
+			builder.RegisterType<SolutionViewModel>();
+
+			builder.Register((c, p) => new ProjectViewModel(
+				p.TypedAs<TfsSolutionProject>(),
+				c.Resolve<Func<TfsFile, AutomationSourceViewModel>>(),
+				c.Resolve<IAutomatedTestDiscoverer>().SupportedFileExtensions.ToList()));
+
+			builder.RegisterType<AutomationSourceViewModel>();
+
+			builder.RegisterType<AutomatedTestViewModel>();
 		}
 	}
 }

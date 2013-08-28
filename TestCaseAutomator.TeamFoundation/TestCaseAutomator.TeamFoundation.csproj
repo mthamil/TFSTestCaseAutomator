@@ -92,10 +92,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Container\TeamFoundationModule.cs" />
+    <Compile Include="IVersionedItem.cs" />
     <Compile Include="ITfsExplorer.cs" />
     <Compile Include="ITfsProjectWorkItemCollection.cs" />
     <Compile Include="IVersionControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VersionedItem.cs" />
     <Compile Include="SolutionFileParser.cs" />
     <Compile Include="TestCaseAssociation\TestCaseExtensions.cs" />
     <Compile Include="TestCaseQueryable.cs" />

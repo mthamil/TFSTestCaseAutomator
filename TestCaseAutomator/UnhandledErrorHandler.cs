@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using TestCaseAutomator.Controls;
 
 namespace TestCaseAutomator
 {
@@ -32,22 +33,27 @@ namespace TestCaseAutomator
 
 		private void ShowMessageBox(Exception exception)
 		{
-			var result = MessageBox.Show(FormatMessage(exception), "Application Error", MessageBoxButton.YesNo);
-			if (result == MessageBoxResult.Yes)
+			var messageBox = new ScrollableMessageBox
+			{
+				Buttons = MessageBoxButton.YesNo,
+				Title = "Application Error",
+				Caption = 
+@"An application error occurred. If this error occurs again there may be a more serious malfunction in the application, and it should be closed.
+
+Do you want to exit the application?
+(Warning: If you click Yes the application will close, if you click No the application will continue)",
+				Message = FormatMessage(exception)
+			};
+
+			messageBox.ShowDialog();
+			if (messageBox.DialogResult.HasValue && messageBox.DialogResult.Value)
 				_application.Shutdown();
 		}
 
 		private static string FormatMessage(Exception exception)
 		{
-			const string caption =
-				@"An application error occurred. If this error occurs again there may be a more serious malfunction in the application, and it should be closed.
-
-Do you want to exit the application?
-(Warning: If you click Yes the application will close, if you click No the application will continue)";
-
-			return String.Format("{1}{0}{2}{0}{3}{0}{4}{5}",
+			return String.Format("{1}{0}{2}{0}{3}{4}",
 			                     Environment.NewLine,
-			                     caption,
 			                     exception.GetType().Name,
 			                     exception.Message,
 			                     exception.StackTrace,

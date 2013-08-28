@@ -4,7 +4,10 @@
         xmlns:xtn="clr-namespace:TestCaseAutomator.Views.MarkupExtensions"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:vm="clr-namespace:TestCaseAutomator.ViewModels"
+        xmlns:Commands="clr-namespace:TestCaseAutomator.Controls.Commands"
+        xmlns:vw="clr-namespace:TestCaseAutomator.Views.Browser"
         Title="Test Case Automator" Height="400" Width="800"
+        WindowStartupLocation="CenterScreen"
         DataContext="{Binding Source={xtn:ViewModelLocator {x:Type vm:MainViewModel}}, Path=ViewModel}">
     
     <i:Interaction.Triggers>
@@ -15,8 +18,9 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
         
         <Grid Grid.Row="0" Width="Auto" HorizontalAlignment="Stretch" Margin="10,0,5,0">
@@ -36,13 +40,14 @@
                 <TextBox Text="{Binding ProjectName}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Center" Width="Auto"/>
             </DockPanel>
             
-            <Button Grid.Column="2" Content="Refresh" Command="{Binding WorkItems.RefreshCommand}" Height="27" Width="50" HorizontalAlignment="Right"
-                    ToolTip="Reloads test case data"/>
+            <Button Grid.Column="2" Content="Refresh" Command="{Binding RefreshCommand}" Height="27" Width="50" HorizontalAlignment="Right"
+                    ToolTip="Reloads data from TFS"/>
         </Grid>
         
         <DataGrid Grid.Row="1" DataContext="{Binding WorkItems}" ItemsSource="{Binding TestCases}" 
                   AutoGenerateColumns="False" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"
-                  IsReadOnly="True" CanUserReorderColumns="False" CanUserAddRows="False" SelectionMode="Single">
+                  IsReadOnly="True" CanUserReorderColumns="False" CanUserAddRows="False" SelectionMode="Single"
+                  SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.SelectedTestCase}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width=".10*"/>
                 
@@ -53,17 +58,31 @@
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
-                
-                <DataGridTextColumn Header="Associated Automated Test" Binding="{Binding AssociatedAutomation}" Width=".50*"/>
-                
-                <DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Associated Automated Test" Width=".50*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="..." ToolTip="Choose automated test..." Width="20" Height="20"/>
+                            <DockPanel Dock="Left">
+                                <TextBlock Text="{Binding AssociatedAutomation}" HorizontalAlignment="Stretch" Width="Auto"/>
+                                <Button Content="..." ToolTip="Choose automated test..." HorizontalAlignment="Right" Width="20" Height="20"
+                                        CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestBrowser, Mode=OneWay}">
+                                    <Button.Command>
+                                        <Commands:OpenDialogCommand Type="{x:Type vw:TestBrowser}" 
+                                                                    Owner="{Binding Source={x:Static Application.Current}, Path=MainWindow}"/>
+                                    </Button.Command>
+                                </Button>
+                            </DockPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+
+        <StatusBar Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0">
+            <StatusBarItem>
+                <TextBlock Text="{Binding Status}" HorizontalAlignment="Left" Margin="2"/>
+            </StatusBarItem>
+        </StatusBar>
+        
     </Grid>
 </Window>

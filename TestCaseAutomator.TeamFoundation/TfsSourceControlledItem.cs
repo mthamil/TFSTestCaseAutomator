@@ -1,5 +1,4 @@
 using System.IO;
-using Microsoft.TeamFoundation.VersionControl.Client;
 
 namespace TestCaseAutomator.TeamFoundation
 {
@@ -13,7 +12,7 @@ namespace TestCaseAutomator.TeamFoundation
 		/// </summary>
 		/// <param name="item">The source controlled item.</param>
 		/// <param name="versionControl">The item's associated TFS source control</param>
-		protected TfsSourceControlledItem(Item item, IVersionControl versionControl)
+		protected TfsSourceControlledItem(IVersionedItem item, IVersionControl versionControl)
 		{
 			Item = item;
 			VersionControl = versionControl;
@@ -38,7 +37,7 @@ namespace TestCaseAutomator.TeamFoundation
 		/// <summary>
 		/// The source controlled item.
 		/// </summary>
-		protected Item Item { get; private set; }
+		protected IVersionedItem Item { get; private set; }
 
 		/// <summary>
 		/// The item's associated source control.

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 using Microsoft.TeamFoundation.VersionControl.Client;
 
 namespace TestCaseAutomator.TeamFoundation
@@ -19,27 +19,21 @@ namespace TestCaseAutomator.TeamFoundation
 		}
 
 		/// <see cref="IVersionControl.GetItem"/>
-		public Item GetItem(string path)
+		public IVersionedItem GetItem(string path)
 		{
-			return _versionControl.GetItem(path);
+			return new VersionedItem(_versionControl.GetItem(path));
 		}
 
 		/// <see cref="IVersionControl.GetItems(string)"/>
-		public IReadOnlyList<Item> GetItems(string path)
+		public IReadOnlyList<IVersionedItem> GetItems(string path)
 		{
-			return _versionControl.GetItems(path).Items;
+			return _versionControl.GetItems(path).Items.Select(i => new VersionedItem(i)).ToList<IVersionedItem>();
 		}
 
 		/// <see cref="IVersionControl.GetItems(string,Microsoft.TeamFoundation.VersionControl.Client.RecursionType)"/>
-		public IReadOnlyList<Item> GetItems(string path, RecursionType recursion)
+		public IReadOnlyList<IVersionedItem> GetItems(string path, RecursionType recursion)
 		{
-			return _versionControl.GetItems(path, recursion).Items;
-		}
-
-		/// <see cref="IVersionControl.DownloadFile"/>
-		public Stream DownloadFile(Item item)
-		{
-			return _versionControl.DownloadFileByUrl(item.DownloadUrl);
+			return _versionControl.GetItems(path, recursion).Items.Select(i => new VersionedItem(i)).ToList<IVersionedItem>();
 		}
 
 		private readonly VersionControlServer _versionControl;

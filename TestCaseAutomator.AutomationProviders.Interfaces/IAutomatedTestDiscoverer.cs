@@ -9,6 +9,11 @@ namespace TestCaseAutomator.AutomationProviders.Interfaces
 	public interface IAutomatedTestDiscoverer
 	{
 		/// <summary>
+		/// Reports the file extensions supported by a test discoverer.
+		/// </summary>
+		IEnumerable<string> SupportedFileExtensions { get; }
+
+		/// <summary>
 		/// Retrieves a sequence of automated tests suitable for association with test cases.
 		/// </summary>
 		/// <param name="sources">A collection of potential test sources. These are usually file paths.</param>

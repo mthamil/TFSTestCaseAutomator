@@ -40,6 +40,7 @@
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.TeamFoundation.TestManagement.Client, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Client, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -83,12 +84,37 @@
     <Compile Include="Container\CoreModule.cs" />
     <Compile Include="Container\MasterModule.cs" />
     <Compile Include="Container\PresentationModule.cs" />
+    <Compile Include="Controls\Behaviors\LoadDependentBehavior.cs" />
+    <Compile Include="Controls\Behaviors\TitleBarOptions.cs" />
+    <Compile Include="Controls\Behaviors\TreeViewBindableSelectedItemBehavior.cs" />
+    <Compile Include="Controls\Behaviors\TreeViewItemExpandedCommandBehavior.cs" />
+    <Compile Include="Controls\Behaviors\TreeViewItemSelectedCommandBehavior.cs" />
+    <Compile Include="Controls\Behaviors\WindowBehaviors.cs" />
+    <Compile Include="Controls\Commands\CloseWindowCommand.cs" />
+    <Compile Include="Controls\Commands\DependencyCommandBase.cs" />
+    <Compile Include="Controls\Commands\OpenDialogCommand.cs" />
+    <Compile Include="Controls\ScrollableMessageBox.xaml.cs">
+      <DependentUpon>ScrollableMessageBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UnhandledErrorHandler.cs" />
     <Compile Include="ViewModels\AutofacViewModelLocator.cs" />
+    <Compile Include="ViewModels\Browser\AutomatedTestViewModel.cs" />
+    <Compile Include="ViewModels\Browser\AutomationSourceViewModel.cs" />
+    <Compile Include="ViewModels\Browser\INodeViewModel.cs" />
+    <Compile Include="ViewModels\Browser\IVirtualizedNode.cs" />
+    <Compile Include="ViewModels\Browser\NodeViewModel.cs" />
+    <Compile Include="ViewModels\Browser\ProjectViewModel.cs" />
+    <Compile Include="ViewModels\Browser\SolutionViewModel.cs" />
+    <Compile Include="ViewModels\Browser\TestBrowserViewModel.cs" />
+    <Compile Include="ViewModels\Browser\VirtualizedNode.cs" />
     <Compile Include="ViewModels\IApplication.cs" />
+    <Compile Include="ViewModels\IWorkItems.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\WorkItemsViewModel.cs" />
     <Compile Include="ViewModels\TestCaseViewModel.cs" />
+    <Compile Include="Views\Browser\TestBrowser.xaml.cs">
+      <DependentUpon>TestBrowser.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -98,6 +124,14 @@
     </Compile>
     <Compile Include="Views\MarkupExtensions\ActivatorExtension.cs" />
     <Compile Include="Views\MarkupExtensions\ViewModelLocator.cs" />
+    <Page Include="Controls\ScrollableMessageBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Browser\TestBrowser.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

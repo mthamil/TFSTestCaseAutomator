@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Linq;
 using TestCaseAutomator.AutomationProviders.Interfaces;
 
 namespace TestCaseAutomator.AutomationProviders
@@ -20,10 +21,16 @@ namespace TestCaseAutomator.AutomationProviders
 			_childDiscoverers = childDiscoverers;
 		}
 
+		/// <see cref="IAutomatedTestDiscoverer.SupportedFileExtensions"/>
+		public IEnumerable<string> SupportedFileExtensions
+		{
+			get { return _childDiscoverers.SelectMany(d => d.SupportedFileExtensions).Distinct(); }
+		}
+
 		/// <see cref="IAutomatedTestDiscoverer.DiscoverAutomatedTests"/>
 		public IEnumerable<IAutomatedTest> DiscoverAutomatedTests(IEnumerable<string> sources)
 		{
-			throw new System.NotImplementedException();
+			return _childDiscoverers.SelectMany(d => d.DiscoverAutomatedTests(sources));
 		}
 
 		private readonly IEnumerable<IAutomatedTestDiscoverer> _childDiscoverers;
