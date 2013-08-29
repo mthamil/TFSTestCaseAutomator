@@ -60,9 +60,9 @@ namespace TestCaseAutomator.ViewModels.Browser
 			{
 				_file.DownloadTo(tempFile.File.FullName);
 				return _testDiscoverer.DiscoverAutomatedTests(tempFile.File.FullName.ToEnumerable())
-							   .Select(t => _testFactory(t))
-							   .Tee(progress.Report)
-							   .ToList();
+				                      .Select(t => _testFactory(t))
+				                      .Tee(progress.Report)
+				                      .ToList();
 			}
 		}
 
