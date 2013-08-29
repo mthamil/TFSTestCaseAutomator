@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Autofac.Features.OwnedInstances;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.TestManagement.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
@@ -22,11 +23,13 @@ namespace TestCaseAutomator.TeamFoundation
 		public TfsExplorer(
 			TfsConnection tfsConnection,
 			Func<ITestManagementTeamProject, ITfsProjectWorkItemCollection> workItemsFactory,
-			Func<TfsConnection, IVersionControl> versionControlFactory)
+			Func<TfsConnection, Owned<IVersionControl>> versionControlFactory)
 		{
 			_tfsConnection = tfsConnection;
 			_workItemsFactory = workItemsFactory;
 			_versionControlFactory = versionControlFactory;
+
+			_versionControl = _versionControlFactory(_tfsConnection);
 		}
 
 		/// <summary>
@@ -46,9 +49,8 @@ namespace TestCaseAutomator.TeamFoundation
 		/// </summary>
 		public IEnumerable<TfsSolution> Solutions()
 		{
-			var sourceControl = _versionControlFactory(_tfsConnection);
-			var solutions = sourceControl.GetItems("$/*.sln", RecursionType.Full);
-			return solutions.Select(item => new TfsSolution(item, sourceControl));
+			var solutions = _versionControl.Value.GetItems("$/*.sln", RecursionType.Full);
+			return solutions.Select(item => new TfsSolution(item, _versionControl.Value));
 		}
 
 		/// <summary>
@@ -59,11 +61,14 @@ namespace TestCaseAutomator.TeamFoundation
 		/// <see cref="DisposableBase.OnDisposing"/>
 		protected override void OnDisposing()
 		{
+			_versionControl.Dispose();
 			_tfsConnection.Dispose();
 		}
 
+		private readonly Owned<IVersionControl> _versionControl;
+
 		private readonly Func<ITestManagementTeamProject, ITfsProjectWorkItemCollection> _workItemsFactory;
-		private readonly Func<TfsConnection, IVersionControl> _versionControlFactory;
+		private readonly Func<TfsConnection, Owned<IVersionControl>> _versionControlFactory;
 		private readonly TfsConnection _tfsConnection;
 	}
 }

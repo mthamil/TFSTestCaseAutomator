@@ -1,13 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.TeamFoundation.VersionControl.Client;
+using TestCaseAutomator.Utilities;
 
 namespace TestCaseAutomator.TeamFoundation
 {
 	/// <summary>
 	/// An adapter for <see cref="VersionControlServer"/>.
 	/// </summary>
-	public class VersionControlServerAdapter : IVersionControl
+	public class VersionControlServerAdapter : DisposableBase, IVersionControl
 	{
 		/// <summary>
 		/// Initializes a new <see cref="VersionControlServerAdapter"/>.
@@ -16,6 +18,8 @@ namespace TestCaseAutomator.TeamFoundation
 		public VersionControlServerAdapter(VersionControlServer versionControl)
 		{
 			_versionControl = versionControl;
+
+			_versionControl.CommitCheckin += versionControl_CommitCheckin;
 		}
 
 		/// <see cref="IVersionControl.GetItem"/>
@@ -34,6 +38,22 @@ namespace TestCaseAutomator.TeamFoundation
 		public IReadOnlyList<IVersionedItem> GetItems(string path, RecursionType recursion)
 		{
 			return _versionControl.GetItems(path, recursion).Items.Select(i => new VersionedItem(i)).ToList<IVersionedItem>();
+		}
+
+		/// <see cref="IVersionControl.ChangeCommitted"/>
+		public event EventHandler<CommitCheckinEventArgs> ChangeCommitted;
+
+		private void versionControl_CommitCheckin(object sender, CommitCheckinEventArgs e)
+		{
+			var localEvent = ChangeCommitted;
+			if (localEvent != null)
+				localEvent(this, e);
+		}
+
+		/// <see cref="DisposableBase.OnDisposing"/>
+		protected override void OnDisposing()
+		{
+			_versionControl.CommitCheckin -= versionControl_CommitCheckin;
 		}
 
 		private readonly VersionControlServer _versionControl;
