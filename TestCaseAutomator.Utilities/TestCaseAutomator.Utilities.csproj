@@ -60,6 +60,8 @@
     <Compile Include="Concurrency\Tasks.cs" />
     <Compile Include="DisposableBase.cs" />
     <Compile Include="DisposableExtensions.cs" />
+    <Compile Include="InputOutput\FileInfoPathEqualityComparer.cs" />
+    <Compile Include="InputOutput\TemporaryFile.cs" />
     <Compile Include="Mvvm\Commands\AsyncCommandBuilderExtensions.cs" />
     <Compile Include="Mvvm\Commands\AsyncRelayCommand.cs" />
     <Compile Include="Mvvm\Commands\BoundRelayCommand.cs" />
