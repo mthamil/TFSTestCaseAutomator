@@ -1,0 +1,93 @@
+﻿<Window x:Class="TestCaseAutomator.Views.Browser.FileSystemTestBrowser"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ctrl="clr-namespace:TestCaseAutomator.Controls"
+        xmlns:Clickable="clr-namespace:TestCaseAutomator.Controls.Behaviors.Clickable"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:Converters="clr-namespace:TestCaseAutomator.Controls.Converters"
+        Title="File System Test Browser" Height="400" Width="600"
+        WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+    
+    <Window.Resources>
+        <ResourceDictionary>
+            <Converters:FileInfoConverter x:Key="FileConverter"/>
+            <Converters:StringIsNullOrEmptyConverter x:Key="StringIsEmptyConverter"/>
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Padding="5,2,0,2" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <TextBlock.Text>
+                <MultiBinding StringFormat="Select automation for Test Case {0}: '{1}'">
+                    <Binding Path="TestCase.Id"/>
+                    <Binding Path="TestCase.Title"/>
+                </MultiBinding>
+            </TextBlock.Text>
+        </TextBlock>
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="90"/>
+            </Grid.ColumnDefinitions>
+        
+            <DockPanel Grid.Column="0" Dock="Left" HorizontalAlignment="Stretch">
+                <TextBlock Text="File:" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0,5,0"/>
+                <TextBox Name="FileTextBox" Text="{Binding SelectedFile, Mode=TwoWay, Converter={StaticResource FileConverter}}" 
+                         HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Center" Width="Auto"/>
+            </DockPanel>
+
+            <Button Grid.Column="1" Name="SelectFileButton" Content="Browse..." Width="75" Margin="5,3,5,3" HorizontalAlignment="Right"
+                        ToolTip="Select file containing tests">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <Clickable:BindableClickAction/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+
+            <ctrl:FileSystemPicker SelectedPath="{Binding SelectedFile, Mode=OneWayToSource}"
+                                       Mode="Open"
+                                       Trigger="{Binding ElementName=SelectFileButton, Path=(Clickable:BindableClick.IsClicked)}"/>
+        </Grid>
+
+        <ListView Grid.Row="2" Name="TestListView" ItemsSource="{Binding Tests}" SelectedItem="{Binding SelectedTest}"
+                  SelectionMode="Single" Margin="2,0,2,0">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListView>
+
+        <TextBlock Grid.Row="2" Text="No tests found." Margin="4" FontStyle="Italic" FontSize="16" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding ElementName=TestListView, Path=Items.Count}" Value="0"/>
+                                <Condition Binding="{Binding ElementName=FileTextBox, Path=Text, Converter={StaticResource StringIsEmptyConverter}}" Value="False"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" Value="Visible" />
+                        </MultiDataTrigger> 
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
+        <DockPanel Grid.Row="3" Dock="Left" HorizontalAlignment="Right">
+            <Button Content="OK" Command="{Binding SaveTestCaseCommand}" Width="100" Margin="5,3,5,3" HorizontalAlignment="Right"/>
+            <Button Content="Cancel" Width="100" Margin="5,3,5,3" HorizontalAlignment="Right" IsDefault="True" IsCancel="True"/>
+        </DockPanel>
+
+    </Grid>
+</Window>

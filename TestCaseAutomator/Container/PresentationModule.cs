@@ -1,9 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Autofac;
 using TestCaseAutomator.AutomationProviders.Interfaces;
 using TestCaseAutomator.Configuration;
-using TestCaseAutomator.TeamFoundation;
 using TestCaseAutomator.ViewModels;
 using TestCaseAutomator.ViewModels.Browser;
 
@@ -26,16 +24,17 @@ namespace TestCaseAutomator.Container
 			       .As<MainViewModel, IApplication>()
 				   .SingleInstance();
 
-			builder.RegisterType<TestBrowserViewModel>();
+			builder.RegisterType<SourceControlTestBrowserViewModel>();
+
+			builder.RegisterType<FileSystemTestBrowserViewModel>();
 
 			builder.RegisterType<WorkItemsViewModel>().As<IWorkItems>();
 
 			builder.RegisterType<SolutionViewModel>();
 
-			builder.Register((c, p) => new ProjectViewModel(
-				p.TypedAs<TfsSolutionProject>(),
-				c.Resolve<Func<TfsFile, AutomationSourceViewModel>>(),
-				c.Resolve<IAutomatedTestDiscoverer>().SupportedFileExtensions.ToList()));
+			builder.RegisterType<ProjectViewModel>()
+				.OnActivating(c => c.Instance.FileExtensions = 
+					c.Context.Resolve<IAutomatedTestDiscoverer>().SupportedFileExtensions.ToList());
 
 			builder.RegisterType<AutomationSourceViewModel>();
 

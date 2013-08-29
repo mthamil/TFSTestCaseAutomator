@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using TestCaseAutomator.Utilities.Mvvm.Commands;
+using TestCaseAutomator.Utilities.PropertyNotification;
 
 namespace TestCaseAutomator.ViewModels.Browser
 {
@@ -16,9 +19,20 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// </summary>
 		protected VirtualizedNode()
 		{
+			_isLoading = Property.New(this, p => p.IsLoading, OnPropertyChanged);
+
 			RefreshCommand = new RelayCommand(Refresh, () => IsRealized);
-			ExpandedCommand = new RelayCommand(Load);
+			ExpandedCommand = new AsyncRelayCommand(LoadAsync);
 			Reset();
+		}
+
+		/// <summary>
+		/// Indicates whether a node's children are loading or not.
+		/// </summary>
+		public bool IsLoading
+		{
+			get { return _isLoading.Value; }
+			private set { _isLoading.Value = value; }
 		}
 
 		#region Implementation of IVirtualizedNode
@@ -47,11 +61,22 @@ namespace TestCaseAutomator.ViewModels.Browser
 			IsExpanded = false;
 		}
 
-		private void Load()
+		private async Task LoadAsync()
 		{
-			Children.Clear();
-			foreach (var project in LoadChildren())
-				Children.Add(project);
+			//if (!_isValid)
+			//{
+			try
+			{
+				IsLoading = true;
+				Children.Clear();
+				var progress = new Progress<TChild>(c => Children.Add(c));
+				await LoadChildrenAsync(progress);
+			}
+			finally
+			{
+				IsLoading = false;
+			}
+			//}
 		}
 
 		/// <summary>
@@ -59,6 +84,18 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// </summary>
 		protected abstract TChild DummyNode { get; }
 
-		protected abstract IEnumerable<TChild> LoadChildren();
+		protected abstract Task<IReadOnlyCollection<TChild>> LoadChildrenAsync(IProgress<TChild> progress);
+
+		/// <summary>
+		/// Notifies a node that it should reload its children instead of using a cached collection.
+		/// </summary>
+		protected void Invalidate()
+		{
+			_isValid = false;
+		}
+
+		private bool _isValid;
+
+		private readonly Property<bool> _isLoading;
 	}
 }

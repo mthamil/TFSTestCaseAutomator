@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System.Threading.Tasks;
+using Autofac;
 using TestCaseAutomator.AutomationProviders;
 using TestCaseAutomator.AutomationProviders.Interfaces;
 using TestCaseAutomator.Configuration;
@@ -13,7 +14,9 @@ namespace TestCaseAutomator.Container
 		/// <see cref="Module.Load"/>
 		protected override void Load(ContainerBuilder builder)
 		{
-			builder.Register(c => Settings.Default);
+			builder.Register(_ => TaskScheduler.Default);
+
+			builder.Register(_ => Settings.Default);
 
 			builder.Register(c => new DotNetSettings(c.Resolve<Settings>()))
 			       .As<ISettings>()

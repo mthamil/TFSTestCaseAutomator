@@ -4,7 +4,7 @@
         xmlns:xtn="clr-namespace:TestCaseAutomator.Views.MarkupExtensions"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:vm="clr-namespace:TestCaseAutomator.ViewModels"
-        xmlns:Commands="clr-namespace:TestCaseAutomator.Controls.Commands"
+        xmlns:cmds="clr-namespace:TestCaseAutomator.Controls.Commands"
         xmlns:vw="clr-namespace:TestCaseAutomator.Views.Browser"
         Title="Test Case Automator" Height="400" Width="800"
         WindowStartupLocation="CenterScreen"
@@ -62,16 +62,34 @@
                 <DataGridTemplateColumn Header="Associated Automated Test" Width=".50*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <DockPanel Dock="Left">
-                                <TextBlock Text="{Binding AssociatedAutomation}" HorizontalAlignment="Stretch" Width="Auto"/>
-                                <Button Content="..." ToolTip="Choose automated test..." HorizontalAlignment="Right" Width="20" Height="20"
-                                        CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestBrowser, Mode=OneWay}">
-                                    <Button.Command>
-                                        <Commands:OpenDialogCommand Type="{x:Type vw:TestBrowser}" 
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="90"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <TextBlock Grid.Column="0" Text="{Binding AssociatedAutomation}" HorizontalAlignment="Left" Width="Auto"/>
+
+                                <DockPanel Grid.Column="1" Dock="Right" HorizontalAlignment="Right">
+                                    <Button Content="\..." ToolTip="Choose automated test from the file system..." 
+                                            HorizontalAlignment="Right" VerticalContentAlignment="Center" Width="20" Height="20"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.FileSystemTestBrowser, Mode=OneWay}">
+                                        <Button.Command>
+                                            <cmds:OpenDialogCommand Type="{x:Type vw:FileSystemTestBrowser}" 
                                                                     Owner="{Binding Source={x:Static Application.Current}, Path=MainWindow}"/>
-                                    </Button.Command>
-                                </Button>
-                            </DockPanel>
+                                        </Button.Command>
+                                    </Button>
+                                
+                                    <Button Content="$..." ToolTip="Choose automated test from a source controlled file..." 
+                                            HorizontalAlignment="Right" Width="20" Height="20"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.SourceControlTestBrowser, Mode=OneWay}">
+                                        <Button.Command>
+                                            <cmds:OpenDialogCommand Type="{x:Type vw:SourceControlTestBrowser}" 
+                                                                    Owner="{Binding Source={x:Static Application.Current}, Path=MainWindow}"/>
+                                        </Button.Command>
+                                    </Button>
+                                </DockPanel>
+                            </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

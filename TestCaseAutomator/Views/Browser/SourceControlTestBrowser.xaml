@@ -1,10 +1,10 @@
-<Window x:Class="TestCaseAutomator.Views.Browser.TestBrowser"
+<Window x:Class="TestCaseAutomator.Views.Browser.SourceControlTestBrowser"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:acb="clr-namespace:TestCaseAutomator.Controls.Behaviors"
         xmlns:vmt="clr-namespace:TestCaseAutomator.ViewModels.Browser"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-        Title="Test Browser" Height="400" Width="600"
+        Title="Source Control Test Browser" Height="400" Width="600"
         WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
 
     <i:Interaction.Behaviors>
@@ -17,8 +17,8 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
-        
-        <TextBlock Padding="5,2,0,2" HorizontalAlignment="Left" VerticalAlignment="Center">
+
+        <TextBlock Grid.Row="0" Padding="5,2,0,2" HorizontalAlignment="Left" VerticalAlignment="Center">
             <TextBlock.Text>
                 <MultiBinding StringFormat="Select automation for Test Case {0}: '{1}'">
                     <Binding Path="TestCase.Id"/>
@@ -28,8 +28,11 @@
         </TextBlock>
         
         <TreeView Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  ItemsSource="{Binding Solutions}" 
-                  acb:TreeViewBindableSelectedItemBehavior.BindableSelectedItem="{Binding SelectedTest, Mode=TwoWay}">
+                  ItemsSource="{Binding Solutions}" Margin="2,0,2,0">
+
+            <i:Interaction.Behaviors>
+                <acb:TreeViewBindableSelectedItem SelectedItem="{Binding SelectedTest, Mode=TwoWay}"/>
+            </i:Interaction.Behaviors>
 
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type vmt:INodeViewModel}" ItemsSource="{Binding Path=Children}">
@@ -61,6 +64,9 @@
                             </MultiTrigger.Conditions>
                             <Setter Property="BorderBrush" Value="LightGray"/>
                         </MultiTrigger>
+                        <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                            <Setter Property="FontStyle" Value="Italic"/>
+                        </DataTrigger>
                     </Style.Triggers>
                     <Style.Resources>
                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#ADC6E5" />
@@ -78,7 +84,7 @@
         </TreeView>
         
         <DockPanel Grid.Row="2" Dock="Left" HorizontalAlignment="Right">
-            <Button Content="OK" Width="100" Margin="5,3,5,3" HorizontalAlignment="Right"/>
+            <Button Content="OK" Command="{Binding SaveTestCaseCommand}" Width="100" Margin="5,3,5,3" HorizontalAlignment="Right"/>
             <Button Content="Cancel" Width="100" Margin="5,3,5,3" HorizontalAlignment="Right" IsDefault="True" IsCancel="True"/>
         </DockPanel>
         

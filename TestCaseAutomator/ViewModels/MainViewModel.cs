@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.TeamFoundation;
 using TestCaseAutomator.TeamFoundation;
@@ -19,20 +20,23 @@ namespace TestCaseAutomator.ViewModels
 		public MainViewModel(
 			Func<Uri, ITfsExplorer> explorerFactory, 
 			Func<ITfsProjectWorkItemCollection, IWorkItems> workItemsFactory,
-			Func<IEnumerable<TfsSolution>, TestCaseViewModel, TestBrowserViewModel> testBrowserFactory)
+			Func<IEnumerable<TfsSolution>, TestCaseViewModel, SourceControlTestBrowserViewModel> sourceControlBrowserFactory,
+			Func<TestCaseViewModel, FileSystemTestBrowserViewModel> fileSystemBrowserFactory)
 		{
 			_explorerFactory = explorerFactory;
 			_workItemsFactory = workItemsFactory;
-			_testBrowserFactory = testBrowserFactory;
+			_sourceControlBrowserFactory = sourceControlBrowserFactory;
+			_fileSystemBrowserFactory = fileSystemBrowserFactory;
 
 			_serverUri = Property.New(this, p => p.ServerUri, OnPropertyChanged);
 			_projectName = Property.New(this, p => p.ProjectName, OnPropertyChanged);
 			_workItems = Property.New(this, p => p.WorkItems, OnPropertyChanged);
-			_testBrowser = Property.New(this, p => p.TestBrowser, OnPropertyChanged);
+			_sourceControlBrowser = Property.New(this, p => p.SourceControlTestBrowser, OnPropertyChanged);
+			_fileSystemBrowser = Property.New(this, p => p.FileSystemTestBrowser, OnPropertyChanged);
 			_selectedTestCase = Property.New(this, p => p.SelectedTestCase, OnPropertyChanged);
 			_status = Property.New(this, p => p.Status, OnPropertyChanged);
 
-			RefreshCommand = new RelayCommand(Refresh);
+			RefreshCommand = new AsyncRelayCommand(Refresh);
 			CloseCommand = new RelayCommand(Close);
 		}
 
@@ -59,10 +63,10 @@ namespace TestCaseAutomator.ViewModels
 				{
 					if (_explorer != null)
 					{
-						HandleServerUnavailable(() =>
+						HandleServerUnavailable(async () =>
 						{
-							_workItems.Value = _workItemsFactory(_explorer.WorkItems(value));
-							_workItems.Value.Load();
+							WorkItems = _workItemsFactory(_explorer.WorkItems(value));
+							await WorkItems.LoadAsync();
 						});
 					}
 				}
@@ -78,7 +82,10 @@ namespace TestCaseAutomator.ViewModels
 			set
 			{
 				if (_selectedTestCase.TrySetValue(value))
-					TestBrowser = CreateTestBrowser();
+				{
+					SourceControlTestBrowser = CreateSourceControlBrowser();
+					FileSystemTestBrowser = CreateFileSystemBrowser();
+				}
 			}
 		}
 
@@ -92,20 +99,34 @@ namespace TestCaseAutomator.ViewModels
 		}
 
 		/// <summary>
-		/// Allows selection of an automated test.
+		/// Allows selection of an automated test from source control.
 		/// </summary>
-		public TestBrowserViewModel TestBrowser
+		public SourceControlTestBrowserViewModel SourceControlTestBrowser
 		{
-			get { return _testBrowser.Value; }
-			private set { _testBrowser.Value = value; }
+			get { return _sourceControlBrowser.Value; }
+			private set { _sourceControlBrowser.Value = value; }
 		}
 
-		private TestBrowserViewModel CreateTestBrowser()
+		private SourceControlTestBrowserViewModel CreateSourceControlBrowser()
 		{
 			IEnumerable<TfsSolution> solutions = null;
 			HandleServerUnavailable(() => solutions = _explorer.Solutions());
 
-			return _testBrowserFactory(solutions ?? Enumerable.Empty<TfsSolution>(), SelectedTestCase);
+			return _sourceControlBrowserFactory(solutions ?? Enumerable.Empty<TfsSolution>(), SelectedTestCase);
+		}
+
+		/// <summary>
+		/// Allows selection of an automated test from a file on the file system.
+		/// </summary>
+		public FileSystemTestBrowserViewModel FileSystemTestBrowser
+		{
+			get { return _fileSystemBrowser.Value; }
+			private set { _fileSystemBrowser.Value = value; }
+		}
+
+		private FileSystemTestBrowserViewModel CreateFileSystemBrowser()
+		{
+			return _fileSystemBrowserFactory(SelectedTestCase);
 		}
 
 		/// <summary>
@@ -116,12 +137,12 @@ namespace TestCaseAutomator.ViewModels
 		/// <summary>
 		/// Refreshes data from the server.
 		/// </summary>
-		public void Refresh()
+		public async Task Refresh()
 		{
-			HandleServerUnavailable(() =>
+			await HandleServerUnavailable(async () =>
 			{
 				if (WorkItems != null)
-					WorkItems.Load();
+					await WorkItems.LoadAsync();
 			});
 		}
 
@@ -167,16 +188,31 @@ namespace TestCaseAutomator.ViewModels
 			}
 		}
 
+		private async Task HandleServerUnavailable(Func<Task> action)
+		{
+			try
+			{
+				await action();
+				Status = null;
+			}
+			catch (TeamFoundationServiceUnavailableException e)
+			{
+				Status = e.Message;
+			}
+		}
+
 		private ITfsExplorer _explorer;
 
 		private readonly Property<Uri> _serverUri;
 		private readonly Property<string> _projectName;
 		private readonly Property<TestCaseViewModel> _selectedTestCase; 
 		private readonly Property<IWorkItems> _workItems;
-		private readonly Property<TestBrowserViewModel> _testBrowser;
+		private readonly Property<SourceControlTestBrowserViewModel> _sourceControlBrowser;
+		private readonly Property<FileSystemTestBrowserViewModel> _fileSystemBrowser;
 		private readonly Property<string> _status;
 		private readonly Func<Uri, ITfsExplorer> _explorerFactory;
 		private readonly Func<ITfsProjectWorkItemCollection, IWorkItems> _workItemsFactory;
-		private readonly Func<IEnumerable<TfsSolution>, TestCaseViewModel, TestBrowserViewModel> _testBrowserFactory;
+		private readonly Func<IEnumerable<TfsSolution>, TestCaseViewModel, SourceControlTestBrowserViewModel> _sourceControlBrowserFactory;
+		private readonly Func<TestCaseViewModel, FileSystemTestBrowserViewModel> _fileSystemBrowserFactory;
 	}
 }

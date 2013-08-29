@@ -48,6 +48,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -84,36 +85,46 @@
     <Compile Include="Container\CoreModule.cs" />
     <Compile Include="Container\MasterModule.cs" />
     <Compile Include="Container\PresentationModule.cs" />
+    <Compile Include="Controls\Behaviors\Clickable\BindableClick.cs" />
+    <Compile Include="Controls\Behaviors\Clickable\BindableClickAction.cs" />
     <Compile Include="Controls\Behaviors\LoadDependentBehavior.cs" />
     <Compile Include="Controls\Behaviors\TitleBarOptions.cs" />
-    <Compile Include="Controls\Behaviors\TreeViewBindableSelectedItemBehavior.cs" />
+    <Compile Include="Controls\Behaviors\TreeViewBindableSelectedItem.cs" />
     <Compile Include="Controls\Behaviors\TreeViewItemExpandedCommandBehavior.cs" />
     <Compile Include="Controls\Behaviors\TreeViewItemSelectedCommandBehavior.cs" />
     <Compile Include="Controls\Behaviors\WindowBehaviors.cs" />
     <Compile Include="Controls\Commands\CloseWindowCommand.cs" />
     <Compile Include="Controls\Commands\DependencyCommandBase.cs" />
     <Compile Include="Controls\Commands\OpenDialogCommand.cs" />
+    <Compile Include="Controls\Converters\FileInfoConverter.cs" />
+    <Compile Include="Controls\Converters\StringIsNullOrEmptyConverter.cs" />
+    <Compile Include="Controls\FileSystemPicker.cs" />
     <Compile Include="Controls\ScrollableMessageBox.xaml.cs">
       <DependentUpon>ScrollableMessageBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TreeViewExtensions.cs" />
     <Compile Include="UnhandledErrorHandler.cs" />
     <Compile Include="ViewModels\AutofacViewModelLocator.cs" />
     <Compile Include="ViewModels\Browser\AutomatedTestViewModel.cs" />
     <Compile Include="ViewModels\Browser\AutomationSourceViewModel.cs" />
+    <Compile Include="ViewModels\Browser\FileSystemTestBrowserViewModel.cs" />
     <Compile Include="ViewModels\Browser\INodeViewModel.cs" />
     <Compile Include="ViewModels\Browser\IVirtualizedNode.cs" />
     <Compile Include="ViewModels\Browser\NodeViewModel.cs" />
     <Compile Include="ViewModels\Browser\ProjectViewModel.cs" />
     <Compile Include="ViewModels\Browser\SolutionViewModel.cs" />
-    <Compile Include="ViewModels\Browser\TestBrowserViewModel.cs" />
+    <Compile Include="ViewModels\Browser\SourceControlTestBrowserViewModel.cs" />
     <Compile Include="ViewModels\Browser\VirtualizedNode.cs" />
     <Compile Include="ViewModels\IApplication.cs" />
     <Compile Include="ViewModels\IWorkItems.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\WorkItemsViewModel.cs" />
     <Compile Include="ViewModels\TestCaseViewModel.cs" />
-    <Compile Include="Views\Browser\TestBrowser.xaml.cs">
-      <DependentUpon>TestBrowser.xaml</DependentUpon>
+    <Compile Include="Views\Browser\FileSystemTestBrowser.xaml.cs">
+      <DependentUpon>FileSystemTestBrowser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Browser\SourceControlTestBrowser.xaml.cs">
+      <DependentUpon>SourceControlTestBrowser.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -128,7 +139,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Browser\TestBrowser.xaml">
+    <Page Include="Views\Browser\FileSystemTestBrowser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Browser\SourceControlTestBrowser.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

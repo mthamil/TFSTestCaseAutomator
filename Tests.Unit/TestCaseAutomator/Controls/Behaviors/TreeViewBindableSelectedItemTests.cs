@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Tests.Unit.TestCaseAutomator.Controls.Behaviors
 {
-	public class TreeViewBindableSelectedItemBehaviorTests
+	public class TreeViewBindableSelectedItemTests
 	{
 		[Fact]
 		public void Test_BindableSelectedItem_View_To_ViewModel()
@@ -30,8 +30,12 @@ namespace Tests.Unit.TestCaseAutomator.Controls.Behaviors
 				Source = selectedItemWatcher,
 				Mode = BindingMode.TwoWay
 			};
-			treeView.SetBinding(TreeViewBindableSelectedItemBehavior.BindableSelectedItemProperty, selectedNodeBinding);
-			TreeViewBindableSelectedItemBehavior.SetBindableSelectedItem(treeView, new object());	// Initialize the property.
+
+			var behavior = new TreeViewBindableSelectedItem();
+			behavior.Attach(treeView);
+
+			treeView.SetBinding(TreeViewBindableSelectedItem.SelectedItemProperty, selectedNodeBinding);
+			behavior.SelectedItem = new object();	// Initialize the property.
 
 			// Act.
 			childView.IsSelected = true;
@@ -42,7 +46,7 @@ namespace Tests.Unit.TestCaseAutomator.Controls.Behaviors
 																		// TreeView's ItemsSource isn't set.  Couldn't get 
 																		// items to generate in the test.
 
-			Assert.Equal(childView, TreeViewBindableSelectedItemBehavior.GetBindableSelectedItem(treeView));
+			Assert.Equal(childView, behavior.SelectedItem);
 		}
 
 		public class TestViewModel : PropertyChangedNotifier

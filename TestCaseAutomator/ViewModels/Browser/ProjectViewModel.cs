@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using TestCaseAutomator.TeamFoundation;
+using TestCaseAutomator.Utilities.Collections;
 
 namespace TestCaseAutomator.ViewModels.Browser
 {
@@ -15,14 +18,19 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// </summary>
 		/// <param name="project">A project belonging to a solution</param>
 		/// <param name="sourceFactory">Creates test source view-models</param>
-		/// <param name="fileExtensions">Used to filter out undesired files in source control</param>
+		/// <param name="scheduler">Used to schedule background tasks</param>
 		public ProjectViewModel(TfsSolutionProject project, Func<TfsFile, AutomationSourceViewModel> sourceFactory,
-		                        IReadOnlyCollection<string> fileExtensions)
+								TaskScheduler scheduler)
 		{
 			_project = project;
 			_sourceFactory = sourceFactory;
-			_fileExtensions = fileExtensions;
+			_scheduler = scheduler;
 		}
+
+		/// <summary>
+		/// Used to filter out undesired files in source control.
+		/// </summary>
+		public IReadOnlyCollection<string> FileExtensions { get; set; }
 
 		/// <see cref="INodeViewModel.Name"/>
 		public override string Name
@@ -36,22 +44,30 @@ namespace TestCaseAutomator.ViewModels.Browser
 			get { return _dummy; }
 		}
 
-		/// <see cref="VirtualizedNode{TChild}.LoadChildren"/>
-		protected override IEnumerable<AutomationSourceViewModel> LoadChildren()
+		/// <see cref="VirtualizedNode{TChild}.LoadChildrenAsync"/>
+		protected override Task<IReadOnlyCollection<AutomationSourceViewModel>> LoadChildrenAsync(IProgress<AutomationSourceViewModel> progress)
 		{
-			return _project.Files(_fileExtensions).Select(f => _sourceFactory(f));
+			return Task<IReadOnlyCollection<AutomationSourceViewModel>>.Factory.StartNew(() =>
+				_project.Files(FileExtensions)
+						.Select(f => _sourceFactory(f))
+						.Tee(progress.Report)
+						.ToList(),
+					CancellationToken.None,
+					TaskCreationOptions.None,
+					_scheduler);
 		}
 
 		private readonly TfsSolutionProject _project;
 		private readonly Func<TfsFile, AutomationSourceViewModel> _sourceFactory;
-		private readonly IReadOnlyCollection<string> _fileExtensions;
+		
+		private readonly TaskScheduler _scheduler;
 
 		private static readonly DummySource _dummy = new DummySource();
 
 		private class DummySource : AutomationSourceViewModel
 		{
-			public DummySource() : base(null, null, null) { }
-			public override string Name { get { return "..."; } }
+			public DummySource() : base(null, null, null, null) { }
+			public override string Name { get { return "Loading..."; } }
 		}
 	}
 }

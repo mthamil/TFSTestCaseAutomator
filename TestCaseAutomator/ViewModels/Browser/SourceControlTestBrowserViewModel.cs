@@ -11,17 +11,17 @@ using TestCaseAutomator.Utilities.PropertyNotification;
 namespace TestCaseAutomator.ViewModels.Browser
 {
 	/// <summary>
-	/// View-model for selection of automated tests.
+	/// View-model for selection of automated tests from source control.
 	/// </summary>
-	public class TestBrowserViewModel : ViewModelBase
+	public class SourceControlTestBrowserViewModel : ViewModelBase
 	{
 		/// <summary>
-		/// Initializes a new <see cref="TestBrowserViewModel"/>.
+		/// Initializes a new <see cref="SourceControlTestBrowserViewModel"/>.
 		/// </summary>
 		/// <param name="solutions">Existing solutions in source control</param>
 		/// <param name="testCase">The current test case</param>
 		/// <param name="solutionFactory">Creates solution view-models</param>
-		public TestBrowserViewModel(IEnumerable<TfsSolution> solutions, TestCaseViewModel testCase,
+		public SourceControlTestBrowserViewModel(IEnumerable<TfsSolution> solutions, TestCaseViewModel testCase,
 		                            Func<TfsSolution, SolutionViewModel> solutionFactory)
 		{
 			TestCase = testCase;
@@ -45,7 +45,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// <summary>
 		/// The currently selected test.
 		/// </summary>
-		public AutomatedTestViewModel SelectedTest
+		public object SelectedTest
 		{
 			get { return _selectedTest.Value; }
 			set { _selectedTest.Value = value; }
@@ -61,7 +61,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// </summary>
 		public bool CanSaveTestCase
 		{
-			get { return SelectedTest != null; }
+			get { return SelectedTest != null && SelectedTest is AutomatedTestViewModel; }
 		}
 
 		/// <summary>
@@ -81,7 +81,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 			private set { _solutions.Value = value; }
 		}
 
-		private readonly Property<AutomatedTestViewModel> _selectedTest;
+		private readonly Property<object> _selectedTest;
 		private readonly Property<ICollection<SolutionViewModel>> _solutions;
 	}
 }

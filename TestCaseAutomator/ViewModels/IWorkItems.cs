@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace TestCaseAutomator.ViewModels
 {
@@ -10,7 +11,7 @@ namespace TestCaseAutomator.ViewModels
 		/// <summary>
 		/// Loads test cases.
 		/// </summary>
-		void Load();
+		Task LoadAsync();
 
 		/// <summary>
 		/// The current collection of test cases.
