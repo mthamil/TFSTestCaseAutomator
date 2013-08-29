@@ -64,7 +64,7 @@
                             </MultiTrigger.Conditions>
                             <Setter Property="BorderBrush" Value="LightGray"/>
                         </MultiTrigger>
-                        <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                        <DataTrigger Binding="{Binding IsLoading, FallbackValue=False}" Value="True">
                             <Setter Property="FontStyle" Value="Italic"/>
                         </DataTrigger>
                     </Style.Triggers>
