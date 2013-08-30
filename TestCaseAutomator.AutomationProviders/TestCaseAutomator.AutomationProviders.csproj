@@ -32,6 +32,10 @@
     <DocumentationFile>bin\Release\TestCaseAutomator.AutomationProviders.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Autofac.3.1.1\lib\net40\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.Composition.Registration" />
@@ -44,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompositeAutomatedTestDiscoverer.cs" />
-    <Compile Include="PluginComposer.cs" />
+    <Compile Include="Container\PluginModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -52,6 +56,9 @@
       <Project>{ad71adb9-e579-4a13-b3a0-9051ff5b075d}</Project>
       <Name>TestCaseAutomator.AutomationProviders.Interfaces</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

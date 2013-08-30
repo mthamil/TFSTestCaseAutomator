@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using TestCaseAutomator.AutomationProviders.Interfaces;
 
@@ -8,15 +7,13 @@ namespace TestCaseAutomator.AutomationProviders
 	/// <summary>
 	/// An <see cref="IAutomatedTestDiscoverer"/> composed of all other discoverers.
 	/// </summary>
-	[Export(typeof(CompositeAutomatedTestDiscoverer))]
 	public class CompositeAutomatedTestDiscoverer : IAutomatedTestDiscoverer
 	{
 		/// <summary>
 		/// Initializes a new <see cref="CompositeAutomatedTestDiscoverer"/>.
 		/// </summary>
 		/// <param name="childDiscoverers">Any child test discoverers</param>
-		[ImportingConstructor]
-		public CompositeAutomatedTestDiscoverer([ImportMany]IEnumerable<IAutomatedTestDiscoverer> childDiscoverers)
+		public CompositeAutomatedTestDiscoverer(IEnumerable<IAutomatedTestDiscoverer> childDiscoverers)
 		{
 			_childDiscoverers = childDiscoverers;
 		}

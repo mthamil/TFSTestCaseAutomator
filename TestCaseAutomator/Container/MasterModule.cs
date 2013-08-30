@@ -1,4 +1,6 @@
 ﻿using Autofac;
+using TestCaseAutomator.AutomationProviders.Container;
+using TestCaseAutomator.Configuration;
 using TestCaseAutomator.TeamFoundation.Container;
 
 namespace TestCaseAutomator.Container
@@ -12,6 +14,7 @@ namespace TestCaseAutomator.Container
 		protected override void Load(ContainerBuilder builder)
 		{
 			builder.RegisterModule<CoreModule>();
+			builder.RegisterModule(new PluginModule { PluginLocation = c => c.Resolve<ISettings>().TestDiscoveryPluginLocation });
 			builder.RegisterModule<TeamFoundationModule>();
 			builder.RegisterModule<PresentationModule>();
 		}

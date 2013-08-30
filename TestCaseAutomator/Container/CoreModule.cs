@@ -1,13 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Autofac;
-using TestCaseAutomator.AutomationProviders;
-using TestCaseAutomator.AutomationProviders.Interfaces;
 using TestCaseAutomator.Configuration;
 
 namespace TestCaseAutomator.Container
 {
 	/// <summary>
-	/// Module that wires up core applicaiton objects.
+	/// Module that wires up core application objects.
 	/// </summary>
 	public class CoreModule : Module
 	{
@@ -25,19 +23,6 @@ namespace TestCaseAutomator.Container
 			builder.RegisterType<SettingsPropagator>()
 			       .AutoActivate()
 			       .SingleInstance();
-
-			builder.RegisterType<PluginComposer>()
-			       .OnActivating(c => c.Instance.PluginLocation = c.Context.Resolve<ISettings>().TestDiscoveryPluginLocation);
-
-			builder.Register(c =>
-					{
-						var composer = c.Resolve<PluginComposer>();
-						composer.Compose();
-						return composer.RootDiscoverer;
-					})
-			       .As<IAutomatedTestDiscoverer>()
-			       .SingleInstance()
-			       .AutoActivate();
 		}
 	}
 }
