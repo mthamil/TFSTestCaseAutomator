@@ -63,20 +63,22 @@ namespace TestCaseAutomator.ViewModels.Browser
 
 		private async Task LoadAsync()
 		{
-			//if (!_isValid)
-			//{
-			try
+			if (!_isValid)
 			{
-				IsLoading = true;
-				Children.Clear();
-				var progress = new Progress<TChild>(c => Children.Add(c));
-				await LoadChildrenAsync(progress);
+				try
+				{
+					IsLoading = true;
+					IsEnabled = false;
+					Children.Clear();
+					var progress = new Progress<TChild>(c => Children.Add(c));
+					await LoadChildrenAsync(progress);
+				}
+				finally
+				{
+					IsLoading = false;
+					IsEnabled = true;
+				}
 			}
-			finally
-			{
-				IsLoading = false;
-			}
-			//}
 		}
 
 		/// <summary>

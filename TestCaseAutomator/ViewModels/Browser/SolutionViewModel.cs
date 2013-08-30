@@ -42,6 +42,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// <see cref="VirtualizedNode{TChild}.LoadChildrenAsync"/>
 		protected override Task<IReadOnlyCollection<ProjectViewModel>> LoadChildrenAsync(IProgress<ProjectViewModel> progress)
 		{
+			Invalidate();	// Reload on next query.
 			return Task<IReadOnlyCollection<ProjectViewModel>>.Factory.StartNew(() =>
 				_solution.Projects()
 						.Select(p => _projectFactory(p))
