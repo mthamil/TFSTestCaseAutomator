@@ -23,5 +23,16 @@ namespace TestCaseAutomator.TeamFoundation.TestCaseAssociation
 			testCase.Implementation = implementation;
 			testCase.Save();
 		}
+
+		/// <summary>
+		/// Removes automation from a test case.
+		/// </summary>
+		public static void RemoveAutomation(this ITestCase testCase)
+		{
+			testCase.WorkItem.Open();
+			testCase.Implementation = null;
+			testCase.CustomFields["Automation status"].Value = "Not Automated";
+			testCase.Save();
+		}
 	}
 }

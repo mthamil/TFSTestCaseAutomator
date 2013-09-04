@@ -18,7 +18,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 	/// <summary>
 	/// View-model for selection of automated tests from a file on the file system.
 	/// </summary>
-	public class FileSystemTestBrowserViewModel : ViewModelBase
+	public class FileSystemTestBrowserViewModel : ViewModelBase, ITestBrowser
 	{
 		/// <summary>
 		/// Initializes a new <see cref="FileSystemTestBrowserViewModel"/>.
@@ -41,6 +41,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 			_tests = Property.New(this, p => p.Tests, OnPropertyChanged);
 			_selectedTest = Property.New(this, p => p.SelectedTest, OnPropertyChanged)
 									.AlsoChanges(p => p.CanSaveTestCase);
+			_hasBeenSaved = Property.New(this, p => p.HasBeenSaved, OnPropertyChanged);
 
 			Tests = new ObservableCollection<AutomatedTestViewModel>();
 			SaveTestCaseCommand = Command.For(this)
@@ -99,6 +100,16 @@ namespace TestCaseAutomator.ViewModels.Browser
 			set { _selectedTest.Value = value; }
 		}
 
+		/// <see cref="ITestBrowser.AutomatedTestSelected"/>
+		public event EventHandler<AutomatedTestSelectedEventArgs> AutomatedTestSelected;
+
+		private void OnAutomatedTestSelected()
+		{
+			var localEvent = AutomatedTestSelected;
+			if (localEvent != null)
+				localEvent(this, new AutomatedTestSelectedEventArgs(TestCase, SelectedTest));
+		}
+
 		/// <summary>
 		/// Command that invokes <see cref="SaveTestCase"/>.
 		/// </summary>
@@ -117,12 +128,21 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// </summary>
 		public void SaveTestCase()
 		{
+			OnAutomatedTestSelected();
+			HasBeenSaved = true;
+		}
 
+		/// <see cref="ITestBrowser.HasBeenSaved"/>
+		public bool? HasBeenSaved
+		{
+			get { return _hasBeenSaved.Value; }
+			set { _hasBeenSaved.Value = value; }
 		}
 
 		private readonly Property<FileInfo> _selectedFile;
 		private readonly Property<ICollection<AutomatedTestViewModel>> _tests;
 		private readonly Property<AutomatedTestViewModel> _selectedTest;
+		private readonly Property<bool?> _hasBeenSaved;
 
 		private readonly Func<IAutomatedTest, AutomatedTestViewModel> _testFactory;
 		private readonly IAutomatedTestDiscoverer _testDiscoverer;

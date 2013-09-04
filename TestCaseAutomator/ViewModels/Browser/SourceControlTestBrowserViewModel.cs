@@ -13,7 +13,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 	/// <summary>
 	/// View-model for selection of automated tests from source control.
 	/// </summary>
-	public class SourceControlTestBrowserViewModel : ViewModelBase
+	public class SourceControlTestBrowserViewModel : ViewModelBase, ITestBrowser
 	{
 		/// <summary>
 		/// Initializes a new <see cref="SourceControlTestBrowserViewModel"/>.
@@ -29,6 +29,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 			_solutions = Property.New(this, p => p.Solutions, OnPropertyChanged);
 			_selectedTest = Property.New(this, p => p.SelectedTest, OnPropertyChanged)
 			                        .AlsoChanges(p => p.CanSaveTestCase);
+			_hasBeenSaved = Property.New(this, p => p.HasBeenSaved, OnPropertyChanged);
 
 			Solutions = new ObservableCollection<SolutionViewModel>(solutions.Select(solutionFactory));
 
@@ -45,10 +46,20 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// <summary>
 		/// The currently selected test.
 		/// </summary>
-		public object SelectedTest
+		public ViewModelBase SelectedTest
 		{
 			get { return _selectedTest.Value; }
 			set { _selectedTest.Value = value; }
+		}
+
+		/// <see cref="ITestBrowser.AutomatedTestSelected"/>
+		public event EventHandler<AutomatedTestSelectedEventArgs> AutomatedTestSelected;
+
+		private void OnAutomatedTestSelected()
+		{
+			var localEvent = AutomatedTestSelected;
+			if (localEvent != null)
+				localEvent(this, new AutomatedTestSelectedEventArgs(TestCase, (AutomatedTestViewModel)SelectedTest));
 		}
 
 		/// <summary>
@@ -69,7 +80,15 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// </summary>
 		public void SaveTestCase()
 		{
+			OnAutomatedTestSelected();
+			HasBeenSaved = true;
+		}
 
+		/// <see cref="ITestBrowser.HasBeenSaved"/>
+		public bool? HasBeenSaved
+		{
+			get { return _hasBeenSaved.Value; }
+			set { _hasBeenSaved.Value = value; }
 		}
 
 		/// <summary>
@@ -81,7 +100,8 @@ namespace TestCaseAutomator.ViewModels.Browser
 			private set { _solutions.Value = value; }
 		}
 
-		private readonly Property<object> _selectedTest;
+		private readonly Property<ViewModelBase> _selectedTest;
+		private readonly Property<bool?> _hasBeenSaved;
 		private readonly Property<ICollection<SolutionViewModel>> _solutions;
 	}
 }

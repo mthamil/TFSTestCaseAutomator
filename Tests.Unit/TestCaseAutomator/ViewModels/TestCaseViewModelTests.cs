@@ -1,4 +1,5 @@
-﻿using Microsoft.TeamFoundation.TestManagement.Client;
+﻿using System.ComponentModel;
+using Microsoft.TeamFoundation.TestManagement.Client;
 using Moq;
 using TestCaseAutomator.ViewModels;
 using Xunit;
@@ -67,6 +68,45 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 
 			// Assert.
 			Assert.Equal(string.Empty, implementation);
+		}
+
+		[Fact]
+		public void Test_Title_PropertyChange_Propagates()
+		{
+			// Arrange.
+			var testCase = new Mock<ITestCase>();
+			var vm = new TestCaseViewModel(testCase.Object);
+
+			// Act/Assert.
+			AssertThat.PropertyChanged(vm,
+				p => p.Title, 
+				() => testCase.Raise(tc => tc.PropertyChanged += null, new PropertyChangedEventArgs("Title")));
+		}
+
+		[Fact]
+		public void Test_Implementation_PropertyChange_Propagates_To_CanRemoveAutomation()
+		{
+			// Arrange.
+			var testCase = new Mock<ITestCase>();
+			var vm = new TestCaseViewModel(testCase.Object);
+
+			// Act/Assert.
+			AssertThat.PropertyChanged(vm,
+				p => p.CanRemoveAutomation,
+				() => testCase.Raise(tc => tc.PropertyChanged += null, new PropertyChangedEventArgs("Implementation")));
+		}
+
+		[Fact]
+		public void Test_Implementation_PropertyChange_Propagates_To_AssociatedAutomation()
+		{
+			// Arrange.
+			var testCase = new Mock<ITestCase>();
+			var vm = new TestCaseViewModel(testCase.Object);
+
+			// Act/Assert.
+			AssertThat.PropertyChanged(vm,
+				p => p.AssociatedAutomation,
+				() => testCase.Raise(tc => tc.PropertyChanged += null, new PropertyChangedEventArgs("Implementation")));
 		}
 	}
 }

@@ -6,7 +6,7 @@
         xmlns:vm="clr-namespace:TestCaseAutomator.ViewModels"
         xmlns:cmds="clr-namespace:TestCaseAutomator.Controls.Commands"
         xmlns:vw="clr-namespace:TestCaseAutomator.Views.Browser"
-        Title="Test Case Automator" Height="400" Width="800"
+        Title="Test Case Automator" Height="400" Width="1000"
         WindowStartupLocation="CenterScreen"
         DataContext="{Binding Source={xtn:ViewModelLocator {x:Type vm:MainViewModel}}, Path=ViewModel}">
     
@@ -54,12 +54,17 @@
                 <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width=".40*">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="{x:Type DataGridCell}">
-                            <Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=Content.Text}" />
+                            <Setter Property="DataGridCell.ToolTip" Value="{Binding Title}" />
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
 
                 <DataGridTemplateColumn Header="Associated Automated Test" Width=".50*">
+                    <DataGridTemplateColumn.CellStyle>
+                        <Style TargetType="{x:Type DataGridCell}">
+                            <Setter Property="DataGridCell.ToolTip" Value="{Binding AssociatedAutomation}" />
+                        </Style>
+                    </DataGridTemplateColumn.CellStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid>
@@ -71,6 +76,10 @@
                                 <TextBlock Grid.Column="0" Text="{Binding AssociatedAutomation}" HorizontalAlignment="Left" Width="Auto"/>
 
                                 <DockPanel Grid.Column="1" Dock="Right" HorizontalAlignment="Right">
+
+                                    <Button Content="-" ToolTip="Remove associated automation." Command="{Binding RemoveAutomationCommand}"
+                                            HorizontalAlignment="Right" VerticalContentAlignment="Center" Width="20" Height="20"/>
+
                                     <Button Content="\..." ToolTip="Choose automated test from the file system..." 
                                             HorizontalAlignment="Right" VerticalContentAlignment="Center" Width="20" Height="20"
                                             CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.FileSystemTestBrowser, Mode=OneWay}">
@@ -88,6 +97,7 @@
                                                                     Owner="{Binding Source={x:Static Application.Current}, Path=MainWindow}"/>
                                         </Button.Command>
                                     </Button>
+                                    
                                 </DockPanel>
                             </Grid>
                         </DataTemplate>

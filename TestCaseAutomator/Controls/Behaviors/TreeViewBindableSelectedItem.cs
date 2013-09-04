@@ -32,8 +32,8 @@ namespace TestCaseAutomator.Controls.Behaviors
 		/// </summary>
 		public object SelectedItem
 		{
-			get { return AssociatedObject.GetValue(SelectedItemProperty); }
-			set { AssociatedObject.SetValue(SelectedItemProperty, value); }
+			get { return GetValue(SelectedItemProperty); }
+			set { SetValue(SelectedItemProperty, value); }
 		}
 
 		/// <summary>
@@ -51,11 +51,11 @@ namespace TestCaseAutomator.Controls.Behaviors
 
 		private static void OnSelectedItemChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
-			var treeView = dependencyObject as TreeView;
-			if (treeView == null)
+			var behavior = dependencyObject as TreeViewBindableSelectedItem;
+			if (behavior == null)
 				return;
 
-			treeView.FindContainerFromItem(e.NewValue).Apply(item =>
+			behavior.AssociatedObject.FindContainerFromItem(e.NewValue).Apply(item =>
 			{
 				if (item != null && !item.IsSelected)
 					item.IsSelected = true;

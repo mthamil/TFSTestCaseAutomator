@@ -4,8 +4,10 @@
         xmlns:acb="clr-namespace:TestCaseAutomator.Controls.Behaviors"
         xmlns:vmt="clr-namespace:TestCaseAutomator.ViewModels.Browser"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:Browser="clr-namespace:TestCaseAutomator.Views.Browser"
         Title="Source Control Test Browser" Height="400" Width="600"
-        WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+        WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
+        acb:WindowBehaviors.DialogResult="{Binding HasBeenSaved}">
 
     <i:Interaction.Behaviors>
         <acb:TitleBarOptions ShowButtons="False"/>
@@ -37,7 +39,12 @@
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type vmt:INodeViewModel}" ItemsSource="{Binding Path=Children}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Name}"/>
+                        <TextBlock Text="{Binding Name}">
+                            <TextBlock.InputBindings>
+                                <MouseBinding Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Browser:SourceControlTestBrowser}, 
+                                                                Path=DataContext.SaveTestCaseCommand}" MouseAction="LeftDoubleClick" />
+                            </TextBlock.InputBindings>
+                        </TextBlock>
                     </StackPanel>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>

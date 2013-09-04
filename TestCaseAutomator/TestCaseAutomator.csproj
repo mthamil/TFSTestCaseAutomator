@@ -105,10 +105,12 @@
     <Compile Include="Controls\TreeViewExtensions.cs" />
     <Compile Include="UnhandledErrorHandler.cs" />
     <Compile Include="ViewModels\AutofacViewModelLocator.cs" />
+    <Compile Include="ViewModels\Browser\AutomatedTestSelectedEventArgs.cs" />
     <Compile Include="ViewModels\Browser\AutomatedTestViewModel.cs" />
     <Compile Include="ViewModels\Browser\AutomationSourceViewModel.cs" />
     <Compile Include="ViewModels\Browser\FileSystemTestBrowserViewModel.cs" />
     <Compile Include="ViewModels\Browser\INodeViewModel.cs" />
+    <Compile Include="ViewModels\Browser\ITestBrowser.cs" />
     <Compile Include="ViewModels\Browser\IVirtualizedNode.cs" />
     <Compile Include="ViewModels\Browser\NodeViewModel.cs" />
     <Compile Include="ViewModels\Browser\ProjectViewModel.cs" />

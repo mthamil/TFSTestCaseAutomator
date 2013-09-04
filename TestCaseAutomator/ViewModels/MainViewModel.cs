@@ -83,8 +83,8 @@ namespace TestCaseAutomator.ViewModels
 			{
 				if (_selectedTestCase.TrySetValue(value))
 				{
-					SourceControlTestBrowser = CreateSourceControlBrowser();
-					FileSystemTestBrowser = CreateFileSystemBrowser();
+					CreateSourceControlBrowser();
+					CreateFileSystemBrowser();
 				}
 			}
 		}
@@ -107,12 +107,16 @@ namespace TestCaseAutomator.ViewModels
 			private set { _sourceControlBrowser.Value = value; }
 		}
 
-		private SourceControlTestBrowserViewModel CreateSourceControlBrowser()
+		private void CreateSourceControlBrowser()
 		{
 			IEnumerable<TfsSolution> solutions = null;
 			HandleServerUnavailable(() => solutions = _explorer.Solutions());
 
-			return _sourceControlBrowserFactory(solutions ?? Enumerable.Empty<TfsSolution>(), SelectedTestCase);
+			if (SourceControlTestBrowser != null)
+				SourceControlTestBrowser.AutomatedTestSelected -= Browser_AutomatedTestSelected;
+
+			SourceControlTestBrowser = _sourceControlBrowserFactory(solutions ?? Enumerable.Empty<TfsSolution>(), SelectedTestCase);
+			SourceControlTestBrowser.AutomatedTestSelected += Browser_AutomatedTestSelected;
 		}
 
 		/// <summary>
@@ -124,9 +128,19 @@ namespace TestCaseAutomator.ViewModels
 			private set { _fileSystemBrowser.Value = value; }
 		}
 
-		private FileSystemTestBrowserViewModel CreateFileSystemBrowser()
+		private void CreateFileSystemBrowser()
 		{
-			return _fileSystemBrowserFactory(SelectedTestCase);
+			if (FileSystemTestBrowser != null)
+				FileSystemTestBrowser.AutomatedTestSelected -= Browser_AutomatedTestSelected;
+
+			FileSystemTestBrowser = _fileSystemBrowserFactory(SelectedTestCase);
+			FileSystemTestBrowser.AutomatedTestSelected += Browser_AutomatedTestSelected;
+		}
+
+		private void Browser_AutomatedTestSelected(object sender, AutomatedTestSelectedEventArgs e)
+		{
+			e.TestCase.UpdateAutomation(e.AutomatedTest.AutomatedTest);
+			//((ITestBrowser)sender).HasBeenSaved = null;	// Need to reset this because otherwise a browser for the same test case won't reopen without changing selection.
 		}
 
 		/// <summary>

@@ -13,15 +13,18 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// <param name="automatedTest">An automated test</param>
 		public AutomatedTestViewModel(IAutomatedTest automatedTest)
 		{
-			_automatedTest = automatedTest;
+			AutomatedTest = automatedTest;
 		}
 
 		/// <see cref="INodeViewModel.Name"/>
 		public override string Name
 		{
-			get { return _automatedTest.Name; }
+			get { return AutomatedTest.Name; }
 		}
 
-		private readonly IAutomatedTest _automatedTest;
+		/// <summary>
+		/// The backing automated test.
+		/// </summary>
+		public IAutomatedTest AutomatedTest { get; private set; }
 	}
 }

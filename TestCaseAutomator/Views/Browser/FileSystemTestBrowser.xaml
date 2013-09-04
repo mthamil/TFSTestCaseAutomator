@@ -3,14 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ctrl="clr-namespace:TestCaseAutomator.Controls"
         xmlns:Clickable="clr-namespace:TestCaseAutomator.Controls.Behaviors.Clickable"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-        xmlns:Converters="clr-namespace:TestCaseAutomator.Controls.Converters"
+        xmlns:convert="clr-namespace:TestCaseAutomator.Controls.Converters"
+        xmlns:Behaviors="clr-namespace:TestCaseAutomator.Controls.Behaviors"
+        xmlns:Browser="clr-namespace:TestCaseAutomator.Views.Browser"
         Title="File System Test Browser" Height="400" Width="600"
-        WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
-    
+        WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
+        Behaviors:WindowBehaviors.DialogResult="{Binding HasBeenSaved}">
+
     <Window.Resources>
         <ResourceDictionary>
-            <Converters:FileInfoConverter x:Key="FileConverter"/>
-            <Converters:StringIsNullOrEmptyConverter x:Key="StringIsEmptyConverter"/>
+            <convert:FileInfoConverter x:Key="FileConverter"/>
+            <convert:StringIsNullOrEmptyConverter x:Key="StringIsEmptyConverter"/>
         </ResourceDictionary>
     </Window.Resources>
     
@@ -61,7 +64,12 @@
                   SelectionMode="Single" Margin="2,0,2,0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name}"/>
+                    <TextBlock Text="{Binding Name}">
+                        <TextBlock.InputBindings>
+                            <MouseBinding Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Browser:FileSystemTestBrowser}, 
+                                                            Path=DataContext.SaveTestCaseCommand}" MouseAction="LeftDoubleClick" />
+                        </TextBlock.InputBindings>
+                    </TextBlock>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListView>
