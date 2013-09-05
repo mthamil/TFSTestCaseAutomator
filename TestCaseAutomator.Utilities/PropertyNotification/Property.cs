@@ -19,13 +19,13 @@ namespace TestCaseAutomator.Utilities.PropertyNotification
 		/// <typeparam name="V">The type of the property</typeparam>
 		/// <param name="owner">An instance of the type that contains the property</param>
 		/// <param name="propertyAccessor">An expression that references the desired property</param>
-		/// <param name="propertyChangedRaiser">A function that raises a property changed event</param>
+		/// <param name="propertyChangedHandler">A function that handles property changes</param>
 		/// <returns>A new ObservableProperty&lt;V&gt;</returns>
 		[SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
 		[SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", Justification = "Factory method uses parameter for type inference.")]
-		public static PropertyBuilder<T, V> New<T, V>(T owner, Expression<Func<T, V>> propertyAccessor, Action<string> propertyChangedRaiser)
+		public static PropertyBuilder<T, V> New<T, V>(T owner, Expression<Func<T, V>> propertyAccessor, Action<string> propertyChangedHandler)
 		{
-			return new PropertyBuilder<T, V>(owner, propertyAccessor, propertyChangedRaiser);
+			return new PropertyBuilder<T, V>(owner, propertyAccessor, propertyChangedHandler);
 		}
 	}
 
@@ -41,11 +41,11 @@ namespace TestCaseAutomator.Utilities.PropertyNotification
 		/// </summary>
 		/// <param name="owner">An instance of the type that contains the property</param>
 		/// <param name="propertyAccessor">An expression that references the desired property</param>
-		/// <param name="propertyChangedRaiser">A function that raises a property changed event</param>
-		public PropertyBuilder(T owner, Expression<Func<T, V>> propertyAccessor, Action<string> propertyChangedRaiser)
+		/// <param name="propertyChangedHandler">A function that handles property changes</param>
+		public PropertyBuilder(T owner, Expression<Func<T, V>> propertyAccessor, Action<string> propertyChangedHandler)
 		{
 			_propertyName = Reflect.PropertyOf(typeof(T), UnwrapPropertyExpression(propertyAccessor)).Name;
-			_propertyChangedRaiser = propertyChangedRaiser;
+			_propertyChangedHandler = propertyChangedHandler;
 		}
 
 		/// <summary>
@@ -80,7 +80,7 @@ namespace TestCaseAutomator.Utilities.PropertyNotification
 		/// <returns>The newly created Property&lt;V&gt;</returns>
 		public Property<V> Get()
 		{
-			return new Property<V>(_propertyName, _propertyChangedRaiser, _dependentPropertyNames, _customComparison);
+			return new Property<V>(_propertyName, _propertyChangedHandler, _dependentPropertyNames, _customComparison);
 		}
 
 		/// <summary>
@@ -116,7 +116,7 @@ namespace TestCaseAutomator.Utilities.PropertyNotification
 		}
 
 		private readonly string _propertyName;
-		private readonly Action<string> _propertyChangedRaiser;
+		private readonly Action<string> _propertyChangedHandler;
 		private readonly ICollection<string> _dependentPropertyNames = new List<string>();
 		private Func<V, V, bool> _customComparison;
 	}
@@ -131,20 +131,20 @@ namespace TestCaseAutomator.Utilities.PropertyNotification
 		/// Creates a new property.
 		/// </summary>
 		/// <param name="propertyName">The name of the property</param>
-		/// <param name="propertyChangedRaiser">Raises a property changed event when a property's value changes</param>
-		public Property(string propertyName, Action<string> propertyChangedRaiser)
-			: this(propertyName, propertyChangedRaiser, Enumerable.Empty<string>(), null) { }
+		/// <param name="propertyChangedHandler">Handler invoked when a property's value changes</param>
+		public Property(string propertyName, Action<string> propertyChangedHandler)
+			: this(propertyName, propertyChangedHandler, Enumerable.Empty<string>(), null) { }
 
 		/// <summary>
 		/// Creates a new property.
 		/// </summary>
 		/// <param name="propertyName">The name of the property</param>
-		/// <param name="propertyChangedRaiser">Raises a property changed event when a property's value changes</param>
+		/// <param name="propertyChangedHandler">Handler invoked when a property's value changes</param>
 		/// <param name="dependentPropertyNames">Names of properties that are also changed when the property's value changes</param>
 		/// <param name="equalityComparison">An optional custom equality comparison, if Object.Equals is not suitable for comparing objects of type V</param>
-		public Property(string propertyName, Action<string> propertyChangedRaiser, IEnumerable<string> dependentPropertyNames, Func<V, V, bool> equalityComparison)
+		public Property(string propertyName, Action<string> propertyChangedHandler, IEnumerable<string> dependentPropertyNames, Func<V, V, bool> equalityComparison)
 		{
-			_propertyChangedRaiser = propertyChangedRaiser;
+			_propertyChangedHandler = propertyChangedHandler;
 			_name = propertyName;
 			_dependentPropertyNames = dependentPropertyNames;
 			if (equalityComparison != null)
@@ -171,9 +171,9 @@ namespace TestCaseAutomator.Utilities.PropertyNotification
 			if (!_equalityComparison(_value, newValue))
 			{
 				_value = newValue;
-				_propertyChangedRaiser(_name);
+				_propertyChangedHandler(_name);
 				foreach (var dependentPropertyName in _dependentPropertyNames)
-					_propertyChangedRaiser(dependentPropertyName);
+					_propertyChangedHandler(dependentPropertyName);
 
 				return true;
 			}
@@ -191,7 +191,7 @@ namespace TestCaseAutomator.Utilities.PropertyNotification
 
 		private readonly string _name;
 		private V _value;
-		private readonly Action<string> _propertyChangedRaiser;
+		private readonly Action<string> _propertyChangedHandler;
 		private readonly IEnumerable<string> _dependentPropertyNames;
 		private readonly Func<V, V, bool> _equalityComparison = (x, y) => Object.Equals(x, y);
 	}
