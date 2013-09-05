@@ -25,28 +25,17 @@ namespace Tests.Unit.TestCaseAutomator.Controls.Behaviors
 			var treeView = new TreeView { DataContext = selectedItemWatcher };
 			treeView.Items.Add(childView);
 
-			var selectedNodeBinding = new Binding("SelectedItem")
-			{
-				Source = selectedItemWatcher,
-				Mode = BindingMode.TwoWay
-			};
-
 			var behavior = new TreeViewBindableSelectedItem();
 			behavior.Attach(treeView);
-
-			treeView.SetBinding(TreeViewBindableSelectedItem.SelectedItemProperty, selectedNodeBinding);
-			behavior.SelectedItem = new object();	// Initialize the property.
 
 			// Act.
 			childView.IsSelected = true;
 
 			// Assert.
 			Assert.True(child.IsSelected);
-			Assert.Equal(childView, selectedItemWatcher.SelectedItem);	// SelectedItem is a TreeViewItem because the 
-																		// TreeView's ItemsSource isn't set.  Couldn't get 
-																		// items to generate in the test.
-
-			Assert.Equal(childView, behavior.SelectedItem);
+			Assert.Equal(childView, behavior.SelectedItem);	// SelectedItem is a TreeViewItem because the 
+															// TreeView's ItemsSource isn't set.  Couldn't get 
+															// items to generate in the test.
 		}
 
 		public class TestViewModel : PropertyChangedNotifier
