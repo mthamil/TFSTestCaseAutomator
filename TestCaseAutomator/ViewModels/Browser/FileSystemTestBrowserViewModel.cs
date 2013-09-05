@@ -18,12 +18,12 @@ namespace TestCaseAutomator.ViewModels.Browser
 	/// <summary>
 	/// View-model for selection of automated tests from a file on the file system.
 	/// </summary>
-	public class FileSystemTestBrowserViewModel : ViewModelBase, ITestBrowser
+	public class FileSystemTestBrowserViewModel : ViewModelBase, IAutomationSelector
 	{
 		/// <summary>
 		/// Initializes a new <see cref="FileSystemTestBrowserViewModel"/>.
 		/// </summary>
-		/// <param name="testCase">The current test case</param>
+		/// <param name="testCase">The test case to associate with automation</param>
 		/// <param name="testFactory">Creates automated test view-models</param>
 		/// <param name="testDiscoverer">Finds tests in files</param>
 		/// <param name="scheduler">Used to schedule background tasks</param>
@@ -42,6 +42,8 @@ namespace TestCaseAutomator.ViewModels.Browser
 			_selectedTest = Property.New(this, p => p.SelectedTest, OnPropertyChanged)
 									.AlsoChanges(p => p.CanSaveTestCase);
 			_hasBeenSaved = Property.New(this, p => p.HasBeenSaved, OnPropertyChanged);
+			_canBrowse = Property.New(this, p => p.CanBrowse, OnPropertyChanged);
+			CanBrowse = true;
 
 			Tests = new ObservableCollection<AutomatedTestViewModel>();
 			SaveTestCaseCommand = Command.For(this)
@@ -70,9 +72,10 @@ namespace TestCaseAutomator.ViewModels.Browser
 			}
 		}
 
-		private Task<IReadOnlyCollection<AutomatedTestViewModel>> DiscoverTests(IProgress<AutomatedTestViewModel> progress)
+		private async Task DiscoverTests(IProgress<AutomatedTestViewModel> progress)
 		{
-			return Task<IReadOnlyCollection<AutomatedTestViewModel>>.Factory.StartNew(() =>
+			CanBrowse = false;
+			await Task<IReadOnlyCollection<AutomatedTestViewModel>>.Factory.StartNew(() =>
 			    _testDiscoverer.DiscoverAutomatedTests(SelectedFile.FullName.ToEnumerable())
 			                   .Select(test => _testFactory(test))
 							   .Tee(progress.Report)
@@ -80,6 +83,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 					CancellationToken.None,
 					TaskCreationOptions.None, 
 					_scheduler);
+			CanBrowse = true;
 		}
 
 		/// <summary>
@@ -100,14 +104,14 @@ namespace TestCaseAutomator.ViewModels.Browser
 			set { _selectedTest.Value = value; }
 		}
 
-		/// <see cref="ITestBrowser.AutomatedTestSelected"/>
+		/// <see cref="IAutomationSelector.AutomatedTestSelected"/>
 		public event EventHandler<AutomatedTestSelectedEventArgs> AutomatedTestSelected;
 
 		private void OnAutomatedTestSelected()
 		{
 			var localEvent = AutomatedTestSelected;
 			if (localEvent != null)
-				localEvent(this, new AutomatedTestSelectedEventArgs(TestCase, SelectedTest));
+				localEvent(this, new AutomatedTestSelectedEventArgs(TestCase, SelectedTest.AutomatedTest));
 		}
 
 		/// <summary>
@@ -132,17 +136,27 @@ namespace TestCaseAutomator.ViewModels.Browser
 			HasBeenSaved = true;
 		}
 
-		/// <see cref="ITestBrowser.HasBeenSaved"/>
+		/// <see cref="IAutomationSelector.HasBeenSaved"/>
 		public bool? HasBeenSaved
 		{
 			get { return _hasBeenSaved.Value; }
 			set { _hasBeenSaved.Value = value; }
 		}
 
+		/// <summary>
+		/// Whether a file can be selected.
+		/// </summary>
+		public bool CanBrowse
+		{
+			get { return _canBrowse.Value; }
+			set { _canBrowse.Value = value; }
+		}
+
 		private readonly Property<FileInfo> _selectedFile;
 		private readonly Property<ICollection<AutomatedTestViewModel>> _tests;
 		private readonly Property<AutomatedTestViewModel> _selectedTest;
 		private readonly Property<bool?> _hasBeenSaved;
+		private readonly Property<bool> _canBrowse;
 
 		private readonly Func<IAutomatedTest, AutomatedTestViewModel> _testFactory;
 		private readonly IAutomatedTestDiscoverer _testDiscoverer;

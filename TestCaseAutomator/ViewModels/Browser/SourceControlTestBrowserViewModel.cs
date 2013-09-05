@@ -13,13 +13,13 @@ namespace TestCaseAutomator.ViewModels.Browser
 	/// <summary>
 	/// View-model for selection of automated tests from source control.
 	/// </summary>
-	public class SourceControlTestBrowserViewModel : ViewModelBase, ITestBrowser
+	public class SourceControlTestBrowserViewModel : ViewModelBase, IAutomationSelector
 	{
 		/// <summary>
 		/// Initializes a new <see cref="SourceControlTestBrowserViewModel"/>.
 		/// </summary>
 		/// <param name="solutions">Existing solutions in source control</param>
-		/// <param name="testCase">The current test case</param>
+		/// <param name="testCase">The test case to associate with automation</param>
 		/// <param name="solutionFactory">Creates solution view-models</param>
 		public SourceControlTestBrowserViewModel(IEnumerable<TfsSolution> solutions, TestCaseViewModel testCase,
 		                            Func<TfsSolution, SolutionViewModel> solutionFactory)
@@ -52,14 +52,14 @@ namespace TestCaseAutomator.ViewModels.Browser
 			set { _selectedTest.Value = value; }
 		}
 
-		/// <see cref="ITestBrowser.AutomatedTestSelected"/>
+		/// <see cref="IAutomationSelector.AutomatedTestSelected"/>
 		public event EventHandler<AutomatedTestSelectedEventArgs> AutomatedTestSelected;
 
 		private void OnAutomatedTestSelected()
 		{
 			var localEvent = AutomatedTestSelected;
 			if (localEvent != null)
-				localEvent(this, new AutomatedTestSelectedEventArgs(TestCase, (AutomatedTestViewModel)SelectedTest));
+				localEvent(this, new AutomatedTestSelectedEventArgs(TestCase, ((AutomatedTestViewModel)SelectedTest).AutomatedTest));
 		}
 
 		/// <summary>
@@ -84,7 +84,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 			HasBeenSaved = true;
 		}
 
-		/// <see cref="ITestBrowser.HasBeenSaved"/>
+		/// <see cref="IAutomationSelector.HasBeenSaved"/>
 		public bool? HasBeenSaved
 		{
 			get { return _hasBeenSaved.Value; }

@@ -1,4 +1,5 @@
 ﻿using System;
+using TestCaseAutomator.AutomationProviders.Interfaces;
 
 namespace TestCaseAutomator.ViewModels.Browser
 {
@@ -12,7 +13,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// </summary>
 		/// <param name="testCase">The test case associated with the automated test</param>
 		/// <param name="automatedTest">The selected automated test</param>
-		public AutomatedTestSelectedEventArgs(TestCaseViewModel testCase, AutomatedTestViewModel automatedTest)
+		public AutomatedTestSelectedEventArgs(TestCaseViewModel testCase, IAutomatedTest automatedTest)
 		{
 			TestCase = testCase;
 			AutomatedTest = automatedTest;
@@ -26,6 +27,6 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// <summary>
 		/// The selected automated test.
 		/// </summary>
-		public AutomatedTestViewModel AutomatedTest { get; private set; }
+		public IAutomatedTest AutomatedTest { get; private set; }
 	}
 }

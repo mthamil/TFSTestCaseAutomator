@@ -33,6 +33,7 @@ namespace TestCaseAutomator.ViewModels
 			_workItems = Property.New(this, p => p.WorkItems, OnPropertyChanged);
 			_sourceControlBrowser = Property.New(this, p => p.SourceControlTestBrowser, OnPropertyChanged);
 			_fileSystemBrowser = Property.New(this, p => p.FileSystemTestBrowser, OnPropertyChanged);
+			_manualEntry = Property.New(this, p => p.ManualEntry, OnPropertyChanged);
 			_selectedTestCase = Property.New(this, p => p.SelectedTestCase, OnPropertyChanged);
 			_status = Property.New(this, p => p.Status, OnPropertyChanged);
 
@@ -85,6 +86,7 @@ namespace TestCaseAutomator.ViewModels
 				{
 					CreateSourceControlBrowser();
 					CreateFileSystemBrowser();
+					CreateManualEntry();
 				}
 			}
 		}
@@ -112,9 +114,6 @@ namespace TestCaseAutomator.ViewModels
 			IEnumerable<TfsSolution> solutions = null;
 			HandleServerUnavailable(() => solutions = _explorer.Solutions());
 
-			if (SourceControlTestBrowser != null)
-				SourceControlTestBrowser.AutomatedTestSelected -= Browser_AutomatedTestSelected;
-
 			SourceControlTestBrowser = _sourceControlBrowserFactory(solutions ?? Enumerable.Empty<TfsSolution>(), SelectedTestCase);
 			SourceControlTestBrowser.AutomatedTestSelected += Browser_AutomatedTestSelected;
 		}
@@ -130,16 +129,30 @@ namespace TestCaseAutomator.ViewModels
 
 		private void CreateFileSystemBrowser()
 		{
-			if (FileSystemTestBrowser != null)
-				FileSystemTestBrowser.AutomatedTestSelected -= Browser_AutomatedTestSelected;
-
 			FileSystemTestBrowser = _fileSystemBrowserFactory(SelectedTestCase);
 			FileSystemTestBrowser.AutomatedTestSelected += Browser_AutomatedTestSelected;
 		}
 
+		/// <summary>
+		/// Allows manually entering test case automation details.
+		/// </summary>
+		public ManualAutomationEntryViewModel ManualEntry
+		{
+			get { return _manualEntry.Value; }
+			private set { _manualEntry.Value = value; }
+		}
+
+		private void CreateManualEntry()
+		{
+			ManualEntry = new ManualAutomationEntryViewModel(SelectedTestCase);
+			ManualEntry.AutomatedTestSelected += Browser_AutomatedTestSelected;
+		}
+
 		private void Browser_AutomatedTestSelected(object sender, AutomatedTestSelectedEventArgs e)
 		{
-			e.TestCase.UpdateAutomation(e.AutomatedTest.AutomatedTest);
+			e.TestCase.UpdateAutomation(e.AutomatedTest);
+
+			((IAutomationSelector)sender).AutomatedTestSelected -= Browser_AutomatedTestSelected;
 			//((ITestBrowser)sender).HasBeenSaved = null;	// Need to reset this because otherwise a browser for the same test case won't reopen without changing selection.
 		}
 
@@ -223,6 +236,7 @@ namespace TestCaseAutomator.ViewModels
 		private readonly Property<IWorkItems> _workItems;
 		private readonly Property<SourceControlTestBrowserViewModel> _sourceControlBrowser;
 		private readonly Property<FileSystemTestBrowserViewModel> _fileSystemBrowser;
+		private readonly Property<ManualAutomationEntryViewModel> _manualEntry;
 		private readonly Property<string> _status;
 		private readonly Func<Uri, ITfsExplorer> _explorerFactory;
 		private readonly Func<ITfsProjectWorkItemCollection, IWorkItems> _workItemsFactory;

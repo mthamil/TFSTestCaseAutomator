@@ -110,8 +110,9 @@
     <Compile Include="ViewModels\Browser\AutomationSourceViewModel.cs" />
     <Compile Include="ViewModels\Browser\FileSystemTestBrowserViewModel.cs" />
     <Compile Include="ViewModels\Browser\INodeViewModel.cs" />
-    <Compile Include="ViewModels\Browser\ITestBrowser.cs" />
+    <Compile Include="ViewModels\Browser\IAutomationSelector.cs" />
     <Compile Include="ViewModels\Browser\IVirtualizedNode.cs" />
+    <Compile Include="ViewModels\Browser\ManualAutomationEntryViewModel.cs" />
     <Compile Include="ViewModels\Browser\NodeViewModel.cs" />
     <Compile Include="ViewModels\Browser\ProjectViewModel.cs" />
     <Compile Include="ViewModels\Browser\SolutionViewModel.cs" />
@@ -124,6 +125,9 @@
     <Compile Include="ViewModels\TestCaseViewModel.cs" />
     <Compile Include="Views\Browser\FileSystemTestBrowser.xaml.cs">
       <DependentUpon>FileSystemTestBrowser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Browser\ManualAutomationEntryEditor.xaml.cs">
+      <DependentUpon>ManualAutomationEntryEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Browser\SourceControlTestBrowser.xaml.cs">
       <DependentUpon>SourceControlTestBrowser.xaml</DependentUpon>
@@ -142,6 +146,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Browser\FileSystemTestBrowser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Browser\ManualAutomationEntryEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

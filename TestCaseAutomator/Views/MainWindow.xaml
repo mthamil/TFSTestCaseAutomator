@@ -97,7 +97,16 @@
                                                                     Owner="{Binding Source={x:Static Application.Current}, Path=MainWindow}"/>
                                         </Button.Command>
                                     </Button>
-                                    
+
+                                    <Button Content="M..." ToolTip="Manually enter test automation information..." 
+                                            HorizontalAlignment="Right" Width="20" Height="20"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.ManualEntry, Mode=OneWay}">
+                                        <Button.Command>
+                                            <cmds:OpenDialogCommand Type="{x:Type vw:ManualAutomationEntryEditor}" 
+                                                                    Owner="{Binding Source={x:Static Application.Current}, Path=MainWindow}"/>
+                                        </Button.Command>
+                                    </Button>
+
                                 </DockPanel>
                             </Grid>
                         </DataTemplate>

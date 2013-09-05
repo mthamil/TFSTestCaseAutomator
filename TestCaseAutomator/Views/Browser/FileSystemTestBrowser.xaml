@@ -10,6 +10,10 @@
         WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
         Behaviors:WindowBehaviors.DialogResult="{Binding HasBeenSaved}">
 
+    <i:Interaction.Behaviors>
+        <Behaviors:TitleBarOptions ShowButtons="False"/>
+    </i:Interaction.Behaviors>
+
     <Window.Resources>
         <ResourceDictionary>
             <convert:FileInfoConverter x:Key="FileConverter"/>
@@ -47,7 +51,7 @@
             </DockPanel>
 
             <Button Grid.Column="1" Name="SelectFileButton" Content="Browse..." Width="75" Margin="5,3,5,3" HorizontalAlignment="Right"
-                        ToolTip="Select file containing tests">
+                        ToolTip="Select file containing tests" IsEnabled="{Binding CanBrowse}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <Clickable:BindableClickAction/>
