@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.TeamFoundation;
-using Microsoft.TeamFoundation.TestManagement.Client;
 using Moq;
 using TestCaseAutomator.AutomationProviders.Interfaces;
 using TestCaseAutomator.TeamFoundation;
@@ -100,7 +99,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 			        });
 
 			// Act.
-			viewModel.SelectedTestCase = new TestCaseViewModel(Mock.Of<ITestCase>());
+			viewModel.SelectedTestCase = Mock.Of<ITestCaseViewModel>();
 
 			// Assert.
 			Assert.NotNull(viewModel.SourceControlTestBrowser);
@@ -115,7 +114,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 			viewModel.ServerUri = new Uri("http://test/");
 
 			// Act.
-			viewModel.SelectedTestCase = new TestCaseViewModel(Mock.Of<ITestCase>());
+			viewModel.SelectedTestCase = Mock.Of<ITestCaseViewModel>();
 
 			// Assert.
 			Assert.NotNull(viewModel.FileSystemTestBrowser);
@@ -147,12 +146,12 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 			return workItems.Object;
 		}
 
-		private SourceControlTestBrowserViewModel CreateSourceControlBrowser(IEnumerable<TfsSolution> solutions, TestCaseViewModel testCase)
+		private SourceControlTestBrowserViewModel CreateSourceControlBrowser(IEnumerable<TfsSolution> solutions, ITestCaseViewModel testCase)
 		{
 			return new SourceControlTestBrowserViewModel(solutions, testCase, _ => null);
 		}
 
-		private FileSystemTestBrowserViewModel CreateFileSystemBrowser(TestCaseViewModel testCase)
+		private FileSystemTestBrowserViewModel CreateFileSystemBrowser(ITestCaseViewModel testCase)
 		{
 			return new FileSystemTestBrowserViewModel(testCase, _ => null, Mock.Of<IAutomatedTestDiscoverer>(), new SynchronousTaskScheduler());
 		}

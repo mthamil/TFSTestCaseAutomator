@@ -119,6 +119,7 @@
     <Compile Include="ViewModels\Browser\SourceControlTestBrowserViewModel.cs" />
     <Compile Include="ViewModels\Browser\VirtualizedNode.cs" />
     <Compile Include="ViewModels\IApplication.cs" />
+    <Compile Include="ViewModels\ITestCaseViewModel.cs" />
     <Compile Include="ViewModels\IWorkItems.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\WorkItemsViewModel.cs" />

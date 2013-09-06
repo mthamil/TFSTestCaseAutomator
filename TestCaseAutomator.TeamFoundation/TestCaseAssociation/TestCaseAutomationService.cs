@@ -4,14 +4,14 @@ using TestCaseAutomator.AutomationProviders.Interfaces;
 namespace TestCaseAutomator.TeamFoundation.TestCaseAssociation
 {
 	/// <summary>
-	/// Provides extension methods related to test case automation association.
+	/// Provides operations related to test case automation association.
 	/// </summary>
-	public static class TestCaseExtensions
+	public class TestCaseAutomationService : ITestCaseAutomationService
 	{
 		/// <summary>
 		/// Associates a test case with an automated test.
 		/// </summary>
-		public static void AssociateWithAutomation(this ITestCase testCase, IAutomatedTest automation)
+		public void AssociateWithAutomation(ITestCase testCase, IAutomatedTest automation)
 		{
 			// Create the associated automation.
 			var implementation = testCase.Project.CreateTmiTestImplementation(
@@ -27,7 +27,7 @@ namespace TestCaseAutomator.TeamFoundation.TestCaseAssociation
 		/// <summary>
 		/// Removes automation from a test case.
 		/// </summary>
-		public static void RemoveAutomation(this ITestCase testCase)
+		public void RemoveAutomation(ITestCase testCase)
 		{
 			testCase.WorkItem.Open();
 			testCase.Implementation = null;

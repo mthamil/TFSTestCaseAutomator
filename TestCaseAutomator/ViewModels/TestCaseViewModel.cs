@@ -13,15 +13,17 @@ namespace TestCaseAutomator.ViewModels
 	/// <summary>
 	/// Represents a test case.
 	/// </summary>
-	public class TestCaseViewModel : ViewModelBase
+	public class TestCaseViewModel : ViewModelBase, ITestCaseViewModel
 	{
 		/// <summary>
 		/// Initializes a new <see cref="TestCaseViewModel"/>.
 		/// </summary>
 		/// <param name="testCase">The backing TFS test case</param>
-		public TestCaseViewModel(ITestCase testCase)
+		/// <param name="automationService">Enables modification of a test case's associated automation</param>
+		public TestCaseViewModel(ITestCase testCase, ITestCaseAutomationService automationService)
 		{
 			_testCase = testCase;
+			_automationService = automationService;
 
 			RemoveAutomationCommand = Command.For(this)
 			                                 .DependsOn(p => p.CanRemoveAutomation)
@@ -30,37 +32,28 @@ namespace TestCaseAutomator.ViewModels
 			_testCase.PropertyChanged += testCase_PropertyChanged;
 		}
 
-		/// <summary>
-		/// A test case's work item ID.
-		/// </summary>
+		/// <see cref="ITestCaseViewModel.Id"/>
 		public int Id
 		{
 			get { return _testCase.Id; }
 		}
 
-		/// <summary>
-		/// A test case's title.
-		/// </summary>
+		/// <see cref="ITestCaseViewModel.Title"/>
 		public string Title 
 		{ 
 			get { return _testCase.Title; } 
 		}
 
-		/// <summary>
-		/// A test case's associated automation if any exists.
-		/// </summary>
+		/// <see cref="ITestCaseViewModel.AssociatedAutomation"/>
 		public string AssociatedAutomation
 		{
 			get { return _testCase.IsAutomated ? _testCase.Implementation.DisplayText : string.Empty; }
 		}
 
-		/// <summary>
-		/// Updates the automation a test case is associated with.
-		/// </summary>
-		/// <param name="automatedTest">An automated test</param>
+		/// <see cref="ITestCaseViewModel.UpdateAutomation"/>
 		public void UpdateAutomation(IAutomatedTest automatedTest)
 		{
-			_testCase.AssociateWithAutomation(automatedTest);
+			_automationService.AssociateWithAutomation(_testCase, automatedTest);
 		}
 
 		/// <summary>
@@ -68,20 +61,16 @@ namespace TestCaseAutomator.ViewModels
 		/// </summary>
 		public ICommand RemoveAutomationCommand { get; private set; }
 
-		/// <summary>
-		/// Whether automation can be removed.
-		/// </summary>
+		/// <see cref="ITestCaseViewModel.CanRemoveAutomation"/>
 		public bool CanRemoveAutomation
 		{
 			get { return _testCase.IsAutomated; }
 		}
 
-		/// <summary>
-		/// Removes the automation from a test case.
-		/// </summary>
+		/// <see cref="ITestCaseViewModel.RemoveAutomation"/>
 		public void RemoveAutomation()
 		{
-			_testCase.RemoveAutomation();
+			_automationService.RemoveAutomation(_testCase);
 		}
 
 		private void testCase_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -94,6 +83,7 @@ namespace TestCaseAutomator.ViewModels
 		}
 
 		private readonly ITestCase _testCase;
+		private readonly ITestCaseAutomationService _automationService;
 
 		private static readonly IDictionary<string, IEnumerable<string>> _propertyMap = new Dictionary<string, IEnumerable<string>>
 		{

@@ -20,8 +20,8 @@ namespace TestCaseAutomator.ViewModels
 		public MainViewModel(
 			Func<Uri, ITfsExplorer> explorerFactory, 
 			Func<ITfsProjectWorkItemCollection, IWorkItems> workItemsFactory,
-			Func<IEnumerable<TfsSolution>, TestCaseViewModel, SourceControlTestBrowserViewModel> sourceControlBrowserFactory,
-			Func<TestCaseViewModel, FileSystemTestBrowserViewModel> fileSystemBrowserFactory)
+			Func<IEnumerable<TfsSolution>, ITestCaseViewModel, SourceControlTestBrowserViewModel> sourceControlBrowserFactory,
+			Func<ITestCaseViewModel, FileSystemTestBrowserViewModel> fileSystemBrowserFactory)
 		{
 			_explorerFactory = explorerFactory;
 			_workItemsFactory = workItemsFactory;
@@ -77,7 +77,7 @@ namespace TestCaseAutomator.ViewModels
 		/// <summary>
 		/// The currently selected test case.
 		/// </summary>
-		public TestCaseViewModel SelectedTestCase
+		public ITestCaseViewModel SelectedTestCase
 		{
 			get { return _selectedTestCase.Value; }
 			set
@@ -232,7 +232,7 @@ namespace TestCaseAutomator.ViewModels
 
 		private readonly Property<Uri> _serverUri;
 		private readonly Property<string> _projectName;
-		private readonly Property<TestCaseViewModel> _selectedTestCase; 
+		private readonly Property<ITestCaseViewModel> _selectedTestCase; 
 		private readonly Property<IWorkItems> _workItems;
 		private readonly Property<SourceControlTestBrowserViewModel> _sourceControlBrowser;
 		private readonly Property<FileSystemTestBrowserViewModel> _fileSystemBrowser;
@@ -240,7 +240,7 @@ namespace TestCaseAutomator.ViewModels
 		private readonly Property<string> _status;
 		private readonly Func<Uri, ITfsExplorer> _explorerFactory;
 		private readonly Func<ITfsProjectWorkItemCollection, IWorkItems> _workItemsFactory;
-		private readonly Func<IEnumerable<TfsSolution>, TestCaseViewModel, SourceControlTestBrowserViewModel> _sourceControlBrowserFactory;
-		private readonly Func<TestCaseViewModel, FileSystemTestBrowserViewModel> _fileSystemBrowserFactory;
+		private readonly Func<IEnumerable<TfsSolution>, ITestCaseViewModel, SourceControlTestBrowserViewModel> _sourceControlBrowserFactory;
+		private readonly Func<ITestCaseViewModel, FileSystemTestBrowserViewModel> _fileSystemBrowserFactory;
 	}
 }

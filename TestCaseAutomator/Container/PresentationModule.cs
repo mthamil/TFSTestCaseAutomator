@@ -30,6 +30,8 @@ namespace TestCaseAutomator.Container
 
 			builder.RegisterType<WorkItemsViewModel>().As<IWorkItems>();
 
+			builder.RegisterType<TestCaseViewModel>().As<ITestCaseViewModel>();
+
 			builder.RegisterType<SolutionViewModel>();
 
 			builder.RegisterType<ProjectViewModel>()

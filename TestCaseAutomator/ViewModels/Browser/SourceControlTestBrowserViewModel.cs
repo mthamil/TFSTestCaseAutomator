@@ -21,7 +21,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// <param name="solutions">Existing solutions in source control</param>
 		/// <param name="testCase">The test case to associate with automation</param>
 		/// <param name="solutionFactory">Creates solution view-models</param>
-		public SourceControlTestBrowserViewModel(IEnumerable<TfsSolution> solutions, TestCaseViewModel testCase,
+		public SourceControlTestBrowserViewModel(IEnumerable<TfsSolution> solutions, ITestCaseViewModel testCase,
 		                            Func<TfsSolution, SolutionViewModel> solutionFactory)
 		{
 			TestCase = testCase;
@@ -41,7 +41,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// <summary>
 		/// The test case to associate with automation.
 		/// </summary>
-		public TestCaseViewModel TestCase { get; private set; }
+		public ITestCaseViewModel TestCase { get; private set; }
 
 		/// <summary>
 		/// The currently selected test.

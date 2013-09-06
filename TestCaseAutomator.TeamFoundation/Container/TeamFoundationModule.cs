@@ -4,6 +4,7 @@ using Autofac.Features.OwnedInstances;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.TestManagement.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
+using TestCaseAutomator.TeamFoundation.TestCaseAssociation;
 
 namespace TestCaseAutomator.TeamFoundation.Container
 {
@@ -29,6 +30,8 @@ namespace TestCaseAutomator.TeamFoundation.Container
 
 			builder.Register((c, p) => new VersionControlServerAdapter(p.TypedAs<TfsConnection>().GetService<VersionControlServer>()))
 			       .As<IVersionControl>();
+
+			builder.RegisterType<TestCaseAutomationService>().As<ITestCaseAutomationService>();
 		}
 	}
 }

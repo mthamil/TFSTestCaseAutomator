@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using Microsoft.TeamFoundation.TestManagement.Client;
 using Moq;
+using TestCaseAutomator.TeamFoundation.TestCaseAssociation;
 using TestCaseAutomator.ViewModels;
 using Xunit;
 
@@ -13,7 +14,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 		{
 			// Arrange.
 			var testCase = Mock.Of<ITestCase>(tc => tc.Id == 112);
-			var vm = new TestCaseViewModel(testCase);
+			var vm = new TestCaseViewModel(testCase, automationService.Object);
 
 			// Act.
 			var id = vm.Id;
@@ -27,7 +28,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 		{
 			// Arrange.
 			var testCase = Mock.Of<ITestCase>(tc => tc.Title == "A test case");
-			var vm = new TestCaseViewModel(testCase);
+			var vm = new TestCaseViewModel(testCase, automationService.Object);
 
 			// Act.
 			var title = vm.Title;
@@ -45,7 +46,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 				tc.Implementation == Mock.Of<ITestImplementation>(ti => 
 				ti.DisplayText == "test123"));
 
-			var vm = new TestCaseViewModel(testCase);
+			var vm = new TestCaseViewModel(testCase, automationService.Object);
 
 			// Act.
 			var implementation = vm.AssociatedAutomation;
@@ -61,7 +62,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 			var testCase = Mock.Of<ITestCase>(tc =>
 				tc.IsAutomated == false);
 
-			var vm = new TestCaseViewModel(testCase);
+			var vm = new TestCaseViewModel(testCase, automationService.Object);
 
 			// Act.
 			var implementation = vm.AssociatedAutomation;
@@ -75,7 +76,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 		{
 			// Arrange.
 			var testCase = new Mock<ITestCase>();
-			var vm = new TestCaseViewModel(testCase.Object);
+			var vm = new TestCaseViewModel(testCase.Object, automationService.Object);
 
 			// Act/Assert.
 			AssertThat.PropertyChanged(vm,
@@ -88,7 +89,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 		{
 			// Arrange.
 			var testCase = new Mock<ITestCase>();
-			var vm = new TestCaseViewModel(testCase.Object);
+			var vm = new TestCaseViewModel(testCase.Object, automationService.Object);
 
 			// Act/Assert.
 			AssertThat.PropertyChanged(vm,
@@ -101,12 +102,14 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 		{
 			// Arrange.
 			var testCase = new Mock<ITestCase>();
-			var vm = new TestCaseViewModel(testCase.Object);
+			var vm = new TestCaseViewModel(testCase.Object, automationService.Object);
 
 			// Act/Assert.
 			AssertThat.PropertyChanged(vm,
 				p => p.AssociatedAutomation,
 				() => testCase.Raise(tc => tc.PropertyChanged += null, new PropertyChangedEventArgs("Implementation")));
 		}
+
+		private readonly Mock<ITestCaseAutomationService> automationService = new Mock<ITestCaseAutomationService>();
 	}
 }

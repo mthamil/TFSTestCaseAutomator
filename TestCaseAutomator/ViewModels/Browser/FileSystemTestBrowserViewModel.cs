@@ -27,7 +27,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// <param name="testFactory">Creates automated test view-models</param>
 		/// <param name="testDiscoverer">Finds tests in files</param>
 		/// <param name="scheduler">Used to schedule background tasks</param>
-		public FileSystemTestBrowserViewModel(TestCaseViewModel testCase,
+		public FileSystemTestBrowserViewModel(ITestCaseViewModel testCase,
 		                                      Func<IAutomatedTest, AutomatedTestViewModel> testFactory,
 		                                      IAutomatedTestDiscoverer testDiscoverer, TaskScheduler scheduler)
 		{
@@ -54,7 +54,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// <summary>
 		/// The test case to associate with automation.
 		/// </summary>
-		public TestCaseViewModel TestCase { get; private set; }
+		public ITestCaseViewModel TestCase { get; private set; }
 
 		/// <summary>
 		/// The currently selected file.

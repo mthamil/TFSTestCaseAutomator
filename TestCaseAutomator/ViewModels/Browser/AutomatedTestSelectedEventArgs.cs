@@ -13,7 +13,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// </summary>
 		/// <param name="testCase">The test case associated with the automated test</param>
 		/// <param name="automatedTest">The selected automated test</param>
-		public AutomatedTestSelectedEventArgs(TestCaseViewModel testCase, IAutomatedTest automatedTest)
+		public AutomatedTestSelectedEventArgs(ITestCaseViewModel testCase, IAutomatedTest automatedTest)
 		{
 			TestCase = testCase;
 			AutomatedTest = automatedTest;
@@ -22,7 +22,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// <summary>
 		/// The test case associated with the automated test.
 		/// </summary>
-		public TestCaseViewModel TestCase { get; private set; }
+		public ITestCaseViewModel TestCase { get; private set; }
 
 		/// <summary>
 		/// The selected automated test.

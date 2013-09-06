@@ -18,7 +18,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// Initializes a new <see cref="ManualAutomationEntryViewModel"/>.
 		/// </summary>
 		/// <param name="testCase">The test case to associate with automation</param>
-		public ManualAutomationEntryViewModel(TestCaseViewModel testCase)
+		public ManualAutomationEntryViewModel(ITestCaseViewModel testCase)
 		{
 			TestCase = testCase;
 
@@ -38,7 +38,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// <summary>
 		/// The test case to associate with automation.
 		/// </summary>
-		public TestCaseViewModel TestCase { get; private set; }
+		public ITestCaseViewModel TestCase { get; private set; }
 
 		/// <summary>
 		/// An automated test's name.

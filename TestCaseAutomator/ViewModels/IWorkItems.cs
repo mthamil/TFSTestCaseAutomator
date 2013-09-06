@@ -16,6 +16,6 @@ namespace TestCaseAutomator.ViewModels
 		/// <summary>
 		/// The current collection of test cases.
 		/// </summary>
-		ICollection<TestCaseViewModel> TestCases { get; }
+		ICollection<ITestCaseViewModel> TestCases { get; }
 	}
 }
