@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
 using Microsoft.TeamFoundation.TestManagement.Client;
@@ -71,6 +72,12 @@ namespace TestCaseAutomator.ViewModels
 		public void RemoveAutomation()
 		{
 			_automationService.RemoveAutomation(_testCase);
+		}
+
+		/// <see cref="ITestCaseViewModel.GetAutomation"/>
+		public IAutomatedTest GetAutomation()
+		{
+			return _automationService.GetExistingAutomation(_testCase);
 		}
 
 		private void testCase_PropertyChanged(object sender, PropertyChangedEventArgs e)

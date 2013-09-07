@@ -15,6 +15,21 @@
             <i:InvokeCommandAction Command="{Binding CloseCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
+    
+    <Window.Resources>
+        <ResourceDictionary>
+
+            <cmds:OpenDialogCommand x:Key="FileSelectorCmd" Type="{x:Type vw:FileSystemTestBrowser}" 
+                                    Owner="{Binding Source={x:Static Application.Current}, Path=MainWindow}"/>
+
+            <cmds:OpenDialogCommand x:Key="SCSelectorCmd" Type="{x:Type vw:SourceControlTestBrowser}" 
+                                    Owner="{Binding Source={x:Static Application.Current}, Path=MainWindow}"/>
+
+            <cmds:OpenDialogCommand x:Key="ManualEditCmd" Type="{x:Type vw:ManualAutomationEntryEditor}" 
+                                    Owner="{Binding Source={x:Static Application.Current}, Path=MainWindow}"/>
+
+        </ResourceDictionary>
+    </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -79,33 +94,21 @@
 
                                     <Button Content="-" ToolTip="Remove associated automation." Command="{Binding RemoveAutomationCommand}"
                                             HorizontalAlignment="Right" VerticalContentAlignment="Center" Width="20" Height="20"/>
-
+                                    
                                     <Button Content="\..." ToolTip="Choose automated test from the file system..." 
                                             HorizontalAlignment="Right" VerticalContentAlignment="Center" Width="20" Height="20"
-                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.FileSystemTestBrowser, Mode=OneWay}">
-                                        <Button.Command>
-                                            <cmds:OpenDialogCommand Type="{x:Type vw:FileSystemTestBrowser}" 
-                                                                    Owner="{Binding Source={x:Static Application.Current}, Path=MainWindow}"/>
-                                        </Button.Command>
-                                    </Button>
+                                            Command="{StaticResource FileSelectorCmd}"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.FileSystemTestBrowser, Mode=OneWay}"/>
                                 
                                     <Button Content="$..." ToolTip="Choose automated test from a source controlled file..." 
                                             HorizontalAlignment="Right" Width="20" Height="20"
-                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.SourceControlTestBrowser, Mode=OneWay}">
-                                        <Button.Command>
-                                            <cmds:OpenDialogCommand Type="{x:Type vw:SourceControlTestBrowser}" 
-                                                                    Owner="{Binding Source={x:Static Application.Current}, Path=MainWindow}"/>
-                                        </Button.Command>
-                                    </Button>
+                                            Command="{StaticResource SCSelectorCmd}"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.SourceControlTestBrowser, Mode=OneWay}"/>
 
                                     <Button Content="M..." ToolTip="Manually enter test automation information..." 
                                             HorizontalAlignment="Right" Width="20" Height="20"
-                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.ManualEntry, Mode=OneWay}">
-                                        <Button.Command>
-                                            <cmds:OpenDialogCommand Type="{x:Type vw:ManualAutomationEntryEditor}" 
-                                                                    Owner="{Binding Source={x:Static Application.Current}, Path=MainWindow}"/>
-                                        </Button.Command>
-                                    </Button>
+                                            Command="{StaticResource ManualEditCmd}"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.ManualEntry, Mode=OneWay}"/>
 
                                 </DockPanel>
                             </Grid>

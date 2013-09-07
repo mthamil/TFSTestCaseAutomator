@@ -37,5 +37,10 @@ namespace TestCaseAutomator.ViewModels
 		/// Removes the automation from a test case.
 		/// </summary>
 		void RemoveAutomation();
+
+		/// <summary>
+		/// Retrieves a test case's existing automated test if it has one.
+		/// </summary>
+		IAutomatedTest GetAutomation();
 	}
 }

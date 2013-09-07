@@ -13,8 +13,8 @@ namespace TestCaseAutomator.ViewModels.Browser
 		event EventHandler<AutomatedTestSelectedEventArgs> AutomatedTestSelected;
 
 		/// <summary>
-		/// Whether a browser has saved its test selection.
+		/// The test case to associate with automation.
 		/// </summary>
-		bool? HasBeenSaved { get; set; }
+		ITestCaseViewModel TestCase { get; }
 	}
 }

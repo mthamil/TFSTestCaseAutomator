@@ -1,4 +1,5 @@
-﻿using Microsoft.TeamFoundation.TestManagement.Client;
+﻿using System;
+using Microsoft.TeamFoundation.TestManagement.Client;
 using TestCaseAutomator.AutomationProviders.Interfaces;
 
 namespace TestCaseAutomator.TeamFoundation.TestCaseAssociation
@@ -33,6 +34,31 @@ namespace TestCaseAutomator.TeamFoundation.TestCaseAssociation
 			testCase.Implementation = null;
 			testCase.CustomFields["Automation status"].Value = "Not Automated";
 			testCase.Save();
+		}
+
+		/// <summary>
+		/// Returns an <see cref="IAutomatedTest"/> representing a <see cref="ITestCase"/>'s
+		/// existing automation if it has any.
+		/// </summary>
+		public IAutomatedTest GetExistingAutomation(ITestCase testCase)
+		{
+			return testCase.IsAutomated ? new ExistingAutomatedTest((ITmiTestImplementation)testCase.Implementation) : null;
+		}
+
+		private class ExistingAutomatedTest : IAutomatedTest
+		{
+			public ExistingAutomatedTest(ITmiTestImplementation existingAutomation)
+			{
+				Identifier = existingAutomation.TestId;
+				Name = existingAutomation.TestName;
+				TestType = existingAutomation.TestType;
+				Storage = existingAutomation.Storage;
+			}
+
+			public Guid Identifier { get; private set; }
+			public string Name { get; private set; }
+			public string TestType { get; private set; }
+			public string Storage { get; private set; }
 		}
 	}
 }

@@ -31,11 +31,13 @@ namespace TestCaseAutomator.ViewModels
 			_serverUri = Property.New(this, p => p.ServerUri, OnPropertyChanged);
 			_projectName = Property.New(this, p => p.ProjectName, OnPropertyChanged);
 			_workItems = Property.New(this, p => p.WorkItems, OnPropertyChanged);
+			_selectedTestCase = Property.New(this, p => p.SelectedTestCase, OnPropertyChanged);
+			_status = Property.New(this, p => p.Status, OnPropertyChanged);
+
 			_sourceControlBrowser = Property.New(this, p => p.SourceControlTestBrowser, OnPropertyChanged);
 			_fileSystemBrowser = Property.New(this, p => p.FileSystemTestBrowser, OnPropertyChanged);
 			_manualEntry = Property.New(this, p => p.ManualEntry, OnPropertyChanged);
 			_selectedTestCase = Property.New(this, p => p.SelectedTestCase, OnPropertyChanged);
-			_status = Property.New(this, p => p.Status, OnPropertyChanged);
 
 			RefreshCommand = new AsyncRelayCommand(Refresh);
 			CloseCommand = new RelayCommand(Close);
@@ -80,13 +82,13 @@ namespace TestCaseAutomator.ViewModels
 		public ITestCaseViewModel SelectedTestCase
 		{
 			get { return _selectedTestCase.Value; }
-			set
+			set 
 			{
 				if (_selectedTestCase.TrySetValue(value))
 				{
-					CreateSourceControlBrowser();
-					CreateFileSystemBrowser();
-					CreateManualEntry();
+					SourceControlTestBrowser = CreateSourceControlBrowser();
+					FileSystemTestBrowser = CreateFileSystemBrowser();
+					ManualEntry = CreateManualEntry();
 				}
 			}
 		}
@@ -109,13 +111,17 @@ namespace TestCaseAutomator.ViewModels
 			private set { _sourceControlBrowser.Value = value; }
 		}
 
-		private void CreateSourceControlBrowser()
+		private SourceControlTestBrowserViewModel CreateSourceControlBrowser()
 		{
+			if (SourceControlTestBrowser != null)
+				SourceControlTestBrowser.AutomatedTestSelected -= Browser_AutomatedTestSelected;
+
 			IEnumerable<TfsSolution> solutions = null;
 			HandleServerUnavailable(() => solutions = _explorer.Solutions());
 
-			SourceControlTestBrowser = _sourceControlBrowserFactory(solutions ?? Enumerable.Empty<TfsSolution>(), SelectedTestCase);
-			SourceControlTestBrowser.AutomatedTestSelected += Browser_AutomatedTestSelected;
+			var sourceControlTestBrowser = _sourceControlBrowserFactory(solutions ?? Enumerable.Empty<TfsSolution>(), SelectedTestCase);
+			sourceControlTestBrowser.AutomatedTestSelected += Browser_AutomatedTestSelected;
+			return sourceControlTestBrowser;
 		}
 
 		/// <summary>
@@ -127,10 +133,14 @@ namespace TestCaseAutomator.ViewModels
 			private set { _fileSystemBrowser.Value = value; }
 		}
 
-		private void CreateFileSystemBrowser()
+		private FileSystemTestBrowserViewModel CreateFileSystemBrowser()
 		{
-			FileSystemTestBrowser = _fileSystemBrowserFactory(SelectedTestCase);
-			FileSystemTestBrowser.AutomatedTestSelected += Browser_AutomatedTestSelected;
+			if (FileSystemTestBrowser != null)
+				FileSystemTestBrowser.AutomatedTestSelected -= Browser_AutomatedTestSelected;
+
+			var fileSystemTestBrowser = _fileSystemBrowserFactory(SelectedTestCase);
+			fileSystemTestBrowser.AutomatedTestSelected += Browser_AutomatedTestSelected;
+			return fileSystemTestBrowser;
 		}
 
 		/// <summary>
@@ -142,18 +152,20 @@ namespace TestCaseAutomator.ViewModels
 			private set { _manualEntry.Value = value; }
 		}
 
-		private void CreateManualEntry()
+		private ManualAutomationEntryViewModel CreateManualEntry()
 		{
-			ManualEntry = new ManualAutomationEntryViewModel(SelectedTestCase);
-			ManualEntry.AutomatedTestSelected += Browser_AutomatedTestSelected;
+			if (ManualEntry != null)
+				ManualEntry.AutomatedTestSelected -= Browser_AutomatedTestSelected;
+
+			var manualEntry = new ManualAutomationEntryViewModel(SelectedTestCase);
+			manualEntry.AutomatedTestSelected += Browser_AutomatedTestSelected;
+			return manualEntry;
 		}
 
 		private void Browser_AutomatedTestSelected(object sender, AutomatedTestSelectedEventArgs e)
 		{
 			e.TestCase.UpdateAutomation(e.AutomatedTest);
-
 			((IAutomationSelector)sender).AutomatedTestSelected -= Browser_AutomatedTestSelected;
-			//((ITestBrowser)sender).HasBeenSaved = null;	// Need to reset this because otherwise a browser for the same test case won't reopen without changing selection.
 		}
 
 		/// <summary>
@@ -234,10 +246,12 @@ namespace TestCaseAutomator.ViewModels
 		private readonly Property<string> _projectName;
 		private readonly Property<ITestCaseViewModel> _selectedTestCase; 
 		private readonly Property<IWorkItems> _workItems;
+		private readonly Property<string> _status;
+
 		private readonly Property<SourceControlTestBrowserViewModel> _sourceControlBrowser;
 		private readonly Property<FileSystemTestBrowserViewModel> _fileSystemBrowser;
 		private readonly Property<ManualAutomationEntryViewModel> _manualEntry;
-		private readonly Property<string> _status;
+
 		private readonly Func<Uri, ITfsExplorer> _explorerFactory;
 		private readonly Func<ITfsProjectWorkItemCollection, IWorkItems> _workItemsFactory;
 		private readonly Func<IEnumerable<TfsSolution>, ITestCaseViewModel, SourceControlTestBrowserViewModel> _sourceControlBrowserFactory;

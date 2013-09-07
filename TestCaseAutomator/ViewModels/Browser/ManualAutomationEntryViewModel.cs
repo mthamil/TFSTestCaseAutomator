@@ -33,11 +33,17 @@ namespace TestCaseAutomator.ViewModels.Browser
 			SaveTestCaseCommand = Command.For(this)
 										 .DependsOn(p => p.CanSaveTestCase)
 										 .Executes(SaveTestCase);
+
+			var existingAutomation = TestCase.GetAutomation();
+			if (existingAutomation != null)
+			{
+				Name = existingAutomation.Name;
+				StorageLocation = existingAutomation.Storage;
+				TestType = existingAutomation.TestType;
+			}
 		}
 
-		/// <summary>
-		/// The test case to associate with automation.
-		/// </summary>
+		/// <see cref="IAutomationSelector.TestCase"/>
 		public ITestCaseViewModel TestCase { get; private set; }
 
 		/// <summary>
@@ -101,7 +107,9 @@ namespace TestCaseAutomator.ViewModels.Browser
 			HasBeenSaved = true;
 		}
 
-		/// <see cref="IAutomationSelector.HasBeenSaved"/>
+		/// <summary>
+		/// Whether test automation has been chosen.
+		/// </summary>
 		public bool? HasBeenSaved
 		{
 			get { return _hasBeenSaved.Value; }
