@@ -45,6 +45,33 @@
                                                                 Path=DataContext.SaveTestCaseCommand}" MouseAction="LeftDoubleClick" />
                             </TextBlock.InputBindings>
                         </TextBlock>
+                        <TextBlock>
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsLoading, FallbackValue=False}" Value="True">
+                                            <DataTrigger.EnterActions>
+                                                <BeginStoryboard Name="LoadingText">
+                                                    <Storyboard>
+                                                        <StringAnimationUsingKeyFrames Storyboard.TargetProperty="Text" Duration="0:0:1"
+                                                                                       RepeatBehavior="Forever" AutoReverse="False" >
+                                                            <DiscreteStringKeyFrame Value=" ."    KeyTime="0:0:0" />
+                                                            <DiscreteStringKeyFrame Value=" .."   KeyTime="0:0:0.25" />
+                                                            <DiscreteStringKeyFrame Value=" ..."  KeyTime="0:0:0.5" />
+                                                            <DiscreteStringKeyFrame Value=" ...." KeyTime="0:0:0.75" />
+                                                            <DiscreteStringKeyFrame Value=""      KeyTime="0:0:1" />
+                                                        </StringAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <RemoveStoryboard BeginStoryboardName="LoadingText"/>
+                                            </DataTrigger.ExitActions>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                     </StackPanel>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
@@ -71,9 +98,6 @@
                             </MultiTrigger.Conditions>
                             <Setter Property="BorderBrush" Value="LightGray"/>
                         </MultiTrigger>
-                        <DataTrigger Binding="{Binding IsLoading, FallbackValue=False}" Value="True">
-                            <Setter Property="FontStyle" Value="Italic"/>
-                        </DataTrigger>
                     </Style.Triggers>
                     <Style.Resources>
                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#ADC6E5" />
