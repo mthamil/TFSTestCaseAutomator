@@ -135,8 +135,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 		{
 			public ManuallyCreatedAutomatedTest()
 			{
-				_identifier = new Lazy<Guid>(() => 
-					CreateTestIdentifier(Name, () => new SHA1CryptoServiceProvider()));
+				_identifier = new Lazy<Guid>(() => new HashedIdentifierFactory().CreateIdentifier(Name));
 			}
 
 			public Guid Identifier { get { return _identifier.Value; } }
@@ -145,19 +144,6 @@ namespace TestCaseAutomator.ViewModels.Browser
 			public string Storage { get; set; }
 
 			private readonly Lazy<Guid> _identifier;
-		}
-
-		/// <summary>
-		/// Creates a deterministic GUID identifier.
-		/// </summary>
-		private static Guid CreateTestIdentifier(string testName, Func<HashAlgorithm> hashAlgorithmFactory)
-		{
-			using (var hasher = hashAlgorithmFactory())
-			{
-				var bytes = new byte[16];
-				Array.Copy(hasher.ComputeHash(Encoding.Unicode.GetBytes(testName)), bytes, bytes.Length);
-				return new Guid(bytes);
-			}
 		}
 	}
 }

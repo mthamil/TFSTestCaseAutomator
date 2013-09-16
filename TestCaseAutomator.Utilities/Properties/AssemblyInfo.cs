@@ -8,7 +8,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("TestCaseAutomator.Utilities")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
 [assembly: AssemblyProduct("TestCaseAutomator.Utilities")]
 [assembly: AssemblyCopyright("Copyright © Matt Hamilton 2013")]
 [assembly: AssemblyTrademark("")]

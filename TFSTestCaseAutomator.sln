@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCaseAutomator.Automatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCaseAutomator.AutomationProviders.Interfaces", "TestCaseAutomator.AutomationProviders.Interfaces\TestCaseAutomator.AutomationProviders.Interfaces.csproj", "{AD71ADB9-E579-4A13-B3A0-9051FF5B075D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xUnit.AutomationProvider", "xUnit.AutomationProvider\xUnit.AutomationProvider.csproj", "{F7F2F7FA-0538-4E4E-A621-1AFF1AECC71D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,10 @@ Global
 		{AD71ADB9-E579-4A13-B3A0-9051FF5B075D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD71ADB9-E579-4A13-B3A0-9051FF5B075D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD71ADB9-E579-4A13-B3A0-9051FF5B075D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7F2F7FA-0538-4E4E-A621-1AFF1AECC71D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7F2F7FA-0538-4E4E-A621-1AFF1AECC71D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7F2F7FA-0538-4E4E-A621-1AFF1AECC71D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7F2F7FA-0538-4E4E-A621-1AFF1AECC71D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

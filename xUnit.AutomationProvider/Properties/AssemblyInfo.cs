@@ -5,10 +5,10 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TestCaseAutomator.AutomationProviders.Interfaces")]
-[assembly: AssemblyDescription("Provides the basic types required to create an automated test provider plugin.")]
+[assembly: AssemblyTitle("xUnit.AutomationProvider")]
+[assembly: AssemblyDescription("A plugin that enables discovery of xUnit.net tests for TFS test case association.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyProduct("TestCaseAutomator.AutomationProviders.Interfaces")]
+[assembly: AssemblyProduct("xUnit.AutomationProvider")]
 [assembly: AssemblyCopyright("Copyright © Matt Hamilton 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("98101691-c216-4965-a7ee-d018aa358ab1")]
+[assembly: Guid("e767dd3b-5361-413a-933f-fabc482a0ca4")]
 
 // Version information for an assembly consists of the following four values:
 //
