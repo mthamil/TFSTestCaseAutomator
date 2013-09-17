@@ -42,7 +42,7 @@ namespace xUnit.AutomationProvider
 			if (sources == null)
 				throw new ArgumentNullException("sources");
 
-			foreach (string source in sources.Where(s => _extensions.Contains(Path.GetExtension(s))))
+			foreach (string source in sources.Where(IsTestAssembly))
 			{
 				using (var executor = _discovererFactory(source))
 				{
@@ -63,6 +63,12 @@ namespace xUnit.AutomationProvider
 									methodNode.Attributes["type"].Value, 
 									methodNode.Attributes["method"].Value));
 
+		}
+
+		private static bool IsTestAssembly(string source)
+		{
+			return _extensions.Contains(Path.GetExtension(source)) &&						// Easy check for .NET assembly file extensions.
+			       File.Exists(Path.Combine(Path.GetDirectoryName(source), "xunit.dll"));	// Ensure there is an xunit.dll in the same directory, otherwise an exception will be thrown.
 		}
 
 		private readonly Func<string, IExecutorWrapper> _discovererFactory;
