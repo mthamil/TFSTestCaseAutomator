@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -33,6 +34,8 @@ namespace TestCaseAutomator
 
 		private void ShowMessageBox(Exception exception)
 		{
+			var message = new StringBuilder();
+			FormatMessage(message, exception);
 			var messageBox = new ScrollableMessageBox
 			{
 				Buttons = MessageBoxButton.YesNo,
@@ -42,7 +45,7 @@ namespace TestCaseAutomator
 
 Do you want to exit the application?
 (Warning: If you click Yes the application will close, if you click No the application will continue)",
-				Message = FormatMessage(exception)
+				Message = message.ToString()
 			};
 
 			messageBox.ShowDialog();
@@ -50,20 +53,19 @@ Do you want to exit the application?
 				_application.Shutdown();
 		}
 
-		private static string FormatMessage(Exception exception)
+		private static void FormatMessage(StringBuilder message, Exception exception)
 		{
-			return String.Format("{1}{0}{2}{0}{3}{4}",
+			message.AppendFormat("{1}:{0}{2}{0}{3}",
 			                     Environment.NewLine,
 			                     exception.GetType().Name,
 			                     exception.Message,
-			                     exception.StackTrace,
-			                     exception.InnerException != null
-				                     ? String.Format("{1}{0}{2}{0}{3}",
-				                                     Environment.NewLine,
-				                                     exception.InnerException.GetType().Name,
-				                                     exception.InnerException.Message,
-				                                     exception.InnerException.StackTrace)
-				                     : string.Empty);
+			                     exception.StackTrace);
+
+			if (exception.InnerException != null)
+			{
+				message.AppendLine();
+				FormatMessage(message, exception.InnerException);
+			}
 		}
 
 		private readonly Application _application;
