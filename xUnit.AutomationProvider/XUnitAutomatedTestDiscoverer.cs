@@ -42,27 +42,18 @@ namespace xUnit.AutomationProvider
 			if (sources == null)
 				throw new ArgumentNullException("sources");
 
-			foreach (string source in sources.Where(IsTestAssembly))
-			{
-				using (var executor = _discovererFactory(source))
-				{
-					foreach (var test in GetAutomatedTests(executor))
-						yield return test;
-				}
-			}
-		}
-
-		private static IEnumerable<IAutomatedTest> GetAutomatedTests(IExecutorWrapper executor)
-		{
-			string assemblyFilename = executor.AssemblyFilename;
-			return executor.EnumerateTests().SelectNodes("//method")
-						   .Cast<XmlNode>()
-			               .Select(methodNode =>
-							   new XUnitAutomatedTest(
-									Path.GetFileName(assemblyFilename), 
-									methodNode.Attributes["type"].Value, 
-									methodNode.Attributes["method"].Value));
-
+			return sources.Where(IsTestAssembly)
+						  .SelectMany(source =>
+						  {
+							  using (var executor = _discovererFactory(source))
+								  return executor.EnumerateTests().SelectNodes("//method")
+								                 .Cast<XmlNode>()
+								                 .Select(methodNode =>
+								                         new XUnitAutomatedTest(
+									                         Path.GetFileName(source),
+									                         methodNode.Attributes["type"].Value,
+									                         methodNode.Attributes["method"].Value));
+						  });
 		}
 
 		private static bool IsTestAssembly(string source)

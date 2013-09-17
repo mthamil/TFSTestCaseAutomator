@@ -20,7 +20,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCaseAutomator.Automatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCaseAutomator.AutomationProviders.Interfaces", "TestCaseAutomator.AutomationProviders.Interfaces\TestCaseAutomator.AutomationProviders.Interfaces.csproj", "{AD71ADB9-E579-4A13-B3A0-9051FF5B075D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xUnit.AutomationProvider", "xUnit.AutomationProvider\xUnit.AutomationProvider.csproj", "{F7F2F7FA-0538-4E4E-A621-1AFF1AECC71D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugins.xUnit.AutomationProvider", "xUnit.AutomationProvider\Plugins.xUnit.AutomationProvider.csproj", "{F7F2F7FA-0538-4E4E-A621-1AFF1AECC71D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugins.MSTest.AutomationProvider", "MSTest.AutomationProvider\Plugins.MSTest.AutomationProvider.csproj", "{3B8A737E-DE29-45E2-BFF3-02CFD703A0A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,6 +58,10 @@ Global
 		{F7F2F7FA-0538-4E4E-A621-1AFF1AECC71D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7F2F7FA-0538-4E4E-A621-1AFF1AECC71D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7F2F7FA-0538-4E4E-A621-1AFF1AECC71D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B8A737E-DE29-45E2-BFF3-02CFD703A0A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B8A737E-DE29-45E2-BFF3-02CFD703A0A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B8A737E-DE29-45E2-BFF3-02CFD703A0A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B8A737E-DE29-45E2-BFF3-02CFD703A0A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
