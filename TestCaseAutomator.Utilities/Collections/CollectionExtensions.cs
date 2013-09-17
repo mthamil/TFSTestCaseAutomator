@@ -15,6 +15,13 @@ namespace TestCaseAutomator.Utilities.Collections
 		/// <param name="newElements">The items to add to the collection</param>
 		public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> newElements)
 		{
+			var list = collection as List<T>;
+			if (list != null)
+			{
+				list.AddRange(newElements);
+				return;
+			}
+
 			foreach (var element in newElements)
 				collection.Add(element);
 		}
@@ -32,8 +39,7 @@ namespace TestCaseAutomator.Utilities.Collections
 			collection.Add(firstElement);
 			collection.Add(secondElement);
 
-			foreach (var element in remainingElements)
-				collection.Add(element);
+			AddRange(collection, remainingElements);
 		}
 	}
 }
