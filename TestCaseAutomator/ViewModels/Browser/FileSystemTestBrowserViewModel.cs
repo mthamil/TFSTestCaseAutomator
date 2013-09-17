@@ -73,15 +73,21 @@ namespace TestCaseAutomator.ViewModels.Browser
 		private async Task DiscoverTests(IProgress<AutomatedTestViewModel> progress)
 		{
 			CanBrowse = false;
-			await Task<IReadOnlyCollection<AutomatedTestViewModel>>.Factory.StartNew(() =>
-			    _testDiscoverer.DiscoverAutomatedTests(SelectedFile.FullName.ToEnumerable())
-			                   .Select(test => _testFactory(test))
-							   .Tee(progress.Report)
-			                   .ToList(),
-					CancellationToken.None,
-					TaskCreationOptions.None, 
-					_scheduler);
-			CanBrowse = true;
+			try
+			{
+				await Task.Factory.StartNew(() =>
+					_testDiscoverer.DiscoverAutomatedTests(SelectedFile.FullName.ToEnumerable())
+								   .Select(test => _testFactory(test))
+								   .Tee(progress.Report)
+								   .ToList(),
+						CancellationToken.None,
+						TaskCreationOptions.None,
+						_scheduler);
+			}
+			finally
+			{
+				CanBrowse = true;
+			}
 		}
 
 		/// <summary>
