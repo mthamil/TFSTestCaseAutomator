@@ -20,7 +20,7 @@ namespace TestCaseAutomator.TeamFoundation
 			: base(projectItem, versionControl)
 		{
 			_projectDocument = new Lazy<XDocument>(() =>
-				XDocument.Load(new StreamReader(Item.DownloadFile())));
+				XDocument.Load(new StreamReader(Download())));
 
 			_projectTypeGuids = new Lazy<IEnumerable<Guid>>(() =>
 			    new HashSet<Guid>(_projectDocument.Value
@@ -44,7 +44,7 @@ namespace TestCaseAutomator.TeamFoundation
 		/// <returns></returns>
 		public IEnumerable<TfsFile> Files(IReadOnlyCollection<string> fileExtensionFilter)
 		{
-			var projectDir = Path.GetDirectoryName(Item.ServerItem);
+			var projectDir = Path.GetDirectoryName(ServerPath);
 
 			return _projectDocument.Value
 				.Descendants(XName.Get("Compile", ProjectNamespace)).Concat(_projectDocument.Value

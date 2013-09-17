@@ -23,7 +23,7 @@ namespace TestCaseAutomator.TeamFoundation
 		/// <param name="path">The local path to download to</param>
 		public void DownloadTo(string path)
 		{
-			var downloadStream = Item.DownloadFile();
+			var downloadStream = Download();
 
 			var directoryPath = Path.GetDirectoryName(path);
 			if (!Directory.Exists(directoryPath))

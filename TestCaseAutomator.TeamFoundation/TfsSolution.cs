@@ -27,8 +27,7 @@ namespace TestCaseAutomator.TeamFoundation
 		public IEnumerable<TfsSolutionProject> Projects()
 		{
 			var solutionDir = Path.GetDirectoryName(ServerPath);
-			var contents = Item.DownloadFile();
-			var solutionParser = new SolutionFileParser(contents);
+			var solutionParser = new SolutionFileParser(Download());
 			return solutionParser.GetProjects()
 			                     .Select(p => Path.Combine(solutionDir, p))
 			                     .Select(p => VersionControl.GetItem(p))

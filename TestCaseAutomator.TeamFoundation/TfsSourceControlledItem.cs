@@ -35,6 +35,15 @@ namespace TestCaseAutomator.TeamFoundation
 		}
 
 		/// <summary>
+		/// Downloads the contents of an item from source control.
+		/// </summary>
+		/// <returns>A stream with an item's contents</returns>
+		public Stream Download()
+		{
+			return Item.DownloadFile();
+		}
+
+		/// <summary>
 		/// The source controlled item.
 		/// </summary>
 		protected IVersionedItem Item { get; private set; }
