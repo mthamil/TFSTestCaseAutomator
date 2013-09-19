@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
+  
+	<Product Id="*" Name="TestCaseAutomator.Setup" Language="1033" Version="1.0.0.0" Manufacturer="Matt Hamilton" UpgradeCode="E5EA6B88-BC93-445D-AA6D-C52FA4B81785">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes"/>
+    <PropertyRef Id="NETFRAMEWORK45"/>
+		
+    <Condition Message="This application requires .NET Framework v4.5. Please install the .NET Framework then run this installer again.">
+      Installed OR NETFRAMEWORK45
+    </Condition>
+
+		<Feature Id="ProductFeature" Title="TestCaseAutomator.Setup" Level="1">
+			<ComponentGroupRef Id="ApplicationComponents" />
+      <ComponentGroupRef Id="CopyrightFiles" />
+      <ComponentGroupRef Id="Plugins" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+    
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLDIR" Name="TestCase Automator">
+          <Directory Id="PluginDir" Name="Plugins"/>
+        </Directory>
+      </Directory>
+    
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ProgramMenuDir" Name="TestCase Automator"/>
+      </Directory>
+		</Directory>
+  
+	</Fragment>
+
+	<Fragment>
+    
+		<ComponentGroup Id="ApplicationComponents" Directory="INSTALLDIR">
+      <Component Id="ApplicationExecutable" Guid="90042EF7-F545-4780-A096-95F1F0BF000B">
+        <File Id="TestCaseAutomatorExe" Name="$(var.TestCaseAutomator.TargetFileName)" Source="$(var.TestCaseAutomator.TargetPath)" KeyPath="yes">
+          <Shortcut Id="StartMenuMainExecutable" Directory="ProgramMenuDir" Name="TestCase Automator" 
+                    WorkingDirectory='INSTALLDIR' Advertise="yes"/>
+        </File>
+        <RemoveFile Id="DeleteShortCut" Directory="ProgramMenuDir" Name="TestCase Automator" On="uninstall"/>
+        <RemoveFolder Id="DeleteShortcutDir" Directory="ProgramMenuDir" On="uninstall"/>
+      </Component>
+      
+      <Component Id="ApplicationConfig" Guid="0DB2DC7A-1A76-4308-9132-51A5BF99F624">
+        <File Id="TestCaseAutomatorConfig" Name="$(var.TestCaseAutomator.TargetFileName).config" Source="$(var.TestCaseAutomator.TargetPath).config" KeyPath="yes"/>
+      </Component>
+      
+      <Component Id="TeamFoundationLib" Guid="552220F4-33BD-40C4-9C86-5317A4586DCE">
+        <File Id="TeamFoundationDll" Name="$(var.TestCaseAutomator.TeamFoundation.TargetFileName)" Source="$(var.TestCaseAutomator.TeamFoundation.TargetPath)" KeyPath="yes"/>
+      </Component>
+      
+      <Component Id="AutomationProviderLib" Guid="6ECFA416-0350-49EE-84B7-D2B89E45F72D">
+        <File Id="AutomationProviderDll" Name="$(var.TestCaseAutomator.AutomationProviders.TargetFileName)" Source="$(var.TestCaseAutomator.AutomationProviders.TargetPath)" KeyPath="yes"/>
+      </Component>
+      
+      <Component Id="AutomationProviderInterfacesLib" Guid="E03C57AE-F94B-48E1-A4CD-2B673EA6B32B">
+        <File Id="AutomationProviderInterfacesDll" Name="$(var.TestCaseAutomator.AutomationProviders.Interfaces.TargetFileName)" Source="$(var.TestCaseAutomator.AutomationProviders.Interfaces.TargetPath)" KeyPath="yes"/>
+      </Component>
+      
+      <Component Id="UtilitiesLib" Guid="E33A482C-18CB-42B9-9B84-E6E68FB24066">
+        <File Id="UtilitiesDll" Name="$(var.TestCaseAutomator.Utilities.TargetFileName)" Source="$(var.TestCaseAutomator.Utilities.TargetPath)" KeyPath="yes"/>
+      </Component>
+		</ComponentGroup>
+    
+    <ComponentGroup Id="Plugins" Directory="PluginDir">
+      <Component Id="xUnitPlugin" Guid="4F0314BD-D727-48CF-855D-6E91E0771044">
+        <File Id="xUnitPluginMainDll" Name="$(var.Plugins.xUnit.AutomationProvider.TargetFileName)" Source="$(var.Plugins.xUnit.AutomationProvider.TargetPath)" KeyPath="yes"/>
+        <File Id="xUnitDll" Name="xunit.dll" Source="$(var.Plugins.xUnit.AutomationProvider.TargetDir)\xunit.dll"/>
+        <File Id="xUnitRunnerDll" Name="xunit.runner.utility.dll" Source="$(var.Plugins.xUnit.AutomationProvider.TargetDir)\xunit.runner.utility.dll"/>
+      </Component>
+    </ComponentGroup>
+  
+    <ComponentGroup Id="CopyrightFiles" Directory="INSTALLDIR">
+      <Component Id="License" Guid="9623DF1F-00F1-4A88-945D-BA0DBA1B3996">
+        <File Id="LicenseFile" Name="LICENSE" Source="$(var.SolutionDir)LICENSE" KeyPath="yes"/>
+      </Component>
+
+      <Component Id="Notice" Guid="B5CA51DE-AF15-406F-A1DC-1F43B4F7AE9F">
+        <File Id="NoticeFile" Name="NOTICE" Source="$(var.SolutionDir)NOTICE" KeyPath="yes"/>
+      </Component>
+    </ComponentGroup>
+
+	</Fragment>
+</Wix>
