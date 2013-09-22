@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -41,6 +42,8 @@ namespace TestCaseAutomator.ViewModels
 
 			RefreshCommand = new AsyncRelayCommand(Refresh);
 			CloseCommand = new RelayCommand(Close);
+
+			PropertyChanged += OnPropertyChanged;
 		}
 
 		/// <see cref="IApplication.ServerUri"/>
@@ -60,20 +63,7 @@ namespace TestCaseAutomator.ViewModels
 		public string ProjectName
 		{
 			get { return _projectName.Value; }
-			set
-			{
-				if (_projectName.TrySetValue(value))
-				{
-					if (_explorer != null)
-					{
-						HandleServerUnavailable(async () =>
-						{
-							WorkItems = _workItemsFactory(_explorer.WorkItems(value));
-							await WorkItems.LoadAsync();
-						});
-					}
-				}
-			}
+			set { _projectName.Value = value; }
 		}
 
 		/// <summary>
@@ -212,6 +202,21 @@ namespace TestCaseAutomator.ViewModels
 		{
 			get { return _status.Value; }
 			private set { _status.Value = value; }
+		}
+
+		private async void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+		{
+			if (propertyChangedEventArgs.PropertyName == _projectName.Name)
+			{
+				if (_explorer != null)
+				{
+					await HandleServerUnavailable(async () =>
+					{
+						WorkItems = _workItemsFactory(_explorer.WorkItems(ProjectName));
+						await WorkItems.LoadAsync();
+					});
+				}
+			}
 		}
 
 		private void HandleServerUnavailable(Action action)
