@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
   
-  <Product Id="*" Name="TestCaseAutomator.Setup" Language="1033" Version="1.0.0.0" Manufacturer="Matt Hamilton" UpgradeCode="E5EA6B88-BC93-445D-AA6D-C52FA4B81785">
+  <Product Id="*" Name="TestCase Automator" Language="1033" Version="1.0.0.0" Manufacturer="Matt Hamilton" UpgradeCode="E5EA6B88-BC93-445D-AA6D-C52FA4B81785">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine"/>
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -67,6 +67,15 @@
       
       <Component Id="UtilitiesLib" Guid="E33A482C-18CB-42B9-9B84-E6E68FB24066">
         <File Id="UtilitiesDll" Name="$(var.TestCaseAutomator.Utilities.TargetFileName)" Source="$(var.TestCaseAutomator.Utilities.TargetPath)" KeyPath="yes"/>
+      </Component>
+      
+      <Component Id="WiLinqLib" Guid="8E9C279D-97A8-4D69-A009-6D1342CE943C">
+        <File Id="WiLinqProviderDll" Name="WiLinq.LinqProvider.dll" Source="$(var.TestCaseAutomator.TeamFoundation.TargetDir)WiLinq.LinqProvider.dll" KeyPath="yes"/>
+        <File Id="WiLinqWiqlDll" Name="WiLinq.Wiql.dll" Source="$(var.TestCaseAutomator.TeamFoundation.TargetDir)WiLinq.Wiql.dll"/>
+        <File Id="FSharpPowerPackDll" Name="FSharp.PowerPack.dll" Source="$(var.TestCaseAutomator.TeamFoundation.TargetDir)FSharp.PowerPack.dll"/>
+        <File Id="FSharpPowerPackLinqDll" Name="FSharp.PowerPack.Linq.dll" Source="$(var.TestCaseAutomator.TeamFoundation.TargetDir)FSharp.PowerPack.Linq.dll"/>
+        <File Id="FSharpPowerPackMetadataDll" Name="FSharp.PowerPack.Metadata.dll" Source="$(var.TestCaseAutomator.TeamFoundation.TargetDir)FSharp.PowerPack.Metadata.dll"/>
+        <File Id="FSharpPowerPackParallelDll" Name="FSharp.PowerPack.Parallel.Seq.dll" Source="$(var.TestCaseAutomator.TeamFoundation.TargetDir)FSharp.PowerPack.Parallel.Seq.dll"/>
       </Component>
     
       <Component Id="AutofacLib" Guid="3D104838-DD89-4A85-8160-9A122EA7AEFE">
