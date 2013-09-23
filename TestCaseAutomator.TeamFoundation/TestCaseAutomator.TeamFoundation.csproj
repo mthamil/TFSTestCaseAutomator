@@ -39,11 +39,6 @@
     <Reference Include="Autofac">
       <HintPath>..\packages\Autofac.3.1.1\lib\net40\Autofac.dll</HintPath>
     </Reference>
-    <Reference Include="envdte, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>C:\Program Files (x86)\Common Files\microsoft shared\MSEnv\PublicAssemblies\envdte.dll</HintPath>
-    </Reference>
     <Reference Include="FSharp.PowerPack">
       <HintPath>..\packages\FSPowerPack.Core.Community.3.0.0.0\Lib\Net40\FSharp.PowerPack.dll</HintPath>
     </Reference>
@@ -56,11 +51,6 @@
     <Reference Include="FSharp.PowerPack.Parallel.Seq">
       <HintPath>..\packages\FSPowerPack.Parallel.Seq.Community.3.0.0.0\Lib\Net40\FSharp.PowerPack.Parallel.Seq.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.TeamFoundation.TestImpact.BuildIntegration">
-      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\Tools\..\IDE\PrivateAssemblies\Microsoft.TeamFoundation.TestImpact.BuildIntegration.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.TestImpact.Client, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.TeamFoundation.VersionControl.Client, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.TeamFoundation.VersionControl.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
