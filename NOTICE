@@ -7,6 +7,14 @@
         Copyright (c) 2007-2013 Autofac Contributors
         http://code.google.com/p/autofac/wiki/Contributing
 
+   WiLinq is used to query TFS work items using LINQ and 
+   it is released under the Microsoft Public License (Ms-PL):
+        https://wilinq.codeplex.com/
+
+   WiLinq makes use of the F# PowerPack, which is released
+   under the Apache 2.0 license:
+        http://fsharppowerpack.codeplex.com/
+
    Attached Behavior and Trigger/Action functionality is provided by
    System.Windows.Interactivity from the Microsoft Blend SDK:
         http://www.microsoft.com/en-us/download/details.aspx?id=10801
