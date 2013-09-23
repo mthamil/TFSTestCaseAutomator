@@ -39,6 +39,7 @@ namespace TestCaseAutomator.ViewModels
 		/// </summary>
 		public async Task LoadAsync()
 		{
+			TestCases.Clear();
 			var progress = new Progress<ITestCaseViewModel>(testCase => TestCases.Add(testCase));
 			await QueryTestCases(progress);
 		}
