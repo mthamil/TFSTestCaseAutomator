@@ -52,9 +52,9 @@ namespace TestCaseAutomator.ViewModels
 		}
 
 		/// <see cref="ITestCaseViewModel.UpdateAutomation"/>
-		public void UpdateAutomation(IAutomatedTest automatedTest)
+		public void UpdateAutomation(ITestAutomation testAutomation)
 		{
-			_automationService.AssociateWithAutomation(_testCase, automatedTest);
+			_automationService.AssociateWithAutomation(_testCase, testAutomation);
 		}
 
 		/// <summary>
@@ -75,7 +75,7 @@ namespace TestCaseAutomator.ViewModels
 		}
 
 		/// <see cref="ITestCaseViewModel.GetAutomation"/>
-		public IAutomatedTest GetAutomation()
+		public ITestAutomation GetAutomation()
 		{
 			return _automationService.GetExistingAutomation(_testCase);
 		}

@@ -13,7 +13,8 @@ namespace TestCaseAutomator.AutomationProviders.Interfaces
 		/// <summary>
 		/// Initializes a new <see cref="HashedIdentifierFactory"/> with a default hash algorithm.
 		/// </summary>
-		public HashedIdentifierFactory() : this(() => new SHA1CryptoServiceProvider())
+		public HashedIdentifierFactory() 
+			: this(() => new SHA1CryptoServiceProvider())
 		{
 		}
 

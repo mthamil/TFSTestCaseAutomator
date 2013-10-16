@@ -12,7 +12,7 @@ namespace TestCaseAutomator.TeamFoundation.TestCaseAssociation
 		/// <summary>
 		/// Associates a test case with an automated test.
 		/// </summary>
-		public void AssociateWithAutomation(ITestCase testCase, IAutomatedTest automation)
+		public void AssociateWithAutomation(ITestCase testCase, ITestAutomation automation)
 		{
 			// Create the associated automation.
 			var implementation = testCase.Project.CreateTmiTestImplementation(
@@ -37,17 +37,17 @@ namespace TestCaseAutomator.TeamFoundation.TestCaseAssociation
 		}
 
 		/// <summary>
-		/// Returns an <see cref="IAutomatedTest"/> representing a <see cref="ITestCase"/>'s
+		/// Returns an <see cref="ITestAutomation"/> representing a <see cref="ITestCase"/>'s
 		/// existing automation if it has any.
 		/// </summary>
-		public IAutomatedTest GetExistingAutomation(ITestCase testCase)
+		public ITestAutomation GetExistingAutomation(ITestCase testCase)
 		{
-			return testCase.IsAutomated ? new ExistingAutomatedTest((ITmiTestImplementation)testCase.Implementation) : null;
+			return testCase.IsAutomated ? new ExistingTestAutomation((ITmiTestImplementation)testCase.Implementation) : null;
 		}
 
-		private class ExistingAutomatedTest : IAutomatedTest
+		private class ExistingTestAutomation : ITestAutomation
 		{
-			public ExistingAutomatedTest(ITmiTestImplementation existingAutomation)
+			public ExistingTestAutomation(ITmiTestImplementation existingAutomation)
 			{
 				Identifier = existingAutomation.TestId;
 				Name = existingAutomation.TestName;

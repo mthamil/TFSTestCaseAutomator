@@ -96,7 +96,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// </summary>
 		public void SaveTestCase()
 		{
-			var test = new ManuallyCreatedAutomatedTest
+			var test = new ManuallyCreatedTestAutomation
 			{
 				Name = Name,
 				Storage = StorageLocation,
@@ -119,11 +119,11 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// <see cref="IAutomationSelector.AutomatedTestSelected"/>
 		public event EventHandler<AutomatedTestSelectedEventArgs> AutomatedTestSelected;
 
-		private void OnAutomatedTestSelected(IAutomatedTest automatedTest)
+		private void OnAutomatedTestSelected(ITestAutomation testAutomation)
 		{
 			var localEvent = AutomatedTestSelected;
 			if (localEvent != null)
-				localEvent(this, new AutomatedTestSelectedEventArgs(TestCase, automatedTest));
+				localEvent(this, new AutomatedTestSelectedEventArgs(TestCase, testAutomation));
 		}
 
 		private readonly Property<string> _name;
@@ -131,9 +131,9 @@ namespace TestCaseAutomator.ViewModels.Browser
 		private readonly Property<string> _testType;
 		private readonly Property<bool?> _hasBeenSaved;
 
-		private class ManuallyCreatedAutomatedTest : IAutomatedTest
+		private class ManuallyCreatedTestAutomation : ITestAutomation
 		{
-			public ManuallyCreatedAutomatedTest()
+			public ManuallyCreatedTestAutomation()
 			{
 				_identifier = new Lazy<Guid>(() => new HashedIdentifierFactory().CreateIdentifier(Name));
 			}

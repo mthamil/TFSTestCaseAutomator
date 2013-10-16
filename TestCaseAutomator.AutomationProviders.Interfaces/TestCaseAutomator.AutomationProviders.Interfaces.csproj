@@ -38,8 +38,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HashedIdentifierFactory.cs" />
-    <Compile Include="IAutomatedTest.cs" />
-    <Compile Include="IAutomatedTestDiscoverer.cs" />
+    <Compile Include="ITestAutomation.cs" />
+    <Compile Include="ITestAutomationDiscoverer.cs" />
     <Compile Include="ITestIdentifierFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

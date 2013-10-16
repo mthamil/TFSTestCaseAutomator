@@ -5,26 +5,26 @@ namespace TestCaseAutomator.ViewModels.Browser
 	/// <summary>
 	/// Represents a test that can be associated with a test case.
 	/// </summary>
-	public class AutomatedTestViewModel : NodeViewModel<object>
+	public class TestAutomationViewModel : NodeViewModel<object>
 	{
 		/// <summary>
-		/// Initializes a new <see cref="AutomatedTestViewModel"/>.
+		/// Initializes a new <see cref="TestAutomationViewModel"/>.
 		/// </summary>
-		/// <param name="automatedTest">An automated test</param>
-		public AutomatedTestViewModel(IAutomatedTest automatedTest)
+		/// <param name="testAutomation">An automated test</param>
+		public TestAutomationViewModel(ITestAutomation testAutomation)
 		{
-			AutomatedTest = automatedTest;
+			TestAutomation = testAutomation;
 		}
 
 		/// <see cref="INodeViewModel.Name"/>
 		public override string Name
 		{
-			get { return AutomatedTest.Name; }
+			get { return TestAutomation.Name; }
 		}
 
 		/// <summary>
 		/// The backing automated test.
 		/// </summary>
-		public IAutomatedTest AutomatedTest { get; private set; }
+		public ITestAutomation TestAutomation { get; private set; }
 	}
 }

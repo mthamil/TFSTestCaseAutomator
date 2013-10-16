@@ -153,7 +153,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 
 		private FileSystemTestBrowserViewModel CreateFileSystemBrowser(ITestCaseViewModel testCase)
 		{
-			return new FileSystemTestBrowserViewModel(testCase, _ => null, Mock.Of<IAutomatedTestDiscoverer>(), new SynchronousTaskScheduler());
+			return new FileSystemTestBrowserViewModel(testCase, _ => null, Mock.Of<ITestAutomationDiscoverer>(), new SynchronousTaskScheduler());
 		}
 
 		private readonly MainViewModel viewModel;

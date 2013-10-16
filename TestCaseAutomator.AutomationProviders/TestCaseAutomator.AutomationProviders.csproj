@@ -43,7 +43,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompositeAutomatedTestDiscoverer.cs" />
+    <Compile Include="CompositeTestAutomationDiscoverer.cs" />
     <Compile Include="Container\PluginModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -30,8 +30,8 @@ namespace TestCaseAutomator.ViewModels
 		/// <summary>
 		/// Updates the automation a test case is associated with.
 		/// </summary>
-		/// <param name="automatedTest">An automated test</param>
-		void UpdateAutomation(IAutomatedTest automatedTest);
+		/// <param name="testAutomation">An automated test</param>
+		void UpdateAutomation(ITestAutomation testAutomation);
 
 		/// <summary>
 		/// Removes the automation from a test case.
@@ -41,6 +41,6 @@ namespace TestCaseAutomator.ViewModels
 		/// <summary>
 		/// Retrieves a test case's existing automated test if it has one.
 		/// </summary>
-		IAutomatedTest GetAutomation();
+		ITestAutomation GetAutomation();
 	}
 }

@@ -12,7 +12,7 @@ namespace Tests.Unit.TestCaseAutomator.AutomationProviders
 	{
 		public CompositeAutomatedTestDiscovererTests()
 		{
-			discoverer = new CompositeAutomatedTestDiscoverer(childDiscoverers);
+			discoverer = new CompositeTestAutomationDiscoverer(childDiscoverers);
 		}
 
 		[Fact]
@@ -21,9 +21,9 @@ namespace Tests.Unit.TestCaseAutomator.AutomationProviders
 			// Arrange.
 			childDiscoverers.AddRange(new[]
 			{
-				Mock.Of<IAutomatedTestDiscoverer>(d => d.SupportedFileExtensions == new[] { ".cs", ".ps1" }),
-				Mock.Of<IAutomatedTestDiscoverer>(d => d.SupportedFileExtensions == new[] { ".js" }),
-				Mock.Of<IAutomatedTestDiscoverer>(d => d.SupportedFileExtensions == new[] { ".ts", ".js" })
+				Mock.Of<ITestAutomationDiscoverer>(d => d.SupportedFileExtensions == new[] { ".cs", ".ps1" }),
+				Mock.Of<ITestAutomationDiscoverer>(d => d.SupportedFileExtensions == new[] { ".js" }),
+				Mock.Of<ITestAutomationDiscoverer>(d => d.SupportedFileExtensions == new[] { ".ts", ".js" })
 			});
 
 			// Act.
@@ -39,12 +39,12 @@ namespace Tests.Unit.TestCaseAutomator.AutomationProviders
 			// Arrange.
 			childDiscoverers.AddRange(new[]
 			{
-				Mock.Of<IAutomatedTestDiscoverer>(d => d.DiscoverAutomatedTests(It.IsAny<IEnumerable<string>>()) == 
-					Mock.Of<IAutomatedTest>(t => t.Name == "Test1").ToEnumerable()),
-				Mock.Of<IAutomatedTestDiscoverer>(d => d.DiscoverAutomatedTests(It.IsAny<IEnumerable<string>>()) == 
-					new[] { Mock.Of<IAutomatedTest>(t => t.Name == "Test2"), Mock.Of<IAutomatedTest>(t => t.Name == "Test3") }),
-				Mock.Of<IAutomatedTestDiscoverer>(d => d.DiscoverAutomatedTests(It.IsAny<IEnumerable<string>>()) == 
-					Mock.Of<IAutomatedTest>(t => t.Name == "Test4").ToEnumerable())
+				Mock.Of<ITestAutomationDiscoverer>(d => d.DiscoverAutomatedTests(It.IsAny<IEnumerable<string>>()) == 
+					Mock.Of<ITestAutomation>(t => t.Name == "Test1").ToEnumerable()),
+				Mock.Of<ITestAutomationDiscoverer>(d => d.DiscoverAutomatedTests(It.IsAny<IEnumerable<string>>()) == 
+					new[] { Mock.Of<ITestAutomation>(t => t.Name == "Test2"), Mock.Of<ITestAutomation>(t => t.Name == "Test3") }),
+				Mock.Of<ITestAutomationDiscoverer>(d => d.DiscoverAutomatedTests(It.IsAny<IEnumerable<string>>()) == 
+					Mock.Of<ITestAutomation>(t => t.Name == "Test4").ToEnumerable())
 			});
 
 			// Act.
@@ -55,8 +55,8 @@ namespace Tests.Unit.TestCaseAutomator.AutomationProviders
 			AssertThat.SequenceEqual(new[] { "Test1", "Test2", "Test3", "Test4" }, tests.Select(t => t.Name));
 		}
 
-		private readonly CompositeAutomatedTestDiscoverer discoverer;
+		private readonly CompositeTestAutomationDiscoverer discoverer;
 
-		private readonly IList<IAutomatedTestDiscoverer> childDiscoverers = new List<IAutomatedTestDiscoverer>();
+		private readonly IList<ITestAutomationDiscoverer> childDiscoverers = new List<ITestAutomationDiscoverer>();
 	}
 }

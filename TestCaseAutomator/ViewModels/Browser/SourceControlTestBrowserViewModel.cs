@@ -57,7 +57,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 		{
 			var localEvent = AutomatedTestSelected;
 			if (localEvent != null)
-				localEvent(this, new AutomatedTestSelectedEventArgs(TestCase, ((AutomatedTestViewModel)SelectedTest).AutomatedTest));
+				localEvent(this, new AutomatedTestSelectedEventArgs(TestCase, ((TestAutomationViewModel)SelectedTest).TestAutomation));
 		}
 
 		/// <summary>
@@ -70,7 +70,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// </summary>
 		public bool CanSaveTestCase
 		{
-			get { return SelectedTest != null && SelectedTest is AutomatedTestViewModel; }
+			get { return SelectedTest != null && SelectedTest is TestAutomationViewModel; }
 		}
 
 		/// <summary>

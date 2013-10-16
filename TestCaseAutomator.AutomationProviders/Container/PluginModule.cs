@@ -31,9 +31,9 @@ namespace TestCaseAutomator.AutomationProviders.Container
 			builder.RegisterType<CompositionContainer>()
 			       .SingleInstance();
 
-			builder.Register(c => new CompositeAutomatedTestDiscoverer(
-				                      c.Resolve<CompositionContainer>().GetExportedValues<IAutomatedTestDiscoverer>()))
-			       .As<IAutomatedTestDiscoverer>()
+			builder.Register(c => new CompositeTestAutomationDiscoverer(
+				                      c.Resolve<CompositionContainer>().GetExportedValues<ITestAutomationDiscoverer>()))
+			       .As<ITestAutomationDiscoverer>()
 			       .SingleInstance()
 			       .AutoActivate();
 		}

@@ -12,32 +12,32 @@ namespace xUnit.AutomationProvider
 	/// <summary>
 	/// Finds xUnit.net tests for test case automation.
 	/// </summary>
-	[Export(typeof(IAutomatedTestDiscoverer))]
-	public class XUnitAutomatedTestDiscoverer : IAutomatedTestDiscoverer
+	[Export(typeof(ITestAutomationDiscoverer))]
+	public class XUnitTestAutomationDiscoverer : ITestAutomationDiscoverer
 	{
 		/// <summary>
-		/// Initializes a new <see cref="XUnitAutomatedTestDiscoverer"/>.
+		/// Initializes a new <see cref="XUnitTestAutomationDiscoverer"/>.
 		/// </summary>
 		[ImportingConstructor]
-		public XUnitAutomatedTestDiscoverer()
+		public XUnitTestAutomationDiscoverer()
 			: this(source => new ExecutorWrapper(source, null, true))
 		{
 		}
 
 		/// <summary>
-		/// Initializes a new <see cref="XUnitAutomatedTestDiscoverer"/>.
+		/// Initializes a new <see cref="XUnitTestAutomationDiscoverer"/>.
 		/// </summary>
 		/// <param name="discovererFactory">Creates objects that discover tests in assembly files</param>
-		public XUnitAutomatedTestDiscoverer(Func<string, IExecutorWrapper> discovererFactory)
+		public XUnitTestAutomationDiscoverer(Func<string, IExecutorWrapper> discovererFactory)
 		{
 			_discovererFactory = discovererFactory;
 		}
 
-		/// <see cref="IAutomatedTestDiscoverer.SupportedFileExtensions"/>
+		/// <see cref="ITestAutomationDiscoverer.SupportedFileExtensions"/>
 		public IEnumerable<string> SupportedFileExtensions { get { return _extensions; } }
 
-		/// <see cref="IAutomatedTestDiscoverer.DiscoverAutomatedTests"/>
-		public IEnumerable<IAutomatedTest> DiscoverAutomatedTests(IEnumerable<string> sources)
+		/// <see cref="ITestAutomationDiscoverer.DiscoverAutomatedTests"/>
+		public IEnumerable<ITestAutomation> DiscoverAutomatedTests(IEnumerable<string> sources)
 		{
 			if (sources == null)
 				throw new ArgumentNullException("sources");
@@ -49,7 +49,7 @@ namespace xUnit.AutomationProvider
 								  return executor.EnumerateTests().SelectNodes("//method")
 								                 .Cast<XmlNode>()
 								                 .Select(methodNode =>
-								                         new XUnitAutomatedTest(
+								                         new XUnitTestAutomation(
 									                         Path.GetFileName(source),
 									                         methodNode.Attributes["type"].Value,
 									                         methodNode.Attributes["method"].Value));

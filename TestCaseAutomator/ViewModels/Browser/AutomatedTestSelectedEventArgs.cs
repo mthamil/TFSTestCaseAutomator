@@ -12,11 +12,11 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// Initializes a new <see cref="AutomatedTestSelectedEventArgs"/>.
 		/// </summary>
 		/// <param name="testCase">The test case associated with the automated test</param>
-		/// <param name="automatedTest">The selected automated test</param>
-		public AutomatedTestSelectedEventArgs(ITestCaseViewModel testCase, IAutomatedTest automatedTest)
+		/// <param name="testAutomation">The selected automated test</param>
+		public AutomatedTestSelectedEventArgs(ITestCaseViewModel testCase, ITestAutomation testAutomation)
 		{
 			TestCase = testCase;
-			AutomatedTest = automatedTest;
+			TestAutomation = testAutomation;
 		}
 
 		/// <summary>
@@ -27,6 +27,6 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// <summary>
 		/// The selected automated test.
 		/// </summary>
-		public IAutomatedTest AutomatedTest { get; private set; }
+		public ITestAutomation TestAutomation { get; private set; }
 	}
 }

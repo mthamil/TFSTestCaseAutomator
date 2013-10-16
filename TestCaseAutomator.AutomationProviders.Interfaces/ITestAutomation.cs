@@ -5,7 +5,7 @@ namespace TestCaseAutomator.AutomationProviders.Interfaces
 	/// <summary>
 	/// Represents the components of an automated test case.
 	/// </summary>
-	public interface IAutomatedTest
+	public interface ITestAutomation
 	{
 		/// <summary>
 		/// A test's unique identifier.

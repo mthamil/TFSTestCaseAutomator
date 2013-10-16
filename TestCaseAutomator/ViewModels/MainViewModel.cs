@@ -155,7 +155,7 @@ namespace TestCaseAutomator.ViewModels
 
 		private void Browser_AutomatedTestSelected(object sender, AutomatedTestSelectedEventArgs e)
 		{
-			e.TestCase.UpdateAutomation(e.AutomatedTest);
+			e.TestCase.UpdateAutomation(e.TestAutomation);
 			((IAutomationSelector)sender).AutomatedTestSelected -= Browser_AutomatedTestSelected;
 		}
 

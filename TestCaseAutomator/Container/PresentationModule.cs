@@ -36,11 +36,11 @@ namespace TestCaseAutomator.Container
 
 			builder.RegisterType<ProjectViewModel>()
 				.OnActivating(c => c.Instance.FileExtensions = 
-					c.Context.Resolve<IAutomatedTestDiscoverer>().SupportedFileExtensions.ToList());
+					c.Context.Resolve<ITestAutomationDiscoverer>().SupportedFileExtensions.ToList());
 
 			builder.RegisterType<AutomationSourceViewModel>();
 
-			builder.RegisterType<AutomatedTestViewModel>();
+			builder.RegisterType<TestAutomationViewModel>();
 		}
 	}
 }

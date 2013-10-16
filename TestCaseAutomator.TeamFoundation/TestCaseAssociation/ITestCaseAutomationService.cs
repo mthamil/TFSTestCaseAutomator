@@ -11,7 +11,7 @@ namespace TestCaseAutomator.TeamFoundation.TestCaseAssociation
 		/// <summary>
 		/// Associates a test case with an automated test.
 		/// </summary>
-		void AssociateWithAutomation(ITestCase testCase, IAutomatedTest automation);
+		void AssociateWithAutomation(ITestCase testCase, ITestAutomation automation);
 
 		/// <summary>
 		/// Removes automation from a test case.
@@ -19,9 +19,9 @@ namespace TestCaseAutomator.TeamFoundation.TestCaseAssociation
 		void RemoveAutomation(ITestCase testCase);
 
 		/// <summary>
-		/// Returns an <see cref="IAutomatedTest"/> representing a <see cref="ITestCase"/>'s
+		/// Returns an <see cref="ITestAutomation"/> representing a <see cref="ITestCase"/>'s
 		/// existing automation if it has any.
 		/// </summary>
-		IAutomatedTest GetExistingAutomation(ITestCase testCase);
+		ITestAutomation GetExistingAutomation(ITestCase testCase);
 	}
 }

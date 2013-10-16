@@ -8,12 +8,12 @@ namespace MSTest.AutomationProvider
 	/// <summary>
 	/// Represents an MSTest automated test.
 	/// </summary>
-	public class MSTestAutomatedTest : IAutomatedTest
+	public class MSTestAutomation : ITestAutomation
 	{
 		/// <summary>
-		/// Initializes a new <see cref="MSTestAutomatedTest"/>.
+		/// Initializes a new <see cref="MSTestAutomation"/>.
 		/// </summary>
-		public MSTestAutomatedTest(TestMethod testMethod)
+		public MSTestAutomation(TestMethod testMethod)
 		{
 			Name = String.Format("{0}.{1}", testMethod.FullClassName, testMethod.Name);
 			Identifier = _identifierFactory.CreateIdentifier(Name);
@@ -21,16 +21,16 @@ namespace MSTest.AutomationProvider
 			TestType = "Unit Test";
 		}
 
-		/// <see cref="IAutomatedTest.Identifier"/>
+		/// <see cref="ITestAutomation.Identifier"/>
 		public Guid Identifier { get; private set; }
 
-		/// <see cref="IAutomatedTest.Name"/>
+		/// <see cref="ITestAutomation.Name"/>
 		public string Name { get; private set; }
 
-		/// <see cref="IAutomatedTest.TestType"/>
+		/// <see cref="ITestAutomation.TestType"/>
 		public string TestType { get; private set; }
 
-		/// <see cref="IAutomatedTest.Storage"/>
+		/// <see cref="ITestAutomation.Storage"/>
 		public string Storage { get; private set; }
 
 		private static readonly ITestIdentifierFactory _identifierFactory = new HashedIdentifierFactory();

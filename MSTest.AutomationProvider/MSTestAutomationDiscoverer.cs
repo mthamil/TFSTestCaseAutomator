@@ -11,14 +11,14 @@ namespace MSTest.AutomationProvider
 	/// <summary>
 	/// Finds MSTest tests for test case automation.
 	/// </summary>
-	[Export(typeof(IAutomatedTestDiscoverer))]
-	public class MSTestAutomatedTestDiscoverer : IAutomatedTestDiscoverer
+	[Export(typeof(ITestAutomationDiscoverer))]
+	public class MSTestAutomationDiscoverer : ITestAutomationDiscoverer
 	{
-		/// <see cref="IAutomatedTestDiscoverer.SupportedFileExtensions"/>
+		/// <see cref="ITestAutomationDiscoverer.SupportedFileExtensions"/>
 		public IEnumerable<string> SupportedFileExtensions { get { return _extensions; } }
 
-		/// <see cref="IAutomatedTestDiscoverer.DiscoverAutomatedTests"/>
-		public IEnumerable<IAutomatedTest> DiscoverAutomatedTests(IEnumerable<string> sources)
+		/// <see cref="ITestAutomationDiscoverer.DiscoverAutomatedTests"/>
+		public IEnumerable<ITestAutomation> DiscoverAutomatedTests(IEnumerable<string> sources)
 		{
 			if (sources == null)
 				throw new ArgumentNullException("sources");
@@ -27,7 +27,7 @@ namespace MSTest.AutomationProvider
 			var tests = sources
 				.Where(source => _extensions.Contains(Path.GetExtension(source)) && File.Exists(source))
 				.SelectMany(source => GetTests(source, warnings))
-				.Select(testElement => new MSTestAutomatedTest(testElement.TestMethod));
+				.Select(testElement => new MSTestAutomation(testElement.TestMethod));
 
 			return tests;
 		}

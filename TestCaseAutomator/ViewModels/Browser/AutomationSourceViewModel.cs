@@ -13,7 +13,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 	/// <summary>
 	/// Represents a file that is a potential source of automated tests.
 	/// </summary>
-	public class AutomationSourceViewModel : VirtualizedNode<AutomatedTestViewModel>
+	public class AutomationSourceViewModel : VirtualizedNode<TestAutomationViewModel>
 	{
 		/// <summary>
 		/// Initializes a new <see cref="AutomationSourceViewModel"/>.
@@ -22,8 +22,8 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// <param name="testFactory">Creates automated test view-models</param>
 		/// <param name="testDiscoverer">Finds tests in files</param>
 		/// <param name="scheduler">Used to schedule background tasks</param>
-		public AutomationSourceViewModel(TfsFile file, Func<IAutomatedTest, AutomatedTestViewModel> testFactory,
-		                                 IAutomatedTestDiscoverer testDiscoverer, TaskScheduler scheduler)
+		public AutomationSourceViewModel(TfsFile file, Func<ITestAutomation, TestAutomationViewModel> testFactory,
+		                                 ITestAutomationDiscoverer testDiscoverer, TaskScheduler scheduler)
 		{
 			_file = file;
 			_testFactory = testFactory;
@@ -38,13 +38,13 @@ namespace TestCaseAutomator.ViewModels.Browser
 		}
 
 		/// <see cref="VirtualizedNode{TChild}.DummyNode"/>
-		protected override AutomatedTestViewModel DummyNode
+		protected override TestAutomationViewModel DummyNode
 		{
 			get { return _dummy; }
 		}
 
 		/// <see cref="VirtualizedNode{TChild}.LoadChildrenAsync"/>
-		protected override Task<IReadOnlyCollection<AutomatedTestViewModel>> LoadChildrenAsync(IProgress<AutomatedTestViewModel> progress)
+		protected override Task<IReadOnlyCollection<TestAutomationViewModel>> LoadChildrenAsync(IProgress<TestAutomationViewModel> progress)
 		{
 			Invalidate();	// Reload on next query.
 			return Task.Factory.StartNew(() => 
@@ -54,7 +54,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 					_scheduler);
 		}
 
-		private IReadOnlyCollection<AutomatedTestViewModel> DiscoverTests(IProgress<AutomatedTestViewModel> progress)
+		private IReadOnlyCollection<TestAutomationViewModel> DiscoverTests(IProgress<TestAutomationViewModel> progress)
 		{
 			var localPath = _file.ServerPath.Replace("$/", string.Empty).Replace('/', '\\');
 			using (var tempFile = new TemporaryFile(localPath))
@@ -68,15 +68,15 @@ namespace TestCaseAutomator.ViewModels.Browser
 		}
 
 		private readonly TfsFile _file;
-		private readonly Func<IAutomatedTest, AutomatedTestViewModel> _testFactory;
-		private readonly IAutomatedTestDiscoverer _testDiscoverer;
+		private readonly Func<ITestAutomation, TestAutomationViewModel> _testFactory;
+		private readonly ITestAutomationDiscoverer _testDiscoverer;
 		private readonly TaskScheduler _scheduler;
 
-		private static readonly DummyAutomatedTest _dummy = new DummyAutomatedTest();
+		private static readonly DummyTestAutomation _dummy = new DummyTestAutomation();
 
-		private class DummyAutomatedTest : AutomatedTestViewModel
+		private class DummyTestAutomation : TestAutomationViewModel
 		{
-			public DummyAutomatedTest() : base(null) { }
+			public DummyTestAutomation() : base(null) { }
 			public override string Name { get { return "Loading..."; } }
 		}
 	}
