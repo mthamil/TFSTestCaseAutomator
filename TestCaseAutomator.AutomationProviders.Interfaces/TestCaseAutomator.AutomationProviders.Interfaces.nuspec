@@ -7,9 +7,9 @@
     <authors>Matthew Hamilton</authors>
     <owners>Matthew Hamilton</owners>
     <projectUrl>https://github.com/mthamil/TFSTestCaseAutomator</projectUrl>
-    <summary>Contains the types necessary to implement a test case automation plugin for TFS TestCase Automator.</summary>
+    <summary>This package contains the types necessary to implement a test case automation plugin for TFS TestCase Automator.</summary>
     <description>
-      Contains the types necessary to implement a test case automation plugin for TFS TestCase Automator.
+      This package contains the types necessary to implement a test case automation plugin for TFS TestCase Automator.
       At a minimum, implementation of two types are necessary, one for the class that discovers automated tests
       from a collection of sources, and the other a test-framework-specific representation of an automated test.
     </description>
