@@ -6,7 +6,7 @@
         xmlns:vm="clr-namespace:TestCaseAutomator.ViewModels"
         xmlns:cmds="clr-namespace:TestCaseAutomator.Controls.Commands"
         xmlns:vw="clr-namespace:TestCaseAutomator.Views.Browser"
-        Title="Test Case Automator" Height="400" Width="1000"
+        Title="Test Case Automator" Height="500" Width="1000"
         WindowStartupLocation="CenterScreen"
         DataContext="{Binding Source={xtn:ViewModelLocator {x:Type vm:MainViewModel}}, Path=ViewModel}">
     

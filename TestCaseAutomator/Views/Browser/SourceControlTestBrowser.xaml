@@ -5,7 +5,7 @@
         xmlns:vmt="clr-namespace:TestCaseAutomator.ViewModels.Browser"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:Browser="clr-namespace:TestCaseAutomator.Views.Browser"
-        Title="Source Control Test Browser" Height="400" Width="600"
+        Title="Source Control Test Browser" Height="500" Width="600"
         WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
         acb:WindowBehaviors.DialogResult="{Binding HasBeenSaved}">
 

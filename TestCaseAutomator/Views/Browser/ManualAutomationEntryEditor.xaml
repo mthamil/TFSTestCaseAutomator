@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Behaviors="clr-namespace:TestCaseAutomator.Controls.Behaviors"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-        Title="Test Automation Manual Entry" Height="400" Width="600"
+        Title="Test Automation Manual Entry" Height="500" Width="600"
         WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
         Behaviors:WindowBehaviors.DialogResult="{Binding HasBeenSaved}">
 

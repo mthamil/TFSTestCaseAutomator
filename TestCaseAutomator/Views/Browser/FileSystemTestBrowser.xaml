@@ -6,7 +6,7 @@
         xmlns:convert="clr-namespace:TestCaseAutomator.Controls.Converters"
         xmlns:Behaviors="clr-namespace:TestCaseAutomator.Controls.Behaviors"
         xmlns:Browser="clr-namespace:TestCaseAutomator.Views.Browser"
-        Title="File System Test Browser" Height="400" Width="600"
+        Title="File System Test Browser" Height="500" Width="600"
         WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
         Behaviors:WindowBehaviors.DialogResult="{Binding HasBeenSaved}">
 
