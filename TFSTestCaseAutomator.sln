@@ -26,6 +26,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugins.MSTest.AutomationPr
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "TestCaseAutomator.Setup", "TestCaseAutomator.Setup\TestCaseAutomator.Setup.wixproj", "{3260D43F-CCBD-4E80-9B4E-1C9ED3265CF2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{9E42EA81-34AB-4C54-858B-4A79C65D3B4E}"
+	ProjectSection(SolutionItems) = preProject
+		Build.proj = Build.proj
+		.build\MSBuild.Community.Tasks.dll = .build\MSBuild.Community.Tasks.dll
+		.build\MSBuild.Community.Tasks.targets = .build\MSBuild.Community.Tasks.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
