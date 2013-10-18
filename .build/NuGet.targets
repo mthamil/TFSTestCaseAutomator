@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.build\MSBuild.Community.Tasks.Targets" />
+
+  <Target Name="AfterBuild" Condition="'$(Configuration)' == 'Package'">
+    <PropertyGroup>
+      <CopyrightNotice>Copyright $([System.DateTime]::Now.Year)</CopyrightNotice>
+      <OutputDirectory>$(MSBuildProjectDirectory)\$(OutputPath)</OutputDirectory>
+      <BuildOutput>$(MSBuildProjectDirectory)\$(OutputPath)</BuildOutput>
+      <StagingDirectory>$(MSBuildProjectDirectory)\$(OutputPath)\Staging</StagingDirectory>
+      <NuSpecFile>$(MSBuildProjectDirectory)\$(MSBuildProjectName).nuspec</NuSpecFile>
+      <InstallScript>$(ProjectDir)Install.ps1</InstallScript>
+    </PropertyGroup>
+    <ItemGroup>
+      <LibFiles Include="$(BuildOutput)\$(AssemblyName).*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(LibFiles)" DestinationFolder="$(StagingDirectory)\lib\net40" />
+    <Copy SourceFiles="$(NuSpecFile)" DestinationFolder="$(StagingDirectory)" />
+    <Copy SourceFiles="$(InstallScript)" DestinationFolder="$(StagingDirectory)\tools" 
+          Condition="Exists('$(InstallScript)')"/>
+    <NuGetPack File="$(StagingDirectory)\$(MSBuildProjectName).nuspec" 
+               OutputDirectory="$(OutputDirectory)" 
+               Version="$(Major).$(Minor).$(Build).$(Revision)" 
+               Properties="id=$(MSBuildProjectName);copyright=$(CopyrightNotice)" />
+    <RemoveDir Directories="$(StagingDirectory)" />
+  </Target>
+
+</Project>

@@ -8,7 +8,7 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("TFS Test Case Automator")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("An application that enables association of Team Foundation Server test cases with automation.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyProduct("TFSTestCaseAutomator")]
 [assembly: AssemblyCopyright("Copyright © Matt Hamilton 2013")]

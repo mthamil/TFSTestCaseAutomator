@@ -31,12 +31,23 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\TestCaseAutomator.AutomationProviders.Interfaces.xml</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Package|AnyCPU'">
+    <OutputPath>bin\Package\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\TestCaseAutomator.AutomationProviders.Interfaces.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.Versions.cs" />
     <Compile Include="HashedIdentifierFactory.cs" />
     <Compile Include="ITestAutomation.cs" />
     <Compile Include="ITestAutomationDiscoverer.cs" />
@@ -45,8 +56,23 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="TestCaseAutomator.AutomationProviders.Interfaces.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <MSBuildCommunityTasksPath>$(SolutionDir)\.build</MSBuildCommunityTasksPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
+  <Target Name="BeforeBuild" Condition="'$(Configuration)' == 'Package'">
+    <Version Major="1" Minor="0" BuildType="Automatic" StartDate="10/17/2013" RevisionType="BuildIncrement">
+      <Output TaskParameter="Major" PropertyName="Major" />
+      <Output TaskParameter="Minor" PropertyName="Minor" />
+      <Output TaskParameter="Build" PropertyName="Build" />
+      <Output TaskParameter="Revision" PropertyName="Revision" />
+    </Version>
+    <AssemblyInfo CodeLanguage="CS" OutputFile="Properties\AssemblyInfo.Versions.cs" AssemblyVersion="$(Major).$(Minor).0.0" AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)" />
+  </Target>
+  <Import Project="$(SolutionDir)\.build\NuGet.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

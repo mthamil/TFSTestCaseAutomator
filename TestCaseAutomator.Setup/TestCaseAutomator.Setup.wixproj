@@ -24,6 +24,22 @@
     <VerboseOutput>True</VerboseOutput>
     <SuppressValidation>True</SuppressValidation>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Package|x86' ">
+    <Cultures />
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <VerboseOutput>True</VerboseOutput>
+    <SuppressValidation>True</SuppressValidation>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Package|AnyCPU' ">
+    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Package|Any CPU' ">
+    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Product.wxs" />
   </ItemGroup>

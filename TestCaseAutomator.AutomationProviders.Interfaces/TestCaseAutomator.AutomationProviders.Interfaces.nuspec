@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>TestCase Automator: Automation Provider Interfaces</title>
+    <authors>Matthew Hamilton</authors>
+    <owners>Matthew Hamilton</owners>
+    <projectUrl>https://github.com/mthamil/TFSTestCaseAutomator</projectUrl>
+    <summary>Contains the types necessary to implement a test case automation plugin for TFS TestCase Automator.</summary>
+    <description>
+      Contains the types necessary to implement a test case automation plugin for TFS TestCase Automator.
+      At a minimum, implementation of two types are necessary, one for the class that discovers automated tests
+      from a collection of sources, and the other a test-framework-specific representation of an automated test.
+    </description>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>$copyright$</copyright>
+    <language>en-US</language>
+    <tags>tfs</tags>
+  </metadata>
+</package>
