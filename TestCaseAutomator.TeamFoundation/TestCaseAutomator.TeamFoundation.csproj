@@ -81,13 +81,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CatalogNodeWrapper.cs" />
     <Compile Include="Container\TeamFoundationModule.cs" />
+    <Compile Include="ICatalogNode.cs" />
+    <Compile Include="ITfsServer.cs" />
     <Compile Include="IVersionedItem.cs" />
     <Compile Include="ITfsExplorer.cs" />
     <Compile Include="ITfsProjectWorkItemCollection.cs" />
     <Compile Include="IVersionControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestCaseAssociation\ITestCaseAutomationService.cs" />
+    <Compile Include="TfsServer.cs" />
     <Compile Include="VersionedItem.cs" />
     <Compile Include="SolutionFileParser.cs" />
     <Compile Include="TestCaseAssociation\TestCaseAutomationService.cs" />

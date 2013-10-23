@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using System.Windows.Input;
 using Microsoft.TeamFoundation;
 using Microsoft.TeamFoundation.TestManagement.Client;
 using TestCaseAutomator.TeamFoundation;
+using TestCaseAutomator.Utilities.Collections;
 using TestCaseAutomator.Utilities.Mvvm;
 using TestCaseAutomator.Utilities.Mvvm.Commands;
 using TestCaseAutomator.Utilities.PropertyNotification;
@@ -56,6 +58,7 @@ namespace TestCaseAutomator.ViewModels
 				if (_serverUri.TrySetValue(value))
 				{
 					_explorer = _explorerFactory(value);
+					LoadProjectNames();
 				}
 			}
 		}
@@ -65,6 +68,19 @@ namespace TestCaseAutomator.ViewModels
 		{
 			get { return _projectName.Value; }
 			set { _projectName.Value = value; }
+		}
+
+		/// <summary>
+		/// Available project names.
+		/// </summary>
+		public ICollection<string> ProjectNames
+		{
+			get { return _projectNames; }
+		}
+
+		private void LoadProjectNames()
+		{
+			_projectNames.AddRange(_explorer.TeamProjects().Select(n => n.Name));
 		}
 
 		/// <summary>
@@ -265,6 +281,8 @@ namespace TestCaseAutomator.ViewModels
 		private readonly Property<SourceControlTestBrowserViewModel> _sourceControlBrowser;
 		private readonly Property<FileSystemTestBrowserViewModel> _fileSystemBrowser;
 		private readonly Property<ManualAutomationEntryViewModel> _manualEntry;
+
+		private readonly ICollection<string> _projectNames = new ObservableCollection<string>(); 
 
 		private readonly Func<Uri, ITfsExplorer> _explorerFactory;
 		private readonly Func<ITfsProjectWorkItemCollection, IWorkItems> _workItemsFactory;

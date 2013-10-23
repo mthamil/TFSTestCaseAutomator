@@ -16,6 +16,11 @@ namespace TestCaseAutomator.TeamFoundation
 		ITfsProjectWorkItemCollection WorkItems(string projectName);
 
 		/// <summary>
+		/// Retrieves the Team Projects for the given connection.
+		/// </summary>
+		IEnumerable<ICatalogNode> TeamProjects();
+
+		/// <summary>
 		/// Provides access to Visual Studio solutions in source control.
 		/// </summary>
 		IEnumerable<TfsSolution> Solutions();
