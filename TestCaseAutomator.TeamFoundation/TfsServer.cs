@@ -19,23 +19,23 @@ namespace TestCaseAutomator.TeamFoundation
 		public TfsServer(TfsTeamProjectCollection connection)
 		{
 			_connection = connection;
-			TestManagement = _connection.GetService<ITestManagementService>();
-			VersionControl = new VersionControlServerAdapter(_connection.GetService<VersionControlServer>());
-			ProjectCollectionService = _connection.ConfigurationServer.GetService<ITeamProjectCollectionService>();
-			CatalogRoot = new CatalogNodeWrapper(_connection.CatalogNode);
+			_testManagement = new Lazy<ITestManagementService>(() => _connection.GetService<ITestManagementService>());
+			_versionControl = new Lazy<IVersionControl>(() => new VersionControlServerAdapter(_connection.GetService<VersionControlServer>()));
+			_projectCollectionService = new Lazy<ITeamProjectCollectionService>(() => _connection.ConfigurationServer.GetService<ITeamProjectCollectionService>());
+			_catalogRoot = new Lazy<ICatalogNode>(() => new CatalogNodeWrapper(_connection.CatalogNode));
 		}
 
 		/// <see cref="ITfsServer.TestManagement"/>
-		public ITestManagementService TestManagement { get; private set; }
+		public ITestManagementService TestManagement { get { return _testManagement.Value; } }
 
 		/// <see cref="ITfsServer.VersionControl"/>
-		public IVersionControl VersionControl { get; private set; }
+		public IVersionControl VersionControl { get { return _versionControl.Value; } }
 
 		/// <see cref="ITfsServer.ProjectCollectionService"/>
-		public ITeamProjectCollectionService ProjectCollectionService { get; private set; }
+		public ITeamProjectCollectionService ProjectCollectionService { get { return _projectCollectionService.Value; } }
 
 		/// <see cref="ITfsServer.CatalogRoot"/>
-		public ICatalogNode CatalogRoot { get; private set; }
+		public ICatalogNode CatalogRoot { get { return _catalogRoot.Value; } }
 
 		/// <see cref="ITfsServer.Uri"/>
 		public Uri Uri
@@ -46,10 +46,15 @@ namespace TestCaseAutomator.TeamFoundation
 		/// <see cref="DisposableBase.OnDisposing"/>
 		protected override void OnDisposing()
 		{
-			VersionControl.Dispose();
+            _versionControl.Dispose();
 			_connection.Dispose();
 		}
 
 		private readonly TfsTeamProjectCollection _connection;
+
+	    private readonly Lazy<ITestManagementService> _testManagement;
+	    private readonly Lazy<IVersionControl> _versionControl;
+	    private readonly Lazy<ITeamProjectCollectionService> _projectCollectionService;
+	    private readonly Lazy<ICatalogNode> _catalogRoot;
 	}
 }
