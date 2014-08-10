@@ -53,7 +53,18 @@
             <DockPanel Grid.Column="1" Margin="10,0,0,0" Dock="Left">
                 <TextBlock Text="Project:" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,0,5,0"/>
                 <ComboBox SelectedItem="{Binding ProjectName}" ItemsSource="{Binding ProjectNames}" 
-                          HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Center" Width="Auto"/>
+                          HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Center" Width="Auto"
+                          IsEnabled="{Binding ProjectNames.Count}">
+                    <ComboBox.Style>
+                        <Style TargetType="{x:Type ComboBox}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ProjectsNames.Count}" Value="0">
+                                    <Setter Property="IsEnabled" Value="false"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ComboBox.Style>
+                </ComboBox>
             </DockPanel>
             
             <Button Grid.Column="2" Content="Refresh" Command="{Binding RefreshCommand}" Height="27" Width="50" HorizontalAlignment="Right"
