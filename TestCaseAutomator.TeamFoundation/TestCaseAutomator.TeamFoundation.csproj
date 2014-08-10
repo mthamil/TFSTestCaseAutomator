@@ -95,13 +95,13 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Xml" />
-    <Reference Include="WiLinq.LinqProvider, Version=0.1.0.29089, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="WiLinq.LinqProvider, Version=0.2.0.22094, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Wilinq.0.1.1.1\lib\net45\WiLinq.LinqProvider.dll</HintPath>
+      <HintPath>..\packages\Wilinq.0.2.0.0\lib\net45\WiLinq.LinqProvider.dll</HintPath>
     </Reference>
-    <Reference Include="WiLinq.Wiql, Version=0.1.0.21218, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="WiLinq.Wiql, Version=0.2.0.23894, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Wilinq.0.1.1.1\lib\net45\WiLinq.Wiql.dll</HintPath>
+      <HintPath>..\packages\Wilinq.0.2.0.0\lib\net45\WiLinq.Wiql.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
