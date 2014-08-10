@@ -48,7 +48,7 @@
   <ItemGroup>
     <Reference Include="Autofac, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Autofac.3.1.5\lib\net40\Autofac.dll</HintPath>
+      <HintPath>..\packages\Autofac.3.5.0\lib\net40\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.PowerPack">
       <HintPath>..\packages\FSPowerPack.Core.Community.3.0.0.0\Lib\Net40\FSharp.PowerPack.dll</HintPath>
@@ -95,11 +95,13 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Xml" />
-    <Reference Include="WiLinq.LinqProvider">
-      <HintPath>..\packages\Wilinq.0.1.0.2\lib\net45\WiLinq.LinqProvider.dll</HintPath>
+    <Reference Include="WiLinq.LinqProvider, Version=0.1.0.29089, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Wilinq.0.1.1.1\lib\net45\WiLinq.LinqProvider.dll</HintPath>
     </Reference>
-    <Reference Include="WiLinq.Wiql">
-      <HintPath>..\packages\Wilinq.0.1.0.2\lib\net45\WiLinq.Wiql.dll</HintPath>
+    <Reference Include="WiLinq.Wiql, Version=0.1.0.21218, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Wilinq.0.1.1.1\lib\net45\WiLinq.Wiql.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
