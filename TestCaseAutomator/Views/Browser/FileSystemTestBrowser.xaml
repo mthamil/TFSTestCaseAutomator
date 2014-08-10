@@ -51,7 +51,7 @@
             </DockPanel>
 
             <Button Grid.Column="1" Name="SelectFileButton" Content="Browse..." Width="75" Margin="5,3,5,3" HorizontalAlignment="Right"
-                        ToolTip="Select file containing tests" IsEnabled="{Binding CanBrowse}">
+                    ToolTip="Select file containing tests" IsEnabled="{Binding CanBrowse}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <Clickable:BindableClickAction/>
@@ -60,8 +60,8 @@
             </Button>
 
             <ctrl:FileSystemPicker SelectedPath="{Binding SelectedFile, Mode=OneWayToSource}"
-                                       Mode="Open"
-                                       Trigger="{Binding ElementName=SelectFileButton, Path=(Clickable:BindableClick.IsClicked)}"/>
+                                   Mode="Open"
+                                   Trigger="{Binding ElementName=SelectFileButton, Path=(Clickable:BindableClick.IsClicked)}"/>
         </Grid>
 
         <ListView Grid.Row="2" Name="TestListView" ItemsSource="{Binding Tests}" SelectedItem="{Binding SelectedTest}"
