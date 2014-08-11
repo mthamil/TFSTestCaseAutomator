@@ -14,7 +14,7 @@ namespace TestCaseAutomator
 			_errorHandler = new UnhandledErrorHandler(Current, Dispatcher);
 
 			var containerBuilder = new ContainerBuilder();
-			containerBuilder.RegisterModule<MasterModule>();
+			containerBuilder.RegisterModule<BootstrapModule>();
 			_container = containerBuilder.Build();
 		}
 

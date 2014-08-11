@@ -23,13 +23,13 @@ namespace TestCaseAutomator.ViewModels
 	{
 		public MainViewModel(
 			Func<Uri, ITfsExplorer> explorerFactory, 
-			Func<ITfsProjectWorkItemCollection, IWorkItems> workItemsFactory,
+			IWorkItems workItems,
 			Func<IEnumerable<TfsSolution>, ITestCaseViewModel, SourceControlTestBrowserViewModel> sourceControlBrowserFactory,
 			Func<ITestCaseViewModel, FileSystemTestBrowserViewModel> fileSystemBrowserFactory)
                 : this()
 		{
 			_explorerFactory = explorerFactory;
-			_workItemsFactory = workItemsFactory;
+			WorkItems = workItems;
 			_sourceControlBrowserFactory = sourceControlBrowserFactory;
 			_fileSystemBrowserFactory = fileSystemBrowserFactory;		
 		}
@@ -38,7 +38,6 @@ namespace TestCaseAutomator.ViewModels
 	    {
             _serverUri = Property.New(this, p => p.ServerUri, OnPropertyChanged);
             _projectName = Property.New(this, p => p.ProjectName, OnPropertyChanged);
-            _workItems = Property.New(this, p => p.WorkItems, OnPropertyChanged);
             _selectedTestCase = Property.New(this, p => p.SelectedTestCase, OnPropertyChanged);
             _status = Property.New(this, p => p.Status, OnPropertyChanged);
 
@@ -104,8 +103,8 @@ namespace TestCaseAutomator.ViewModels
 		/// </summary>
 		public IWorkItems WorkItems
 		{
-			get { return _workItems.Value; }
-			private set { _workItems.Value = value; }
+			get;
+		    private set;
 		}
 
 		/// <summary>
@@ -249,8 +248,7 @@ namespace TestCaseAutomator.ViewModels
             if (String.IsNullOrWhiteSpace(ProjectName))
                 return;
 
-            WorkItems = _workItemsFactory(_explorer.WorkItems(ProjectName));
-            await WorkItems.LoadAsync();
+            await WorkItems.LoadAsync(_explorer.WorkItems(ProjectName));
 	    }
 
 		private void HandleServerError(Action action)
@@ -292,7 +290,6 @@ namespace TestCaseAutomator.ViewModels
 		private readonly Property<Uri> _serverUri;
 		private readonly Property<string> _projectName;
 		private readonly Property<ITestCaseViewModel> _selectedTestCase; 
-		private readonly Property<IWorkItems> _workItems;
 		private readonly Property<string> _status;
 
 		private readonly Property<SourceControlTestBrowserViewModel> _sourceControlBrowser;
@@ -302,7 +299,6 @@ namespace TestCaseAutomator.ViewModels
 		private readonly ICollection<string> _projectNames = new ObservableCollection<string>(); 
 
 		private readonly Func<Uri, ITfsExplorer> _explorerFactory;
-		private readonly Func<ITfsProjectWorkItemCollection, IWorkItems> _workItemsFactory;
 		private readonly Func<IEnumerable<TfsSolution>, ITestCaseViewModel, SourceControlTestBrowserViewModel> _sourceControlBrowserFactory;
 		private readonly Func<ITestCaseViewModel, FileSystemTestBrowserViewModel> _fileSystemBrowserFactory;
 	}

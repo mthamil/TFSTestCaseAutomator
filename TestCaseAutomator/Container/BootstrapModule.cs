@@ -8,7 +8,7 @@ namespace TestCaseAutomator.Container
 	/// <summary>
 	/// Module that registers all other modules.
 	/// </summary>
-	public class MasterModule : Module
+	public class BootstrapModule : Module
 	{
 		/// <see cref="Module.Load"/>
 		protected override void Load(ContainerBuilder builder)

@@ -104,7 +104,7 @@
     </Compile>
     <Compile Include="Configuration\SettingsPropagator.cs" />
     <Compile Include="Container\CoreModule.cs" />
-    <Compile Include="Container\MasterModule.cs" />
+    <Compile Include="Container\BootstrapModule.cs" />
     <Compile Include="Container\PresentationModule.cs" />
     <Compile Include="Controls\Behaviors\Clickable\BindableClick.cs" />
     <Compile Include="Controls\Behaviors\Clickable\BindableClickAction.cs" />

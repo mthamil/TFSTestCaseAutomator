@@ -58,7 +58,7 @@
                     <ComboBox.Style>
                         <Style TargetType="{x:Type ComboBox}">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ProjectsNames.Count}" Value="0">
+                                <DataTrigger Binding="{Binding ProjectNames.Count}" Value="0">
                                     <Setter Property="IsEnabled" Value="false"/>
                                 </DataTrigger>
                             </Style.Triggers>

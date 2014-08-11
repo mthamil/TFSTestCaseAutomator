@@ -19,14 +19,11 @@ namespace TestCaseAutomator.ViewModels
 		/// <summary>
 		/// Initializes a new <see cref="WorkItemsViewModel"/>.
 		/// </summary>
-		/// <param name="workItems">Used for querying for test cases</param>
 		/// <param name="testCaseFactory">Creates test case view-models</param>
 		/// <param name="scheduler">Used for scheduling background tasks</param>
-		public WorkItemsViewModel(ITfsProjectWorkItemCollection workItems,
-		                          Func<ITestCase, ITestCaseViewModel> testCaseFactory,
+		public WorkItemsViewModel(Func<ITestCase, ITestCaseViewModel> testCaseFactory,
 		                          TaskScheduler scheduler)
 		{
-			_workItems = workItems;
 			_testCaseFactory = testCaseFactory;
 			_scheduler = scheduler;
 
@@ -37,18 +34,18 @@ namespace TestCaseAutomator.ViewModels
 		/// <summary>
 		/// Loads test cases.
 		/// </summary>
-		public async Task LoadAsync()
+        public async Task LoadAsync(ITfsProjectWorkItemCollection projectworkItemCollection)
 		{
 			TestCases.Clear();
 			var progress = new Progress<ITestCaseViewModel>(testCase => TestCases.Add(testCase));
-			await QueryTestCases(progress);
+            await QueryTestCases(projectworkItemCollection, progress);
 		}
 
-		private Task QueryTestCases(IProgress<ITestCaseViewModel> progress)
+		private Task QueryTestCases(ITfsProjectWorkItemCollection workItems, IProgress<ITestCaseViewModel> progress)
 		{
 			return Task.Factory.StartNew(() =>
 			{
-				var testCases = _workItems.TestCases().AsTestCases().Select(tc => _testCaseFactory(tc));
+                var testCases = workItems.TestCases().AsTestCases().Select(tc => _testCaseFactory(tc));
 				foreach (var testCase in testCases)
 					progress.Report(testCase);
 			}, CancellationToken.None, TaskCreationOptions.None, _scheduler);
@@ -64,7 +61,6 @@ namespace TestCaseAutomator.ViewModels
 		}
 
 		private readonly Property<ICollection<ITestCaseViewModel>> _testCases;
-		private readonly ITfsProjectWorkItemCollection _workItems;
 		private readonly Func<ITestCase, ITestCaseViewModel> _testCaseFactory;
 		private readonly TaskScheduler _scheduler;
 	}

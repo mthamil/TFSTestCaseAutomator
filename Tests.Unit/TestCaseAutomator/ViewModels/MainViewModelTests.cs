@@ -16,7 +16,11 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 	{
 		public MainViewModelTests()
 		{
-			viewModel = new MainViewModel(CreateExplorer, CreateWorkItems,
+            workItems = new Mock<IWorkItems>();
+		    workItems.Setup(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()))
+		             .Returns(Task.FromResult<object>(null));
+
+			viewModel = new MainViewModel(CreateExplorer, workItems.Object,
 			                              CreateSourceControlBrowser, CreateFileSystemBrowser);
 		}
 
@@ -42,7 +46,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 
 			// Assert.
 			Assert.NotNull(workItems);
-			workItems.Verify(wi => wi.LoadAsync(), Times.Once());
+            workItems.Verify(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()), Times.Once());
 		}
 
 		[Fact]
@@ -52,7 +56,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 			viewModel.ProjectName = "TestProject";
 
 			// Assert.
-			Assert.Null(workItems);
+            workItems.Verify(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()), Times.Never);
 		}
 
 		[Fact]
@@ -82,7 +86,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 			viewModel.Refresh();
 
 			// Assert.
-			workItems.Verify(wi => wi.LoadAsync(), Times.Exactly(2));
+            workItems.Verify(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()), Times.Exactly(2));
 		}
 
 		[Fact]
@@ -139,13 +143,6 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 			return explorer.Object;
 		}
 
-		private IWorkItems CreateWorkItems(ITfsProjectWorkItemCollection items)
-		{
-			workItems = new Mock<IWorkItems>();
-			workItems.Setup(wi => wi.LoadAsync()).Returns(Task.FromResult<object>(null));
-			return workItems.Object;
-		}
-
 		private SourceControlTestBrowserViewModel CreateSourceControlBrowser(IEnumerable<TfsSolution> solutions, ITestCaseViewModel testCase)
 		{
 			return new SourceControlTestBrowserViewModel(solutions, testCase, _ => null);
@@ -158,8 +155,8 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 
 		private readonly MainViewModel viewModel;
 
-		private Mock<IWorkItems> workItems;
  		private Mock<ITfsExplorer> explorer;
+        private readonly Mock<IWorkItems> workItems;
 		private readonly Mock<IVersionControl> versionControl = new Mock<IVersionControl>();
 	}
 }
