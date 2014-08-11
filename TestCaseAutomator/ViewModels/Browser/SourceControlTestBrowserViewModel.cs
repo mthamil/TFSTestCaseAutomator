@@ -15,30 +15,31 @@ namespace TestCaseAutomator.ViewModels.Browser
 	/// </summary>
 	public class SourceControlTestBrowserViewModel : ViewModelBase, IAutomationSelector
 	{
-		/// <summary>
-		/// Initializes a new <see cref="SourceControlTestBrowserViewModel"/>.
-		/// </summary>
-		/// <param name="solutions">Existing solutions in source control</param>
-		/// <param name="testCase">The test case to associate with automation</param>
-		/// <param name="solutionFactory">Creates solution view-models</param>
-		public SourceControlTestBrowserViewModel(IEnumerable<TfsSolution> solutions, ITestCaseViewModel testCase,
-		                            Func<TfsSolution, SolutionViewModel> solutionFactory)
-		{
-			TestCase = testCase;
+	    /// <summary>
+	    /// Initializes a new <see cref="SourceControlTestBrowserViewModel"/>.
+	    /// </summary>
+	    /// <param name="solutions">Existing solutions in source control</param>
+	    /// <param name="testCase">The test case to associate with automation</param>
+	    /// <param name="solutionFactory">Creates solution view-models</param>
+	    public SourceControlTestBrowserViewModel(IEnumerable<TfsSolution> solutions,
+	                                             ITestCaseViewModel testCase,
+	                                             Func<TfsSolution, SolutionViewModel> solutionFactory)
+	    {
+	        TestCase = testCase;
 
-			_solutions = Property.New(this, p => p.Solutions, OnPropertyChanged);
-			_selectedTest = Property.New(this, p => p.SelectedTest, OnPropertyChanged)
-			                        .AlsoChanges(p => p.CanSaveTestCase);
-			_hasBeenSaved = Property.New(this, p => p.HasBeenSaved, OnPropertyChanged);
+	        _solutions = Property.New(this, p => p.Solutions, OnPropertyChanged);
+	        _selectedTest = Property.New(this, p => p.SelectedTest, OnPropertyChanged)
+	                                .AlsoChanges(p => p.CanSaveTestCase);
+	        _hasBeenSaved = Property.New(this, p => p.HasBeenSaved, OnPropertyChanged);
 
-			Solutions = new ObservableCollection<SolutionViewModel>(solutions.Select(solutionFactory));
+	        Solutions = new ObservableCollection<SolutionViewModel>(solutions.Select(solutionFactory));
 
-			SaveTestCaseCommand = Command.For(this)
-			                             .DependsOn(p => p.CanSaveTestCase)
-			                             .Executes(SaveTestCase);
-		}
+	        SaveTestCaseCommand = Command.For(this)
+	                                     .DependsOn(p => p.CanSaveTestCase)
+	                                     .Executes(SaveTestCase);
+	    }
 
-		/// <see cref="IAutomationSelector.TestCase"/>
+	    /// <see cref="IAutomationSelector.TestCase"/>
 		public ITestCaseViewModel TestCase { get; private set; }
 
 		/// <summary>

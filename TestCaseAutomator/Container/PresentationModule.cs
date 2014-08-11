@@ -24,6 +24,8 @@ namespace TestCaseAutomator.Container
 			       .As<MainViewModel, IApplication>()
 				   .SingleInstance();
 
+		    builder.RegisterType<TestSelectionViewModel>();
+
 			builder.RegisterType<SourceControlTestBrowserViewModel>();
 
 			builder.RegisterType<FileSystemTestBrowserViewModel>();

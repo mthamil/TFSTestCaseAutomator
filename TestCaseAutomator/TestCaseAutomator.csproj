@@ -106,6 +106,8 @@
     <Compile Include="Container\CoreModule.cs" />
     <Compile Include="Container\BootstrapModule.cs" />
     <Compile Include="Container\PresentationModule.cs" />
+    <Compile Include="Container\Support\NonPublicConstructorFinder.cs" />
+    <Compile Include="Container\Support\RegistrationExtensions.cs" />
     <Compile Include="Controls\Behaviors\Clickable\BindableClick.cs" />
     <Compile Include="Controls\Behaviors\Clickable\BindableClickAction.cs" />
     <Compile Include="Controls\Behaviors\LoadDependentBehavior.cs" />
@@ -143,6 +145,7 @@
     <Compile Include="ViewModels\ITestCaseViewModel.cs" />
     <Compile Include="ViewModels\IWorkItems.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\TestSelectionViewModel.cs" />
     <Compile Include="ViewModels\WorkItemsViewModel.cs" />
     <Compile Include="ViewModels\TestCaseViewModel.cs" />
     <Compile Include="Views\Browser\FileSystemTestBrowser.xaml.cs">

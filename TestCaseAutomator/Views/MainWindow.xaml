@@ -74,7 +74,7 @@
         <DataGrid Grid.Row="1" DataContext="{Binding WorkItems}" ItemsSource="{Binding TestCases}" 
                   AutoGenerateColumns="False" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"
                   IsReadOnly="True" CanUserReorderColumns="False" CanUserAddRows="False" SelectionMode="Single"
-                  SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.SelectedTestCase}">
+                  SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestSelection.SelectedTestCase}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width=".10*"/>
                 
@@ -110,17 +110,17 @@
                                     <Button Content="\..." ToolTip="Choose automated test from the file system..." 
                                             HorizontalAlignment="Right" VerticalContentAlignment="Center" Width="20" Height="20"
                                             Command="{StaticResource FileSelectorCmd}"
-                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.FileSystemTestBrowser, Mode=OneWay}"/>
+                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestSelection.FileSystemTestBrowser.Value, Mode=OneWay}"/>
                                 
                                     <Button Content="$..." ToolTip="Choose automated test from a source controlled file..." 
                                             HorizontalAlignment="Right" Width="20" Height="20"
                                             Command="{StaticResource SCSelectorCmd}"
-                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.SourceControlTestBrowser, Mode=OneWay}"/>
+                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestSelection.SourceControlTestBrowser.Value, Mode=OneWay}"/>
 
                                     <Button Content="M..." ToolTip="Manually enter test automation information..." 
                                             HorizontalAlignment="Right" Width="20" Height="20"
                                             Command="{StaticResource ManualEditCmd}"
-                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.ManualEntry, Mode=OneWay}"/>
+                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestSelection.ManualEntry.Value, Mode=OneWay}"/>
 
                                 </DockPanel>
                             </Grid>

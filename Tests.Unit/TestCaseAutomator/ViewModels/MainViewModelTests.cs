@@ -21,7 +21,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 		             .Returns(Task.FromResult<object>(null));
 
 			viewModel = new MainViewModel(CreateExplorer, workItems.Object,
-			                              CreateSourceControlBrowser, CreateFileSystemBrowser);
+			                              new TestSelectionViewModel(CreateSourceControlBrowser, CreateFileSystemBrowser));
 		}
 
 		[Fact]
@@ -103,12 +103,12 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 			        });
 
 			// Act.
-			viewModel.SelectedTestCase = Mock.Of<ITestCaseViewModel>();
+			viewModel.TestSelection.SelectedTestCase = Mock.Of<ITestCaseViewModel>();
 
 			// Assert.
-			Assert.NotNull(viewModel.SourceControlTestBrowser);
-			Assert.Equal(viewModel.SelectedTestCase, viewModel.SourceControlTestBrowser.TestCase);
-			Assert.Equal(2, viewModel.SourceControlTestBrowser.Solutions.Count);
+            Assert.NotNull(viewModel.TestSelection.SourceControlTestBrowser);
+            Assert.Equal(viewModel.TestSelection.SelectedTestCase, viewModel.TestSelection.SourceControlTestBrowser.Value.TestCase);
+            Assert.Equal(2, viewModel.TestSelection.SourceControlTestBrowser.Value.Solutions.Count);
 		}
 
 		[Fact]
@@ -118,11 +118,11 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 			viewModel.ServerUri = new Uri("http://test/");
 
 			// Act.
-			viewModel.SelectedTestCase = Mock.Of<ITestCaseViewModel>();
+            viewModel.TestSelection.SelectedTestCase = Mock.Of<ITestCaseViewModel>();
 
 			// Assert.
-			Assert.NotNull(viewModel.FileSystemTestBrowser);
-			Assert.Equal(viewModel.SelectedTestCase, viewModel.FileSystemTestBrowser.TestCase);
+            Assert.NotNull(viewModel.TestSelection.FileSystemTestBrowser);
+            Assert.Equal(viewModel.TestSelection.SelectedTestCase, viewModel.TestSelection.FileSystemTestBrowser.Value.TestCase);
 		}
 
 		[Fact]

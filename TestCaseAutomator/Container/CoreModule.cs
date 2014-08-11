@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Autofac;
 using TestCaseAutomator.Configuration;
+using TestCaseAutomator.Container.Support;
 
 namespace TestCaseAutomator.Container
 {
@@ -16,9 +17,10 @@ namespace TestCaseAutomator.Container
 
 			builder.Register(_ => Settings.Default);
 
-			builder.Register(c => new DotNetSettings(c.Resolve<Settings>()))
-			       .As<ISettings>()
-			       .SingleInstance();
+		    builder.RegisterType<DotNetSettings>()
+		           .FindConstructorsWith(new NonPublicConstructorFinder())
+		           .As<ISettings>()
+		           .SingleInstance();
 
 			builder.RegisterType<SettingsPropagator>()
 			       .AutoActivate()

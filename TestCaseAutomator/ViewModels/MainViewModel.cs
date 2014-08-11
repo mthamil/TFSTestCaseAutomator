@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.TeamFoundation;
@@ -12,7 +13,6 @@ using TestCaseAutomator.Utilities.Collections;
 using TestCaseAutomator.Utilities.Mvvm;
 using TestCaseAutomator.Utilities.Mvvm.Commands;
 using TestCaseAutomator.Utilities.PropertyNotification;
-using TestCaseAutomator.ViewModels.Browser;
 
 namespace TestCaseAutomator.ViewModels
 {
@@ -24,27 +24,27 @@ namespace TestCaseAutomator.ViewModels
 		public MainViewModel(
 			Func<Uri, ITfsExplorer> explorerFactory, 
 			IWorkItems workItems,
-			Func<IEnumerable<TfsSolution>, ITestCaseViewModel, SourceControlTestBrowserViewModel> sourceControlBrowserFactory,
-			Func<ITestCaseViewModel, FileSystemTestBrowserViewModel> fileSystemBrowserFactory)
+			TestSelectionViewModel testSelection)
                 : this()
 		{
 			_explorerFactory = explorerFactory;
-			WorkItems = workItems;
-			_sourceControlBrowserFactory = sourceControlBrowserFactory;
-			_fileSystemBrowserFactory = fileSystemBrowserFactory;		
+		    WorkItems = workItems;
+            TestSelection = testSelection;
+
+            // ugh, hacky
+		    TestSelection.SolutionRetriever = () =>
+		    {
+		        IEnumerable<TfsSolution> solutions = null;
+                HandleServerError(() => solutions = _explorer.Solutions());
+		        return solutions;
+		    };
 		}
 
 	    private MainViewModel()
 	    {
             _serverUri = Property.New(this, p => p.ServerUri, OnPropertyChanged);
             _projectName = Property.New(this, p => p.ProjectName, OnPropertyChanged);
-            _selectedTestCase = Property.New(this, p => p.SelectedTestCase, OnPropertyChanged);
             _status = Property.New(this, p => p.Status, OnPropertyChanged);
-
-            _sourceControlBrowser = Property.New(this, p => p.SourceControlTestBrowser, OnPropertyChanged);
-            _fileSystemBrowser = Property.New(this, p => p.FileSystemTestBrowser, OnPropertyChanged);
-            _manualEntry = Property.New(this, p => p.ManualEntry, OnPropertyChanged);
-            _selectedTestCase = Property.New(this, p => p.SelectedTestCase, OnPropertyChanged);
 
             RefreshCommand = new AsyncRelayCommand(Refresh);
             CloseCommand = new RelayCommand(Close);
@@ -82,96 +82,11 @@ namespace TestCaseAutomator.ViewModels
 		}
 
 		/// <summary>
-		/// The currently selected test case.
-		/// </summary>
-		public ITestCaseViewModel SelectedTestCase
-		{
-			get { return _selectedTestCase.Value; }
-			set 
-			{
-				if (_selectedTestCase.TrySetValue(value))
-				{
-					SourceControlTestBrowser = CreateSourceControlBrowser();
-					FileSystemTestBrowser = CreateFileSystemBrowser();
-					ManualEntry = CreateManualEntry();
-				}
-			}
-		}
-
-		/// <summary>
 		/// Contains work items from the current server and project.
 		/// </summary>
-		public IWorkItems WorkItems
-		{
-			get;
-		    private set;
-		}
+		public IWorkItems WorkItems { get; private set; }
 
-		/// <summary>
-		/// Allows selection of an automated test from source control.
-		/// </summary>
-		public SourceControlTestBrowserViewModel SourceControlTestBrowser
-		{
-			get { return _sourceControlBrowser.Value; }
-			private set { _sourceControlBrowser.Value = value; }
-		}
-
-		private SourceControlTestBrowserViewModel CreateSourceControlBrowser()
-		{
-			if (SourceControlTestBrowser != null)
-				SourceControlTestBrowser.AutomatedTestSelected -= Browser_AutomatedTestSelected;
-
-			IEnumerable<TfsSolution> solutions = null;
-			HandleServerError(() => solutions = _explorer.Solutions());
-
-			var sourceControlTestBrowser = _sourceControlBrowserFactory(solutions ?? Enumerable.Empty<TfsSolution>(), SelectedTestCase);
-			sourceControlTestBrowser.AutomatedTestSelected += Browser_AutomatedTestSelected;
-			return sourceControlTestBrowser;
-		}
-
-		/// <summary>
-		/// Allows selection of an automated test from a file on the file system.
-		/// </summary>
-		public FileSystemTestBrowserViewModel FileSystemTestBrowser
-		{
-			get { return _fileSystemBrowser.Value; }
-			private set { _fileSystemBrowser.Value = value; }
-		}
-
-		private FileSystemTestBrowserViewModel CreateFileSystemBrowser()
-		{
-			if (FileSystemTestBrowser != null)
-				FileSystemTestBrowser.AutomatedTestSelected -= Browser_AutomatedTestSelected;
-
-			var fileSystemTestBrowser = _fileSystemBrowserFactory(SelectedTestCase);
-			fileSystemTestBrowser.AutomatedTestSelected += Browser_AutomatedTestSelected;
-			return fileSystemTestBrowser;
-		}
-
-		/// <summary>
-		/// Allows manually entering test case automation details.
-		/// </summary>
-		public ManualAutomationEntryViewModel ManualEntry
-		{
-			get { return _manualEntry.Value; }
-			private set { _manualEntry.Value = value; }
-		}
-
-		private ManualAutomationEntryViewModel CreateManualEntry()
-		{
-			if (ManualEntry != null)
-				ManualEntry.AutomatedTestSelected -= Browser_AutomatedTestSelected;
-
-			var manualEntry = new ManualAutomationEntryViewModel(SelectedTestCase);
-			manualEntry.AutomatedTestSelected += Browser_AutomatedTestSelected;
-			return manualEntry;
-		}
-
-		private void Browser_AutomatedTestSelected(object sender, AutomatedTestSelectedEventArgs e)
-		{
-			e.TestCase.UpdateAutomation(e.TestAutomation);
-			((IAutomationSelector)sender).AutomatedTestSelected -= Browser_AutomatedTestSelected;
-		}
+        public TestSelectionViewModel TestSelection { get; private set; }
 
 		/// <summary>
 		/// Command that forces a server refresh.
@@ -207,7 +122,7 @@ namespace TestCaseAutomator.ViewModels
 		{
 			var localEvent = Closing;
 			if (localEvent != null)
-				Closing(this, EventArgs.Empty);
+                localEvent(this, EventArgs.Empty);
 		}
 
 		/// <summary>
@@ -289,17 +204,10 @@ namespace TestCaseAutomator.ViewModels
 
 		private readonly Property<Uri> _serverUri;
 		private readonly Property<string> _projectName;
-		private readonly Property<ITestCaseViewModel> _selectedTestCase; 
 		private readonly Property<string> _status;
-
-		private readonly Property<SourceControlTestBrowserViewModel> _sourceControlBrowser;
-		private readonly Property<FileSystemTestBrowserViewModel> _fileSystemBrowser;
-		private readonly Property<ManualAutomationEntryViewModel> _manualEntry;
 
 		private readonly ICollection<string> _projectNames = new ObservableCollection<string>(); 
 
 		private readonly Func<Uri, ITfsExplorer> _explorerFactory;
-		private readonly Func<IEnumerable<TfsSolution>, ITestCaseViewModel, SourceControlTestBrowserViewModel> _sourceControlBrowserFactory;
-		private readonly Func<ITestCaseViewModel, FileSystemTestBrowserViewModel> _fileSystemBrowserFactory;
 	}
 }
