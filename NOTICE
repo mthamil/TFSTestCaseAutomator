@@ -1,11 +1,11 @@
    TFS TestCase Automator
-   Copyright 2013 Matthew Hamilton - https://github.com/mthamil/TFSTestCaseAutomator
+   Copyright 2014 Matthew Hamilton - https://github.com/mthamil/TFSTestCaseAutomator
 
    For dependency injection, the AutoFac framework is utilized.
    AutoFac is released under the MIT license: 
         Autofac IoC Container
-        Copyright (c) 2007-2013 Autofac Contributors
-        http://code.google.com/p/autofac/wiki/Contributing
+        Copyright (c) 2007-2014 Autofac Contributors
+        http://autofac.org/
 
    WiLinq is used to query TFS work items using LINQ and 
    it is released under the Microsoft Public License (Ms-PL):
@@ -18,15 +18,21 @@
    Attached Behavior and Trigger/Action functionality is provided by
    System.Windows.Interactivity from the Microsoft Blend SDK:
         http://www.microsoft.com/en-us/download/details.aspx?id=10801
+		
+   Icons originate from or are based on the Fugue Icons set:
+        (C) 2013 Yusuke Kamiyamane. All rights reserved.
+        These icons are licensed under a Creative Commons Attribution 3.0 License.
+        http://creativecommons.org/licenses/by/3.0/
+        http://p.yusukekamiyamane.com/
 
    The following libraries provide testing support: 
         xUnit.net is used as the unit testing framework
-        and is released under the Microsoft Public License (Ms-PL):
-            http://xunit.codeplex.com/
+        and is released under the Apache 2.0 license:
+            http://xunit.github.io/
 
         Moq is used for mock objects and is released under the BSD license:
             Copyright (c) 2007. Clarius Consulting, Manas Technology Solutions, InSTEDD
-            http://code.google.com/p/moq/
+            http://www.moqthis.com/
             All rights reserved.
 
         TheoryDataSet.cs is from ASP.Net, provides theory test support, 
