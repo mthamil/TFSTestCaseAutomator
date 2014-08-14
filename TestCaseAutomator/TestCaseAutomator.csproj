@@ -122,6 +122,7 @@
     <Compile Include="Controls\Converters\FileInfoConverter.cs" />
     <Compile Include="Controls\Converters\StringIsNullOrEmptyConverter.cs" />
     <Compile Include="Controls\FileSystemPicker.cs" />
+    <Compile Include="Controls\MessageBox.cs" />
     <Compile Include="Controls\ScrollableMessageBox.xaml.cs">
       <DependentUpon>ScrollableMessageBox.xaml</DependentUpon>
     </Compile>
@@ -170,6 +171,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Resources\Icons\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Browser\FileSystemTestBrowser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -205,7 +210,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Icons\folder-horizontal-open-16x16.png" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TestCaseAutomator.AutomationProviders.Interfaces\TestCaseAutomator.AutomationProviders.Interfaces.csproj">
       <Project>{AD71ADB9-E579-4A13-B3A0-9051FF5B075D}</Project>
@@ -223,6 +230,24 @@
       <Project>{9B948621-F11E-4503-AA62-142128E6BB6A}</Project>
       <Name>TestCaseAutomator.Utilities</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\keyboard--pencil-16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\minus-16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\network-cloud-16x16.png" />
+    <Resource Include="Resources\Icons\server-cloud-16x16.png" />
+    <Resource Include="Resources\Icons\servers-network-16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\arrow-circle-double-135-24x24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\plug-connect-16x16.png" />
+    <Resource Include="Resources\Icons\plug-disconnect-16x16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

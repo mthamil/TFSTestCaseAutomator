@@ -6,6 +6,8 @@
         xmlns:vm="clr-namespace:TestCaseAutomator.ViewModels"
         xmlns:cmds="clr-namespace:TestCaseAutomator.Controls.Commands"
         xmlns:vw="clr-namespace:TestCaseAutomator.Views.Browser"
+        xmlns:ctrls="clr-namespace:TestCaseAutomator.Controls"
+        xmlns:Clickable="clr-namespace:TestCaseAutomator.Controls.Behaviors.Clickable"
         Title="Test Case Automator" Height="500" Width="1000"
         WindowStartupLocation="CenterScreen"
         DataContext="{Binding Source={xtn:ViewModelLocator {x:Type vm:MainViewModel}}, Path=ViewModel}">
@@ -18,7 +20,10 @@
     
     <Window.Resources>
         <ResourceDictionary>
-
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Resources/Icons/Icons.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
             <cmds:OpenDialogCommand x:Key="FileSelectorCmd" Type="{x:Type vw:FileSystemTestBrowser}" 
                                     Owner="{Binding Source={x:Static Application.Current}, Path=MainWindow}"/>
 
@@ -27,7 +32,6 @@
 
             <cmds:OpenDialogCommand x:Key="ManualEditCmd" Type="{x:Type vw:ManualAutomationEntryEditor}" 
                                     Owner="{Binding Source={x:Static Application.Current}, Path=MainWindow}"/>
-
         </ResourceDictionary>
     </Window.Resources>
 
@@ -67,16 +71,20 @@
                 </ComboBox>
             </DockPanel>
             
-            <Button Grid.Column="2" Content="Refresh" Command="{Binding RefreshCommand}" Height="27" Width="50" HorizontalAlignment="Right"
-                    ToolTip="Reloads data from TFS"/>
+            <Button Grid.Column="2" Command="{Binding RefreshCommand}" Height="30" Width="30" HorizontalAlignment="Right"
+                    ToolTip="Reconnects to TFS">
+                <Image Source="{StaticResource RefreshIcon}" Style="{StaticResource DisableableIcon}" 
+                                               RenderOptions.BitmapScalingMode="NearestNeighbor" RenderOptions.EdgeMode="Aliased"/>
+            </Button>
         </Grid>
         
         <DataGrid Grid.Row="1" DataContext="{Binding WorkItems}" ItemsSource="{Binding TestCases}" 
                   AutoGenerateColumns="False" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"
                   IsReadOnly="True" CanUserReorderColumns="False" CanUserAddRows="False" SelectionMode="Single"
-                  SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestSelection.SelectedTestCase}">
+                  SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestSelection.SelectedTestCase}" 
+                  MinRowHeight="25">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width=".10*"/>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width=".05*"/>
                 
                 <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width=".40*">
                     <DataGridTextColumn.CellStyle>
@@ -86,7 +94,7 @@
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
 
-                <DataGridTemplateColumn Header="Associated Automated Test" Width=".50*">
+                <DataGridTemplateColumn Header="Associated Automated Test" Width=".55*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="{x:Type DataGridCell}">
                             <Setter Property="DataGridCell.ToolTip" Value="{Binding AssociatedAutomation}" />
@@ -97,30 +105,52 @@
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="90"/>
+                                    <ColumnDefinition Width="100"/>
                                 </Grid.ColumnDefinitions>
                                 
                                 <TextBlock Grid.Column="0" Text="{Binding AssociatedAutomation}" HorizontalAlignment="Left" Width="Auto"/>
 
                                 <DockPanel Grid.Column="1" Dock="Right" HorizontalAlignment="Right">
 
-                                    <Button Content="-" ToolTip="Remove associated automation." Command="{Binding RemoveAutomationCommand}"
-                                            HorizontalAlignment="Right" VerticalContentAlignment="Center" Width="20" Height="20"/>
-                                    
-                                    <Button Content="\..." ToolTip="Choose automated test from the file system..." 
-                                            HorizontalAlignment="Right" VerticalContentAlignment="Center" Width="20" Height="20"
-                                            Command="{StaticResource FileSelectorCmd}"
-                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestSelection.FileSystemTestBrowser.Value, Mode=OneWay}"/>
-                                
-                                    <Button Content="$..." ToolTip="Choose automated test from a source controlled file..." 
-                                            HorizontalAlignment="Right" Width="20" Height="20"
-                                            Command="{StaticResource SCSelectorCmd}"
-                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestSelection.SourceControlTestBrowser.Value, Mode=OneWay}"/>
+                                    <ctrls:MessageBox AffirmativeAction="{Binding RemoveAutomationCommand}"
+                                                      Message="{Binding Id, StringFormat='Are you sure you want to remove automation for Test Case {0}?'}"
+                                                      Trigger="{Binding ElementName=RemoveAutomationButton, Path=(Clickable:BindableClick.IsClicked)}" 
+                                                      Caption="Remove Automation?" Type="OKCancel"/>
 
-                                    <Button Content="M..." ToolTip="Manually enter test automation information..." 
-                                            HorizontalAlignment="Right" Width="20" Height="20"
+                                    <Button Name="RemoveAutomationButton" ToolTip="Remove associated automation." IsEnabled="{Binding CanRemoveAutomation}"
+                                            HorizontalAlignment="Right" VerticalContentAlignment="Center" Width="25" Height="25">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Click">
+                                                <Clickable:BindableClickAction/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <Image Source="{StaticResource RemoveIcon}" Style="{StaticResource DisableableIcon}" 
+                                               RenderOptions.BitmapScalingMode="NearestNeighbor" RenderOptions.EdgeMode="Aliased"/>
+                                    </Button>
+                                    
+                                    <Button ToolTip="Choose automated test from the file system..." 
+                                            HorizontalAlignment="Right" VerticalContentAlignment="Center" Width="25" Height="25"
+                                            Command="{StaticResource FileSelectorCmd}"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestSelection.FileSystemTestBrowser.Value, Mode=OneWay}">
+                                        <Image Source="{StaticResource BrowseFileSystemIcon}" Style="{StaticResource DisableableIcon}" 
+                                               RenderOptions.BitmapScalingMode="NearestNeighbor" RenderOptions.EdgeMode="Aliased"/>
+                                    </Button>
+                                
+                                    <Button ToolTip="Choose automated test from a source controlled file..." 
+                                            HorizontalAlignment="Right" Width="25" Height="25"
+                                            Command="{StaticResource SCSelectorCmd}"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestSelection.SourceControlTestBrowser.Value, Mode=OneWay}">
+                                        <Image Source="{StaticResource BrowseSourceControlIcon}" Style="{StaticResource DisableableIcon}" 
+                                               RenderOptions.BitmapScalingMode="NearestNeighbor" RenderOptions.EdgeMode="Aliased"/>
+                                    </Button>
+
+                                    <Button ToolTip="Manually enter test automation information..." 
+                                            HorizontalAlignment="Right" Width="25" Height="25"
                                             Command="{StaticResource ManualEditCmd}"
-                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestSelection.ManualEntry.Value, Mode=OneWay}"/>
+                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestSelection.ManualEntry.Value, Mode=OneWay}">
+                                        <Image Source="{StaticResource ManualEntryIcon}" Style="{StaticResource DisableableIcon}" 
+                                               RenderOptions.BitmapScalingMode="NearestNeighbor" RenderOptions.EdgeMode="Aliased"/>
+                                    </Button>
 
                                 </DockPanel>
                             </Grid>
@@ -131,6 +161,22 @@
         </DataGrid>
 
         <StatusBar Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0">
+            <StatusBarItem>
+                <Image RenderOptions.BitmapScalingMode="NearestNeighbor" RenderOptions.EdgeMode="Aliased">
+                    <Image.Style>
+                        <Style TargetType="{x:Type Image}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsConnected}" Value="True">
+                                    <Setter Property="Source" Value="{StaticResource ConnectedIcon}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsConnected}" Value="False">
+                                    <Setter Property="Source" Value="{StaticResource DisconnectedIcon}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+            </StatusBarItem>
             <StatusBarItem>
                 <TextBlock Text="{Binding Status}" HorizontalAlignment="Left" Margin="2"/>
             </StatusBarItem>

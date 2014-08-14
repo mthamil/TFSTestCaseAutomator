@@ -26,8 +26,8 @@ namespace TestCaseAutomator.TeamFoundation
 		IEnumerable<TfsSolution> Solutions();
 
 		/// <summary>
-		/// The Team Foundation Server's URI.
+		/// The Team Foundation Server.
 		/// </summary>
-		Uri TfsServer { get; }
+		ITfsServer Server { get; }
 	}
 }

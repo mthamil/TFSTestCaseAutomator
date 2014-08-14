@@ -29,6 +29,11 @@ namespace TestCaseAutomator.TeamFoundation
 		/// </summary>
 		ICatalogNode CatalogRoot { get; }
 
+        /// <summary>
+        /// Event raised when a connection's status changes.
+        /// </summary>
+        event EventHandler<ConnectionStatusChangedEventArgs> ConnectionStatusChanged;
+
 		/// <summary>
 		/// The Team Foundation Server's URI.
 		/// </summary>

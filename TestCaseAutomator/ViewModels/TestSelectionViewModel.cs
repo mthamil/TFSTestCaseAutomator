@@ -37,7 +37,7 @@ namespace TestCaseAutomator.ViewModels
             get { return _selectedTestCase.Value; }
             set
             {
-                if (_selectedTestCase.TrySetValue(value))
+                if (_selectedTestCase.TrySetValue(value) && value != null)
                 {
                     SourceControlTestBrowser = CreateSourceControlBrowser();
                     FileSystemTestBrowser = CreateFileSystemBrowser();

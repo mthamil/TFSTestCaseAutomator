@@ -19,6 +19,8 @@ namespace TestCaseAutomator.TeamFoundation
 		public TfsServer(TfsTeamProjectCollection connection)
 		{
 			_connection = connection;
+            _connection.ConnectivityFailureStatusChanged += connection_ConnectivityFailureStatusChanged;
+
 			_testManagement = new Lazy<ITestManagementService>(() => _connection.GetService<ITestManagementService>());
 			_versionControl = new Lazy<IVersionControl>(() => new VersionControlServerAdapter(_connection.GetService<VersionControlServer>()));
 			_projectCollectionService = new Lazy<ITeamProjectCollectionService>(() => _connection.ConfigurationServer.GetService<ITeamProjectCollectionService>());
@@ -37,7 +39,22 @@ namespace TestCaseAutomator.TeamFoundation
 		/// <see cref="ITfsServer.CatalogRoot"/>
 		public ICatalogNode CatalogRoot { get { return _catalogRoot.Value; } }
 
-		/// <see cref="ITfsServer.Uri"/>
+        /// <see cref="ITfsServer.ConnectionStatusChanged"/>
+        public event EventHandler<ConnectionStatusChangedEventArgs> ConnectionStatusChanged;
+
+	    private void OnConnectionStatusChanged(bool status)
+	    {
+	        var localEvent = ConnectionStatusChanged;
+	        if (localEvent != null)
+	            localEvent(this, new ConnectionStatusChangedEventArgs(status));
+	    }
+
+        void connection_ConnectivityFailureStatusChanged(object sender, ConnectivityFailureStatusChangedEventArgs e)
+        {
+            OnConnectionStatusChanged(e.NewConnectivityFailureStatus);
+        }
+
+	    /// <see cref="ITfsServer.Uri"/>
 		public Uri Uri
 		{
 			get { return _connection.Uri; }
@@ -47,6 +64,7 @@ namespace TestCaseAutomator.TeamFoundation
 		protected override void OnDisposing()
 		{
             _versionControl.Dispose();
+		    _connection.ConnectivityFailureStatusChanged -= connection_ConnectivityFailureStatusChanged;
 			_connection.Dispose();
 		}
 

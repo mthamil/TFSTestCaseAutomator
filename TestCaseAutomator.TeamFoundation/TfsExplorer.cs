@@ -57,9 +57,9 @@ namespace TestCaseAutomator.TeamFoundation
 		}
 
 		/// <summary>
-		/// The Team Foundation Server's URI.
+		/// The Team Foundation Server.
 		/// </summary>
-		public Uri TfsServer { get { return _server.Uri; } }
+		public ITfsServer Server { get { return _server; } }
 
 		/// <see cref="DisposableBase.OnDisposing"/>
 		protected override void OnDisposing()

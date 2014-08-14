@@ -44,6 +44,7 @@ namespace TestCaseAutomator.ViewModels
             _serverUri = Property.New(this, p => p.ServerUri, OnPropertyChanged);
             _projectName = Property.New(this, p => p.ProjectName, OnPropertyChanged);
             _status = Property.New(this, p => p.Status, OnPropertyChanged);
+	        _connectionIsUp = Property.New(this, p => p.IsConnected, OnPropertyChanged);
 
             RefreshCommand = new AsyncRelayCommand(Refresh);
             CloseCommand = new RelayCommand(Close);
@@ -51,7 +52,16 @@ namespace TestCaseAutomator.ViewModels
             PropertyChanged += OnPropertyChanged;
 	    }
 
-		/// <see cref="IApplication.ServerUri"/>
+        /// <summary>
+        /// Whether the connection is known to be up.
+        /// </summary>
+        public bool IsConnected
+        {
+            get { return _connectionIsUp.Value; }
+            set { _connectionIsUp.Value = value; }
+        }
+
+	    /// <see cref="IApplication.ServerUri"/>
 		public Uri ServerUri
 		{
 			get { return _serverUri.Value; }
@@ -147,8 +157,18 @@ namespace TestCaseAutomator.ViewModels
 
         private void ConnectToServer(Uri serverUrl)
         {
+            if (_explorer != null)
+                _explorer.Server.ConnectionStatusChanged -= Server_ConnectionStatusChanged;
+
             _explorer = _explorerFactory(serverUrl);
+            _explorer.Server.ConnectionStatusChanged += Server_ConnectionStatusChanged;
             LoadProjectNames();
+            IsConnected = true;
+        }
+
+        private void Server_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
+        {
+            IsConnected = !e.ConnectionFailed;
         }
 
         private void LoadProjectNames()
@@ -204,6 +224,7 @@ namespace TestCaseAutomator.ViewModels
 		private readonly Property<Uri> _serverUri;
 		private readonly Property<string> _projectName;
 		private readonly Property<string> _status;
+	    private readonly Property<bool> _connectionIsUp;
 
 		private readonly ICollection<string> _projectNames = new ObservableCollection<string>(); 
 

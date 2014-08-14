@@ -32,7 +32,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 
 			// Assert.
 			Assert.NotNull(explorer);
-			Assert.Equal(new Uri("http://test/"), explorer.Object.TfsServer);
+			Assert.Equal(new Uri("http://test/"), serverUri);
 		}
 
 		[Fact]
@@ -136,8 +136,9 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 
 		private ITfsExplorer CreateExplorer(Uri uri)
 		{
+		    serverUri = uri;
 			explorer = new Mock<ITfsExplorer>();
-			explorer.SetupGet(e => e.TfsServer).Returns(uri);
+			explorer.SetupGet(e => e.Server).Returns(server.Object);
 			explorer.Setup(e => e.WorkItems(It.IsAny<string>()))
 			        .Returns((string name) => Mock.Of<ITfsProjectWorkItemCollection>(wi => wi.ProjectName == name));
 			return explorer.Object;
@@ -155,7 +156,9 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 
 		private readonly MainViewModel viewModel;
 
+	    private Uri serverUri;
  		private Mock<ITfsExplorer> explorer;
+        private readonly Mock<ITfsServer> server = new Mock<ITfsServer>();
         private readonly Mock<IWorkItems> workItems;
 		private readonly Mock<IVersionControl> versionControl = new Mock<IVersionControl>();
 	}

@@ -106,6 +106,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CatalogNodeWrapper.cs" />
+    <Compile Include="ConnectionStatusChangedEventArgs.cs" />
     <Compile Include="Container\TeamFoundationModule.cs" />
     <Compile Include="ICatalogNode.cs" />
     <Compile Include="ITfsServer.cs" />
