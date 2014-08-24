@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using TestCaseAutomator.Utilities.Reflection;
 
 namespace TestCaseAutomator.Controls.Commands
 {
@@ -14,14 +15,23 @@ namespace TestCaseAutomator.Controls.Commands
 		/// <param name="parameter">
 		/// The data context to set on the window. If null, the data context will not 
 		/// be set, preventing an override of any existing context.
+		/// If it is an instance of <see cref="Lazy{T}"/>, its <see cref="Lazy{T}.Value"/>
+		/// will be used.
 		/// </param>
 		public override void Execute(object parameter)
 		{
 			var window = (Window)Activator.CreateInstance(Type);
-			if (parameter != null)
-				window.DataContext = parameter;
+		    if (parameter != null)
+		    {
+                // Detect Lazy<T> data contexts.
+		        var parameterType = parameter.GetType();
+		        if (parameterType.IsClosedTypeOf(LazyType))
+                    parameter = parameterType.GetProperty("Value").GetValue(parameter);
 
-			if (Owner != null)
+		        window.DataContext = parameter;
+		    }
+
+		    if (Owner != null)
 				window.Owner = Owner;
 
 			window.ShowDialog();
@@ -50,5 +60,7 @@ namespace TestCaseAutomator.Controls.Commands
 				typeof(Window),
 				typeof(OpenDialogCommand),
 				new FrameworkPropertyMetadata(null));
+
+	    private static readonly Type LazyType = typeof(Lazy<>);
 	}
 }
