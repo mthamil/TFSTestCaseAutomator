@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 using Autofac;
-using TestCaseAutomator.Utilities.PropertyNotification;
+using TestCaseAutomator.Utilities.Observable;
 
 namespace TestCaseAutomator.ViewModels
 {

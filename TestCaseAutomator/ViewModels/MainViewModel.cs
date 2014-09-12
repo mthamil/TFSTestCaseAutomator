@@ -11,7 +11,7 @@ using TestCaseAutomator.TeamFoundation;
 using TestCaseAutomator.Utilities.Collections;
 using TestCaseAutomator.Utilities.Mvvm;
 using TestCaseAutomator.Utilities.Mvvm.Commands;
-using TestCaseAutomator.Utilities.PropertyNotification;
+using TestCaseAutomator.Utilities.Observable;
 
 namespace TestCaseAutomator.ViewModels
 {

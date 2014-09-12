@@ -1,13 +1,13 @@
 ﻿using System;
 using System.IO;
-using TestCaseAutomator.Utilities.PropertyNotification;
+using TestCaseAutomator.Utilities.Observable;
 
 namespace TestCaseAutomator.Configuration
 {
 	/// <summary>
 	/// An adapter around a generated .NET Settings class.
 	/// </summary>
-	public class DotNetSettings : PropertyChangedNotifier, ISettings
+	public class DotNetSettings : ObservableObject, ISettings
 	{
 		/// <summary>
 		/// Initializes a new instance of <see cref="DotNetSettings"/>.

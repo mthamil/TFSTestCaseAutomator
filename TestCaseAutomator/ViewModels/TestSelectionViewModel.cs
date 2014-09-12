@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TestCaseAutomator.TeamFoundation;
 using TestCaseAutomator.Utilities.Mvvm;
-using TestCaseAutomator.Utilities.PropertyNotification;
+using TestCaseAutomator.Utilities.Observable;
 using TestCaseAutomator.ViewModels.Browser;
 
 namespace TestCaseAutomator.ViewModels

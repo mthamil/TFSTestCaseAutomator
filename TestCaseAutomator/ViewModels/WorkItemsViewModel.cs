@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.TeamFoundation.TestManagement.Client;
 using TestCaseAutomator.TeamFoundation;
 using TestCaseAutomator.Utilities.Mvvm;
-using TestCaseAutomator.Utilities.PropertyNotification;
+using TestCaseAutomator.Utilities.Observable;
 
 namespace TestCaseAutomator.ViewModels
 {

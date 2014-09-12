@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using TestCaseAutomator.Utilities.Reflection;
 
-namespace TestCaseAutomator.Utilities.PropertyNotification
+namespace TestCaseAutomator.Utilities.Observable
 {
 	/// <summary>
 	/// Allows convenient creation of Property objects.

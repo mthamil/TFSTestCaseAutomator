@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-using TestCaseAutomator.Utilities.PropertyNotification;
+using TestCaseAutomator.Utilities.Observable;
 
 namespace TestCaseAutomator.Utilities.Mvvm.Commands
 {

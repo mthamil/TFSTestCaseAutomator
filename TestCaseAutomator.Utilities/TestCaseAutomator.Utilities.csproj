@@ -89,10 +89,10 @@
     <Compile Include="Mvvm\Commands\NamedRelayCommand.cs" />
     <Compile Include="Mvvm\Commands\RelayCommand.cs" />
     <Compile Include="Mvvm\ViewModelBase.cs" />
+    <Compile Include="Observable\ObservableObject.cs" />
     <Compile Include="Option.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PropertyNotification\Property.cs" />
-    <Compile Include="PropertyNotification\PropertyChangedNotifier.cs" />
+    <Compile Include="Observable\Property.cs" />
     <Compile Include="Reflection\Reflect.cs" />
     <Compile Include="Reflection\ReflectionExtensions.cs" />
     <Compile Include="WeakEventHandler.cs" />

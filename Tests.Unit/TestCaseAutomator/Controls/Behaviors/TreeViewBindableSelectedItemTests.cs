@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using System.Windows.Data;
 using TestCaseAutomator.Controls.Behaviors;
-using TestCaseAutomator.Utilities.PropertyNotification;
+using TestCaseAutomator.Utilities.Observable;
 using Xunit;
 
 namespace Tests.Unit.TestCaseAutomator.Controls.Behaviors
@@ -38,7 +38,7 @@ namespace Tests.Unit.TestCaseAutomator.Controls.Behaviors
 															// items to generate in the test.
 		}
 
-		public class TestViewModel : PropertyChangedNotifier
+		public class TestViewModel : ObservableObject
 		{
 			public TestViewModel()
 			{
@@ -54,7 +54,7 @@ namespace Tests.Unit.TestCaseAutomator.Controls.Behaviors
 			private readonly Property<bool> _isSelected;
 		}
 
-		public class SelectedItemWatcher : PropertyChangedNotifier
+        public class SelectedItemWatcher : ObservableObject
 		{
 			public SelectedItemWatcher()
 			{

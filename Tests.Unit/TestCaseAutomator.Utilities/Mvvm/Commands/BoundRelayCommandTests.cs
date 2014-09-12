@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TestCaseAutomator.Utilities.Mvvm;
 using TestCaseAutomator.Utilities.Mvvm.Commands;
-using TestCaseAutomator.Utilities.PropertyNotification;
+using TestCaseAutomator.Utilities.Observable;
 using Xunit;
 
 namespace Tests.Unit.TestCaseAutomator.Utilities.Mvvm.Commands

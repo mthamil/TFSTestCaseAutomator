@@ -6,7 +6,7 @@ using System.Windows.Input;
 using TestCaseAutomator.TeamFoundation;
 using TestCaseAutomator.Utilities.Mvvm;
 using TestCaseAutomator.Utilities.Mvvm.Commands;
-using TestCaseAutomator.Utilities.PropertyNotification;
+using TestCaseAutomator.Utilities.Observable;
 
 namespace TestCaseAutomator.ViewModels.Browser
 {
