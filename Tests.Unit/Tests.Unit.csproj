@@ -127,7 +127,7 @@
     <Compile Include="TestCaseAutomator.Utilities\Mvvm\Commands\DependentBoundRelayCommandTests.cs" />
     <Compile Include="TestCaseAutomator.Utilities\Mvvm\Commands\RelayCommandTests.cs" />
     <Compile Include="TestCaseAutomator.Utilities\OptionTests.cs" />
-    <Compile Include="TestCaseAutomator.Utilities\PropertyNotification\PropertyTests.cs" />
+    <Compile Include="TestCaseAutomator.Utilities\Observable\PropertyTests.cs" />
     <Compile Include="TestCaseAutomator.Utilities\Reflection\ReflectionExtensionsTests.cs" />
     <Compile Include="TestCaseAutomator.Utilities\Reflection\ReflectTests.cs" />
     <Compile Include="TestCaseAutomator\Configuration\DotNetSettingsTests.cs" />

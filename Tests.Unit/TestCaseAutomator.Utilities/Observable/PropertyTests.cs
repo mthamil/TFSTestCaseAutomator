@@ -4,7 +4,7 @@ using System.ComponentModel;
 using TestCaseAutomator.Utilities.Observable;
 using Xunit;
 
-namespace Tests.Unit.TestCaseAutomator.Utilities.PropertyNotification
+namespace Tests.Unit.TestCaseAutomator.Utilities.Observable
 {
 	public class PropertyTests : ObservableObject
 	{
