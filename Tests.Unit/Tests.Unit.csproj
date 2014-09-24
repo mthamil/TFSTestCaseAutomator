@@ -118,7 +118,7 @@
     <Compile Include="TestCaseAutomator.Utilities\Concurrency\TasksTests.cs" />
     <Compile Include="TestCaseAutomator.Utilities\DisposableBaseTests.cs" />
     <Compile Include="TestCaseAutomator.Utilities\DisposableExtensionsTests.cs" />
-    <Compile Include="TestCaseAutomator.Utilities\InputOutput\FileInfoPathEqualityComparerTests.cs" />
+    <Compile Include="TestCaseAutomator.Utilities\InputOutput\FileSystemInfoPathEqualityComparerTests.cs" />
     <Compile Include="TestCaseAutomator.Utilities\InputOutput\TemporaryFileTests.cs" />
     <Compile Include="TestCaseAutomator.Utilities\Mvvm\Commands\AggregateBoundRelayCommandTests.cs" />
     <Compile Include="TestCaseAutomator.Utilities\Mvvm\Commands\AsyncRelayCommandTests.cs" />

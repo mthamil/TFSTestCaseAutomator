@@ -37,7 +37,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 			TestCase = testCase;
 
 			_selectedFile = Property.New(this, p => p.SelectedFile, OnPropertyChanged)
-			                        .EqualWhen((f1, f2) => FileInfoPathEqualityComparer.Instance.Equals(f1, f2));
+			                        .EqualWhen((f1, f2) => FileSystemInfoPathEqualityComparer.Instance.Equals(f1, f2));
 			_tests = Property.New(this, p => p.Tests, OnPropertyChanged);
 			_selectedTest = Property.New(this, p => p.SelectedTest, OnPropertyChanged)
 									.AlsoChanges(p => p.CanSaveTestCase);
