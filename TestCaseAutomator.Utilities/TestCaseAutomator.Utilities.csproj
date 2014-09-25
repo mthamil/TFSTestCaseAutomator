@@ -90,6 +90,7 @@
     <Compile Include="Mvvm\Commands\RelayCommand.cs" />
     <Compile Include="Mvvm\ViewModelBase.cs" />
     <Compile Include="Observable\ObservableObject.cs" />
+    <Compile Include="Observable\PropertyBuilderEqualityExtensions.cs" />
     <Compile Include="Option.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Observable\Property.cs" />

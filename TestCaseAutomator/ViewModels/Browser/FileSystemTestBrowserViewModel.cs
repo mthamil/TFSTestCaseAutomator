@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using TestCaseAutomator.AutomationProviders.Interfaces;
 using TestCaseAutomator.Utilities.Collections;
-using TestCaseAutomator.Utilities.InputOutput;
 using TestCaseAutomator.Utilities.Mvvm;
 using TestCaseAutomator.Utilities.Mvvm.Commands;
 using TestCaseAutomator.Utilities.Observable;
@@ -36,8 +35,8 @@ namespace TestCaseAutomator.ViewModels.Browser
 			_scheduler = scheduler;
 			TestCase = testCase;
 
-			_selectedFile = Property.New(this, p => p.SelectedFile, OnPropertyChanged)
-			                        .EqualWhen((f1, f2) => FileSystemInfoPathEqualityComparer.Instance.Equals(f1, f2));
+		    _selectedFile = Property.New(this, p => p.SelectedFile, OnPropertyChanged)
+		                            .UsingPathEquality();
 			_tests = Property.New(this, p => p.Tests, OnPropertyChanged);
 			_selectedTest = Property.New(this, p => p.SelectedTest, OnPropertyChanged)
 									.AlsoChanges(p => p.CanSaveTestCase);
