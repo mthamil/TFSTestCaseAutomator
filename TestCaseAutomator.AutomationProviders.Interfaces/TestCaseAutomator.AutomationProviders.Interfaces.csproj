@@ -55,7 +55,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="TestCaseAutomator.AutomationProviders.Interfaces.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -63,6 +65,7 @@
     <MSBuildCommunityTasksPath>$(SolutionDir)\.build</MSBuildCommunityTasksPath>
   </PropertyGroup>
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
+  <Import Project="$(SolutionDir)\.build\NuGet.targets" />
   <Target Name="BeforeBuild" Condition="'$(Configuration)' == 'Package'">
     <Version Major="1" Minor="0" BuildType="Automatic" StartDate="10/17/2013" RevisionType="BuildIncrement">
       <Output TaskParameter="Major" PropertyName="Major" />
@@ -72,7 +75,6 @@
     </Version>
     <AssemblyInfo CodeLanguage="CS" OutputFile="Properties\AssemblyInfo.Versions.cs" AssemblyVersion="$(Major).$(Minor).0.0" AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)" />
   </Target>
-  <Import Project="$(SolutionDir)\.build\NuGet.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

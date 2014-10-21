@@ -3,7 +3,7 @@
 
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.build\MSBuild.Community.Tasks.Targets" />
-
+ 
   <Target Name="AfterBuild" Condition="'$(Configuration)' == 'Package'">
     <PropertyGroup>
       <CopyrightNotice>Copyright $([System.DateTime]::Now.Year)</CopyrightNotice>
@@ -23,7 +23,8 @@
     <NuGetPack File="$(StagingDirectory)\$(MSBuildProjectName).nuspec" 
                OutputDirectory="$(OutputDirectory)" 
                Version="$(Major).$(Minor).$(Build).$(Revision)" 
-               Properties="id=$(MSBuildProjectName);copyright=$(CopyrightNotice)" />
+               Properties="id=$(MSBuildProjectName);copyright=$(CopyrightNotice)" 
+               ToolPath="$(SolutionDir)\packages\NuGet.CommandLine.2.8.3\tools\"/>
     <RemoveDir Directories="$(StagingDirectory)" />
   </Target>
 
