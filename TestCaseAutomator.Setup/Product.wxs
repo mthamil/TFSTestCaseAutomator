@@ -65,8 +65,12 @@
         <File Id="AutomationProviderInterfacesDll" Name="$(var.TestCaseAutomator.AutomationProviders.Interfaces.TargetFileName)" Source="$(var.TestCaseAutomator.AutomationProviders.Interfaces.TargetPath)" KeyPath="yes"/>
       </Component>
       
-      <Component Id="UtilitiesLib" Guid="E33A482C-18CB-42B9-9B84-E6E68FB24066">
-        <File Id="UtilitiesDll" Name="$(var.TestCaseAutomator.Utilities.TargetFileName)" Source="$(var.TestCaseAutomator.Utilities.TargetPath)" KeyPath="yes"/>
+      <Component Id="SharpEssentialsLib" Guid="E33A482C-18CB-42B9-9B84-E6E68FB24066">
+        <File Id="SharpEssentialsDll" Name="$(var.SharpEssentials.TargetFileName)" Source="$(var.SharpEssentials.TargetPath)" KeyPath="yes"/>
+      </Component>
+
+      <Component Id="SharpEssentialsControlsLib" Guid="3FE6E2E0-1ADA-4C59-8731-9F9FAEA2F774">
+        <File Id="SharpEssentialsControlsDll" Name="$(var.SharpEssentials.Controls.TargetFileName)" Source="$(var.SharpEssentials.Controls.TargetPath)" KeyPath="yes"/>
       </Component>
       
       <Component Id="WiLinqLib" Guid="8E9C279D-97A8-4D69-A009-6D1342CE943C">

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TestCaseAutomator.TeamFoundation;
-using TestCaseAutomator.Utilities.Collections;
+using SharpEssentials.Collections;
 
 namespace TestCaseAutomator.ViewModels.Browser
 {

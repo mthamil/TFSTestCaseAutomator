@@ -8,10 +8,10 @@ using System.Windows.Input;
 using Microsoft.TeamFoundation;
 using Microsoft.TeamFoundation.TestManagement.Client;
 using TestCaseAutomator.TeamFoundation;
-using TestCaseAutomator.Utilities.Collections;
-using TestCaseAutomator.Utilities.Mvvm;
-using TestCaseAutomator.Utilities.Mvvm.Commands;
-using TestCaseAutomator.Utilities.Observable;
+using SharpEssentials.Collections;
+using SharpEssentials.Controls.Mvvm;
+using SharpEssentials.Controls.Mvvm.Commands;
+using SharpEssentials.Observable;
 
 namespace TestCaseAutomator.ViewModels
 {

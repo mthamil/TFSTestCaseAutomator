@@ -1,17 +1,18 @@
 ﻿<Window x:Class="TestCaseAutomator.Views.Browser.FileSystemTestBrowser"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ctrl="clr-namespace:TestCaseAutomator.Controls"
-        xmlns:Clickable="clr-namespace:TestCaseAutomator.Controls.Behaviors.Clickable"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:clickable="clr-namespace:SharpEssentials.Controls.Behaviors.Clickable;assembly=SharpEssentials.Controls"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:convert="clr-namespace:TestCaseAutomator.Controls.Converters"
-        xmlns:Behaviors="clr-namespace:TestCaseAutomator.Controls.Behaviors"
+        xmlns:behaviors="clr-namespace:SharpEssentials.Controls.Behaviors;assembly=SharpEssentials.Controls"
         xmlns:Browser="clr-namespace:TestCaseAutomator.Views.Browser"
+        xmlns:ctrls="clr-namespace:SharpEssentials.Controls;assembly=SharpEssentials.Controls"
         Title="File System Test Browser" Height="500" Width="600"
         WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
-        Behaviors:WindowBehaviors.DialogResult="{Binding HasBeenSaved}">
+        behaviors:WindowBehaviors.DialogResult="{Binding HasBeenSaved}">
 
     <i:Interaction.Behaviors>
-        <Behaviors:TitleBarOptions ShowButtons="False"/>
+        <behaviors:TitleBarOptions ShowButtons="False"/>
     </i:Interaction.Behaviors>
 
     <Window.Resources>
@@ -54,14 +55,13 @@
                     ToolTip="Select file containing tests" IsEnabled="{Binding CanBrowse}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
-                        <Clickable:BindableClickAction/>
+                        <clickable:BindableClickAction/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>
 
-            <ctrl:FileSystemPicker SelectedPath="{Binding SelectedFile, Mode=OneWayToSource}"
-                                   Mode="Open"
-                                   Trigger="{Binding ElementName=SelectFileButton, Path=(Clickable:BindableClick.IsClicked)}"/>
+            <ctrls:FileSystemPicker SelectedPath="{Binding SelectedFile, Mode=OneWayToSource}" Mode="Open"
+                                       Trigger="{Binding ElementName=SelectFileButton, Path=(clickable:BindableClick.IsClicked)}"/>
         </Grid>
 
         <ListView Grid.Row="2" Name="TestListView" ItemsSource="{Binding Tests}" SelectedItem="{Binding SelectedTest}"

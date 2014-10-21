@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using Microsoft.TeamFoundation.TestManagement.Client;
 using Moq;
+using SharpEssentials.Testing;
 using TestCaseAutomator.TeamFoundation.TestCaseAssociation;
 using TestCaseAutomator.ViewModels;
 using Xunit;

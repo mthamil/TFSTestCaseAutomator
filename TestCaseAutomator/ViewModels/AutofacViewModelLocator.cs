@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 using Autofac;
-using TestCaseAutomator.Utilities.Observable;
+using SharpEssentials.Observable;
 
 namespace TestCaseAutomator.ViewModels
 {

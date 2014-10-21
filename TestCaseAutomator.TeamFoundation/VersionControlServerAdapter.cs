@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.TeamFoundation.VersionControl.Client;
-using TestCaseAutomator.Utilities;
+using SharpEssentials;
 
 namespace TestCaseAutomator.TeamFoundation
 {

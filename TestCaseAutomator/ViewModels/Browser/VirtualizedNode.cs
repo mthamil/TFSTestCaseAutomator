@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using TestCaseAutomator.Utilities.Mvvm.Commands;
-using TestCaseAutomator.Utilities.Observable;
+using SharpEssentials.Controls.Mvvm.Commands;
+using SharpEssentials.Observable;
 
 namespace TestCaseAutomator.ViewModels.Browser
 {

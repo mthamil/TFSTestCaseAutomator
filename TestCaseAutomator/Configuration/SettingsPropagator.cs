@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using TestCaseAutomator.Utilities.Reflection;
+using SharpEssentials.Reflection;
 using TestCaseAutomator.ViewModels;
 
 namespace TestCaseAutomator.Configuration

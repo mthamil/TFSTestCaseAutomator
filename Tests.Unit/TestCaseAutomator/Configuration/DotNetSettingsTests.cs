@@ -1,4 +1,5 @@
 ﻿using System;
+using SharpEssentials.Testing;
 using TestCaseAutomator.Configuration;
 using Xunit;
 

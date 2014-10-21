@@ -4,10 +4,10 @@
         xmlns:xtn="clr-namespace:TestCaseAutomator.Views.MarkupExtensions"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:vm="clr-namespace:TestCaseAutomator.ViewModels"
-        xmlns:cmds="clr-namespace:TestCaseAutomator.Controls.Commands"
+        xmlns:cmds="clr-namespace:SharpEssentials.Controls.Commands;assembly=SharpEssentials.Controls"
         xmlns:vw="clr-namespace:TestCaseAutomator.Views.Browser"
-        xmlns:ctrls="clr-namespace:TestCaseAutomator.Controls"
-        xmlns:Clickable="clr-namespace:TestCaseAutomator.Controls.Behaviors.Clickable"
+        xmlns:ctrls="clr-namespace:SharpEssentials.Controls;assembly=SharpEssentials.Controls"
+        xmlns:clickable="clr-namespace:SharpEssentials.Controls.Behaviors.Clickable;assembly=SharpEssentials.Controls"
         Title="Test Case Automator" Height="500" Width="1000"
         WindowStartupLocation="CenterScreen"
         DataContext="{Binding Source={xtn:ViewModelLocator {x:Type vm:MainViewModel}}, Path=ViewModel}">
@@ -114,14 +114,14 @@
 
                                     <ctrls:MessageBox AffirmativeAction="{Binding RemoveAutomationCommand}"
                                                       Message="{Binding Id, StringFormat='Are you sure you want to remove automation for Test Case {0}?'}"
-                                                      Trigger="{Binding ElementName=RemoveAutomationButton, Path=(Clickable:BindableClick.IsClicked)}" 
+                                                      Trigger="{Binding ElementName=RemoveAutomationButton, Path=(clickable:BindableClick.IsClicked)}" 
                                                       Caption="Remove Automation?" Type="OKCancel"/>
 
                                     <Button Name="RemoveAutomationButton" ToolTip="Remove associated automation." IsEnabled="{Binding CanRemoveAutomation}"
                                             HorizontalAlignment="Right" VerticalContentAlignment="Center" Width="25" Height="25">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="Click">
-                                                <Clickable:BindableClickAction/>
+                                                <clickable:BindableClickAction/>
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
                                         <Image Source="{StaticResource RemoveIcon}" Style="{StaticResource DisableableIcon}" 

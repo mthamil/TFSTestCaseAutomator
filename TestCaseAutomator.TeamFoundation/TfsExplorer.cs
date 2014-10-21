@@ -4,8 +4,8 @@ using System.Linq;
 using Microsoft.TeamFoundation.Framework.Common;
 using Microsoft.TeamFoundation.TestManagement.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
-using TestCaseAutomator.Utilities;
-using TestCaseAutomator.Utilities.Collections;
+using SharpEssentials;
+using SharpEssentials.Collections;
 
 namespace TestCaseAutomator.TeamFoundation
 {

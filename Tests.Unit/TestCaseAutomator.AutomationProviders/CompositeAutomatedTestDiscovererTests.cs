@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Moq;
+using SharpEssentials.Testing;
 using TestCaseAutomator.AutomationProviders;
 using TestCaseAutomator.AutomationProviders.Interfaces;
-using TestCaseAutomator.Utilities.Collections;
+using SharpEssentials.Collections;
 using Xunit;
 
 namespace Tests.Unit.TestCaseAutomator.AutomationProviders

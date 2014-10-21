@@ -5,9 +5,9 @@ using System.Windows.Input;
 using Microsoft.TeamFoundation.TestManagement.Client;
 using TestCaseAutomator.AutomationProviders.Interfaces;
 using TestCaseAutomator.TeamFoundation.TestCaseAssociation;
-using TestCaseAutomator.Utilities.Mvvm;
-using TestCaseAutomator.Utilities.Mvvm.Commands;
-using TestCaseAutomator.Utilities.Reflection;
+using SharpEssentials.Controls.Mvvm;
+using SharpEssentials.Controls.Mvvm.Commands;
+using SharpEssentials.Reflection;
 
 namespace TestCaseAutomator.ViewModels
 {

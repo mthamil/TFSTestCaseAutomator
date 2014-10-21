@@ -4,9 +4,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using TestCaseAutomator.TeamFoundation;
-using TestCaseAutomator.Utilities.Mvvm;
-using TestCaseAutomator.Utilities.Mvvm.Commands;
-using TestCaseAutomator.Utilities.Observable;
+using SharpEssentials.Controls.Mvvm;
+using SharpEssentials.Controls.Mvvm.Commands;
+using SharpEssentials.Observable;
 
 namespace TestCaseAutomator.ViewModels.Browser
 {

@@ -5,8 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using TestCaseAutomator.AutomationProviders.Interfaces;
 using TestCaseAutomator.TeamFoundation;
-using TestCaseAutomator.Utilities.Collections;
-using TestCaseAutomator.Utilities.InputOutput;
+using SharpEssentials.Collections;
+using SharpEssentials.InputOutput;
 
 namespace TestCaseAutomator.ViewModels.Browser
 {

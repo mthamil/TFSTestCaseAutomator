@@ -7,10 +7,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TestCaseAutomator.AutomationProviders.Interfaces;
-using TestCaseAutomator.Utilities.Collections;
-using TestCaseAutomator.Utilities.Mvvm;
-using TestCaseAutomator.Utilities.Mvvm.Commands;
-using TestCaseAutomator.Utilities.Observable;
+using SharpEssentials.Collections;
+using SharpEssentials.Controls.Mvvm;
+using SharpEssentials.Controls.Mvvm.Commands;
+using SharpEssentials.Observable;
 
 namespace TestCaseAutomator.ViewModels.Browser
 {

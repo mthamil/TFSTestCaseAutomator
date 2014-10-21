@@ -3,7 +3,7 @@ using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.TeamFoundation.TestManagement.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
-using TestCaseAutomator.Utilities;
+using SharpEssentials;
 
 namespace TestCaseAutomator.TeamFoundation
 {

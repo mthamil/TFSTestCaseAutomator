@@ -6,8 +6,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.TeamFoundation.TestManagement.Client;
 using TestCaseAutomator.TeamFoundation;
-using TestCaseAutomator.Utilities.Mvvm;
-using TestCaseAutomator.Utilities.Observable;
+using SharpEssentials.Controls.Mvvm;
+using SharpEssentials.Observable;
 
 namespace TestCaseAutomator.ViewModels
 {

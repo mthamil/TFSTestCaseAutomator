@@ -108,25 +108,8 @@
     <Compile Include="Container\PresentationModule.cs" />
     <Compile Include="Container\Support\NonPublicConstructorFinder.cs" />
     <Compile Include="Container\Support\RegistrationExtensions.cs" />
-    <Compile Include="Controls\Behaviors\Clickable\BindableClick.cs" />
-    <Compile Include="Controls\Behaviors\Clickable\BindableClickAction.cs" />
-    <Compile Include="Controls\Behaviors\LoadDependentBehavior.cs" />
-    <Compile Include="Controls\Behaviors\TitleBarOptions.cs" />
-    <Compile Include="Controls\Behaviors\TreeViewBindableSelectedItem.cs" />
-    <Compile Include="Controls\Behaviors\TreeViewItemExpandedCommandBehavior.cs" />
-    <Compile Include="Controls\Behaviors\TreeViewItemSelectedCommandBehavior.cs" />
-    <Compile Include="Controls\Behaviors\WindowBehaviors.cs" />
-    <Compile Include="Controls\Commands\CloseWindowCommand.cs" />
-    <Compile Include="Controls\Commands\DependencyCommandBase.cs" />
-    <Compile Include="Controls\Commands\OpenDialogCommand.cs" />
     <Compile Include="Controls\Converters\FileInfoConverter.cs" />
     <Compile Include="Controls\Converters\StringIsNullOrEmptyConverter.cs" />
-    <Compile Include="Controls\FileSystemPicker.cs" />
-    <Compile Include="Controls\MessageBox.cs" />
-    <Compile Include="Controls\ScrollableMessageBox.xaml.cs">
-      <DependentUpon>ScrollableMessageBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\TreeViewExtensions.cs" />
     <Compile Include="UnhandledErrorHandler.cs" />
     <Compile Include="ViewModels\AutofacViewModelLocator.cs" />
     <Compile Include="ViewModels\Browser\AutomatedTestSelectedEventArgs.cs" />
@@ -167,10 +150,6 @@
     </Compile>
     <Compile Include="Views\MarkupExtensions\ActivatorExtension.cs" />
     <Compile Include="Views\MarkupExtensions\ViewModelLocator.cs" />
-    <Page Include="Controls\ScrollableMessageBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Resources\Icons\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -214,6 +193,14 @@
     <Resource Include="Resources\Icons\folder-horizontal-open-16x16.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SharpEssentials\SharpEssentials.Controls\SharpEssentials.Controls.csproj">
+      <Project>{3be8d9dc-ddc3-47d8-848f-68cf43026cca}</Project>
+      <Name>SharpEssentials.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharpEssentials\SharpEssentials\SharpEssentials.csproj">
+      <Project>{573d5f8c-4c19-42c3-b84b-bc585008b505}</Project>
+      <Name>SharpEssentials</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TestCaseAutomator.AutomationProviders.Interfaces\TestCaseAutomator.AutomationProviders.Interfaces.csproj">
       <Project>{AD71ADB9-E579-4A13-B3A0-9051FF5B075D}</Project>
       <Name>TestCaseAutomator.AutomationProviders.Interfaces</Name>
@@ -225,10 +212,6 @@
     <ProjectReference Include="..\TestCaseAutomator.TeamFoundation\TestCaseAutomator.TeamFoundation.csproj">
       <Project>{73169659-ABD5-4A80-8C0E-C774BA166519}</Project>
       <Name>TestCaseAutomator.TeamFoundation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TestCaseAutomator.Utilities\TestCaseAutomator.Utilities.csproj">
-      <Project>{9B948621-F11E-4503-AA62-142128E6BB6A}</Project>
-      <Name>TestCaseAutomator.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

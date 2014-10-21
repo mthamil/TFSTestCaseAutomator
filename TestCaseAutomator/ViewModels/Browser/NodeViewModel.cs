@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using TestCaseAutomator.Utilities.Mvvm;
-using TestCaseAutomator.Utilities.Observable;
+using SharpEssentials.Controls.Mvvm;
+using SharpEssentials.Observable;
 
 namespace TestCaseAutomator.ViewModels.Browser
 {

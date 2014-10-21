@@ -3,9 +3,9 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Input;
 using TestCaseAutomator.AutomationProviders.Interfaces;
-using TestCaseAutomator.Utilities.Mvvm;
-using TestCaseAutomator.Utilities.Mvvm.Commands;
-using TestCaseAutomator.Utilities.Observable;
+using SharpEssentials.Controls.Mvvm;
+using SharpEssentials.Controls.Mvvm.Commands;
+using SharpEssentials.Observable;
 
 namespace TestCaseAutomator.ViewModels.Browser
 {

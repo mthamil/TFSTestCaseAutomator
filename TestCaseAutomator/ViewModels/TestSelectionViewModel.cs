@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TestCaseAutomator.TeamFoundation;
-using TestCaseAutomator.Utilities.Mvvm;
-using TestCaseAutomator.Utilities.Observable;
+using SharpEssentials.Controls.Mvvm;
+using SharpEssentials.Observable;
 using TestCaseAutomator.ViewModels.Browser;
 
 namespace TestCaseAutomator.ViewModels
