@@ -148,7 +148,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\MarkupExtensions\ActivatorExtension.cs" />
     <Compile Include="Views\MarkupExtensions\ViewModelLocator.cs" />
     <Page Include="Resources\Icons\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>

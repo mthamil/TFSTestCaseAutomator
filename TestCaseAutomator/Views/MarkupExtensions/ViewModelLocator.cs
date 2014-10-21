@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Markup;
+using SharpEssentials.Controls.Markup;
 using TestCaseAutomator.ViewModels;
 
 namespace TestCaseAutomator.Views.MarkupExtensions
