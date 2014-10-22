@@ -62,9 +62,9 @@ namespace TestCaseAutomator.TeamFoundation
 		}
 
 		/// <see cref="IQueryProvider.CreateQuery{TElement}"/>
-		public IQueryable<TElement> CreateQuery<TElement>(Expression expression)
+		public IQueryable<T> CreateQuery<T>(Expression expression)
 		{
-			return new TestCaseQueryable<TElement>(_innerQuery.Provider.CreateQuery<TElement>(expression), Project);
+			return new TestCaseQueryable<T>(_innerQuery.Provider.CreateQuery<T>(expression), Project);
 		}
 
 		/// <see cref="IQueryProvider.Execute"/>
