@@ -9,3 +9,5 @@ details is available.
 
 At a bare minimum, the Visual Studio shell should be installed on the target computer for the application to connect to a TFS server. This shell
 comes with Visual Studio Test Professional, for example.
+
+[![Build status](https://ci.appveyor.com/api/projects/status/trbslo0vug5xkur0)](https://ci.appveyor.com/project/mthamil/tfstestcaseautomator)
