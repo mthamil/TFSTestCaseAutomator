@@ -16,24 +16,24 @@ namespace xUnit.AutomationProvider
 		/// <param name="methodName">The method name of the test</param>
 		public XUnitTestAutomation(string assemblyName, string typeName, string methodName)
 		{
-			Name =  String.Format("{0}.{1}", typeName, methodName);
-			Identifier = _identifierFactory.CreateIdentifier(Name);
+			Name = $"{typeName}.{methodName}";
+			Identifier = IdentifierFactory.CreateIdentifier(Name);
 			Storage = assemblyName;
 			TestType = "Unit Test";
 		}
 
 		/// <see cref="ITestAutomation.Identifier"/>
-		public Guid Identifier { get; private set; }
+		public Guid Identifier { get; }
 
 		/// <see cref="ITestAutomation.Name"/>
-		public string Name { get; private set; }
+		public string Name { get; }
 
 		/// <see cref="ITestAutomation.TestType"/>
-		public string TestType { get; private set; }
+		public string TestType { get; }
 
 		/// <see cref="ITestAutomation.Storage"/>
-		public string Storage { get; private set; }
+		public string Storage { get; }
 
-		private static readonly ITestIdentifierFactory _identifierFactory = new HashedIdentifierFactory();
+		private static readonly ITestIdentifierFactory IdentifierFactory = new HashedIdentifierFactory();
 	}
 }

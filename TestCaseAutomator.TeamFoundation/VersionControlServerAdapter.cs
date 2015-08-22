@@ -23,31 +23,28 @@ namespace TestCaseAutomator.TeamFoundation
 		}
 
 		/// <see cref="IVersionControl.GetItem"/>
-		public IVersionedItem GetItem(string path)
-		{
-			return new VersionedItem(_versionControl.GetItem(path));
-		}
+		public IVersionedItem GetItem(string path) => new VersionedItem(_versionControl.GetItem(path));
 
-		/// <see cref="IVersionControl.GetItems(string)"/>
-		public IReadOnlyList<IVersionedItem> GetItems(string path)
-		{
-			return _versionControl.GetItems(path).Items.Select(i => new VersionedItem(i)).ToList<IVersionedItem>();
-		}
+	    /// <see cref="IVersionControl.GetItems(string)"/>
+		public IReadOnlyList<IVersionedItem> GetItems(string path) 
+            => _versionControl.GetItems(path)
+                              .Items
+                              .Select(i => new VersionedItem(i))
+                              .ToList<IVersionedItem>();
 
-		/// <see cref="IVersionControl.GetItems(string,Microsoft.TeamFoundation.VersionControl.Client.RecursionType)"/>
-		public IReadOnlyList<IVersionedItem> GetItems(string path, RecursionType recursion)
-		{
-			return _versionControl.GetItems(path, recursion).Items.Select(i => new VersionedItem(i)).ToList<IVersionedItem>();
-		}
+	    /// <see cref="IVersionControl.GetItems(string,Microsoft.TeamFoundation.VersionControl.Client.RecursionType)"/>
+		public IReadOnlyList<IVersionedItem> GetItems(string path, RecursionType recursion) 
+            => _versionControl.GetItems(path, recursion)
+                              .Items
+                              .Select(i => new VersionedItem(i))
+                              .ToList<IVersionedItem>();
 
-		/// <see cref="IVersionControl.ChangeCommitted"/>
+	    /// <see cref="IVersionControl.ChangeCommitted"/>
 		public event EventHandler<CommitCheckinEventArgs> ChangeCommitted;
 
 		private void versionControl_CommitCheckin(object sender, CommitCheckinEventArgs e)
 		{
-			var localEvent = ChangeCommitted;
-			if (localEvent != null)
-				localEvent(this, e);
+            ChangeCommitted?.Invoke(this, e);
 		}
 
 		/// <see cref="DisposableBase.OnDisposing"/>

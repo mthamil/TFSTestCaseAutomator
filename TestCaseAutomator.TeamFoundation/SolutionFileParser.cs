@@ -21,14 +21,12 @@ namespace TestCaseAutomator.TeamFoundation
 		/// <summary>
 		/// Returns the projects in a solution.
 		/// </summary>
-		public IEnumerable<string> GetProjects()
-		{
-			return Lines(_solutionStream)
-				.Where(l => l.StartsWith("Project(") && !l.Contains(solutionFolderGuidString))
-				.Select(l => l.Split(',')[1].Trim('"', ' '));
-		}
+		public IEnumerable<string> GetProjects() 
+            => Lines(_solutionStream)
+		        .Where(l => l.StartsWith("Project(") && !l.Contains(solutionFolderGuidString))
+		        .Select(l => l.Split(',')[1].Trim('"', ' '));
 
-		/// <summary>
+	    /// <summary>
 		/// Returns a stream as a sequence of lines.
 		/// </summary>
 		/// <param name="stream">The stream to iterate over</param>

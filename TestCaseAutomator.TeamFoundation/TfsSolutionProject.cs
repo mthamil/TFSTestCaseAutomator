@@ -32,12 +32,9 @@ namespace TestCaseAutomator.TeamFoundation
 		/// <summary>
 		/// The GUIDs identifying the type of a project.
 		/// </summary>
-		public IEnumerable<Guid> ProjectTypeGuids
-		{
-			get { return _projectTypeGuids.Value; }
-		}
+		public IEnumerable<Guid> ProjectTypeGuids => _projectTypeGuids.Value;
 
-		/// <summary>
+	    /// <summary>
 		/// The files in a project.
 		/// </summary>
 		/// <param name="fileExtensionFilter">Any file extensions to filter out. If empty, all file extensions are returned.</param>

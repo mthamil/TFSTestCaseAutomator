@@ -53,35 +53,20 @@ namespace TestCaseAutomator.ViewModels.Browser
 		}
 
 		/// <see cref="INodeViewModel.IsSelected"/>
-		public virtual ICommand SelectedCommand
-		{
-			get;
-			set;
-		}
+		public virtual ICommand SelectedCommand { get; set; }
 
 		/// <see cref="INodeViewModel.IsSelected"/>
-		public virtual ICommand ExpandedCommand
-		{
-			get;
-			set;
-		}
+		public virtual ICommand ExpandedCommand { get; set; }
 
-		/// <see cref="INodeViewModel{TChild}.Children"/>
-		public ICollection<TChild> Children
-		{
-			get { return _children.Value; }
-		}
+        /// <see cref="INodeViewModel{TChild}.Children"/>
+        public ICollection<TChild> Children => _children.Value;
 
-		/// <see cref="INodeViewModel.IconUri"/>
-		public Uri IconUri
-		{
-			get; 
-			set;
-		}
+	    /// <see cref="INodeViewModel.IconUri"/>
+		public Uri IconUri { get; set; }
 
-		#endregion
+        #endregion
 
-		private readonly Property<bool> _isSelected;
+        private readonly Property<bool> _isSelected;
 		private readonly Property<bool> _isExpanded;
 		private readonly Property<bool> _isEnabled;
 		private readonly Property<ICollection<TChild>> _children;

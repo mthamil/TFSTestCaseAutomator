@@ -22,20 +22,16 @@ namespace TestCaseAutomator.TeamFoundation
 		/// <summary>
 		/// Provides an <see cref="IQueryable"/> over the test cases in a project.
 		/// </summary>
-		public IQueryable<WorkItem> TestCases()
-		{
-			return new TestCaseQueryable<WorkItem>(_testManagement.WitProject.WorkItemSet(), _testManagement)
-				.Where(wi => wi.Field<string>(SystemField.WorkItemType) == "Test Case");
-		}
+		public IQueryable<WorkItem> TestCases() 
+            => new TestCaseQueryable<WorkItem>(_testManagement.WitProject.WorkItemSet(), 
+                                               _testManagement)
+		            .Where(wi => wi.Field<string>(SystemField.WorkItemType) == "Test Case");
 
-		/// <summary>
+	    /// <summary>
 		/// The name of the Team Foundation project.
 		/// </summary>
-		public string ProjectName
-		{
-			get { return _testManagement.TeamProjectName; }
-		}
+		public string ProjectName => _testManagement.TeamProjectName;
 
-		private readonly ITestManagementTeamProject _testManagement;
+	    private readonly ITestManagementTeamProject _testManagement;
 	}
 }

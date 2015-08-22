@@ -28,18 +28,12 @@ namespace TestCaseAutomator.ViewModels.Browser
 		}
 
 		/// <see cref="INodeViewModel.Name"/>
-		public override string Name
-		{
-			get { return _solution.Name; }
-		}
+		public override string Name => _solution.Name;
 
-		/// <see cref="VirtualizedNode{TChild}.DummyNode"/>
-		protected override ProjectViewModel DummyNode
-		{
-			get { return _dummy; }
-		}
+	    /// <see cref="VirtualizedNode{TChild}.DummyNode"/>
+		protected override ProjectViewModel DummyNode => Dummy;
 
-		/// <see cref="VirtualizedNode{TChild}.LoadChildrenAsync"/>
+	    /// <see cref="VirtualizedNode{TChild}.LoadChildrenAsync"/>
 		protected override Task<IReadOnlyCollection<ProjectViewModel>> LoadChildrenAsync(IProgress<ProjectViewModel> progress)
 		{
 			Invalidate();	// Reload on next query.
@@ -55,12 +49,12 @@ namespace TestCaseAutomator.ViewModels.Browser
 		private readonly Func<TfsSolutionProject, ProjectViewModel> _projectFactory;
 		private readonly TaskScheduler _scheduler;
 
-		private static readonly DummyProject _dummy = new DummyProject();
+		private static readonly DummyProject Dummy = new DummyProject();
 
 		private class DummyProject : ProjectViewModel
 		{
 			public DummyProject() : base(null, null, null) { }
-			public override string Name { get { return "Loading..."; } }
+			public override string Name => "Loading...";
 		}
 	}
 }

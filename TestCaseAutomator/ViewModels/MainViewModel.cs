@@ -85,22 +85,19 @@ namespace TestCaseAutomator.ViewModels
 		/// <summary>
 		/// Available project names.
 		/// </summary>
-		public ICollection<string> ProjectNames
-		{
-			get { return _projectNames; }
-		}
+		public ICollection<string> ProjectNames => _projectNames;
 
-		/// <summary>
+	    /// <summary>
 		/// Contains work items from the current server and project.
 		/// </summary>
-		public IWorkItems WorkItems { get; private set; }
+		public IWorkItems WorkItems { get; }
 
-        public TestSelectionViewModel TestSelection { get; private set; }
+        public TestSelectionViewModel TestSelection { get; }
 
 		/// <summary>
 		/// Command that forces a server refresh.
 		/// </summary>
-		public ICommand RefreshCommand { get; private set; }
+		public ICommand RefreshCommand { get; }
 
 		/// <summary>
 		/// Refreshes data from the server.
@@ -117,7 +114,7 @@ namespace TestCaseAutomator.ViewModels
 		/// <summary>
 		/// Command invoked when the application is closing.
 		/// </summary>
-		public ICommand CloseCommand { get; private set; }
+		public ICommand CloseCommand { get; }
 
 		private void Close()
 		{
@@ -129,9 +126,7 @@ namespace TestCaseAutomator.ViewModels
 
 		private void OnClosing()
 		{
-			var localEvent = Closing;
-			if (localEvent != null)
-                localEvent(this, EventArgs.Empty);
+            Closing?.Invoke(this, EventArgs.Empty);
 		}
 
 		/// <summary>

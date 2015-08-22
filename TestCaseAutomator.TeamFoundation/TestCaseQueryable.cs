@@ -17,71 +17,52 @@ namespace TestCaseAutomator.TeamFoundation
 		public TestCaseQueryable(IQueryable<TElement> innerQuery, ITestManagementTeamProject project)
 		{
 			_innerQuery = innerQuery;
-			_project = project;
+			Project = project;
 		}
 
 		/// <summary>
 		/// A test management project.
 		/// </summary>
-		public ITestManagementTeamProject Project
-		{
-			get { return _project; }
-		}
+		public ITestManagementTeamProject Project { get; }
 
-		#region IQueryable Implementation
+	    #region IQueryable Implementation
 
 		/// <see cref="IEnumerable{T}.GetEnumerator"/>
-		public IEnumerator<TElement> GetEnumerator()
-		{
-			return _innerQuery.GetEnumerator();
-		}
+		public IEnumerator<TElement> GetEnumerator() => _innerQuery.GetEnumerator();
 
-		/// <see cref="IEnumerable.GetEnumerator"/>
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
+	    /// <see cref="IEnumerable.GetEnumerator"/>
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-		/// <see cref="IQueryable.Expression"/>
-		public Expression Expression { get { return _innerQuery.Expression; } }
+	    /// <see cref="IQueryable.Expression"/>
+		public Expression Expression => _innerQuery.Expression;
 
-		/// <see cref="IQueryable.ElementType"/>
-		public Type ElementType { get { return _innerQuery.ElementType; } }
+	    /// <see cref="IQueryable.ElementType"/>
+		public Type ElementType => _innerQuery.ElementType;
 
-		/// <see cref="IQueryable.Provider"/>
-		public IQueryProvider Provider { get { return this; } }
+	    /// <see cref="IQueryable.Provider"/>
+		public IQueryProvider Provider => this;
 
-		#endregion IQueryable Implementation
+	    #endregion IQueryable Implementation
 
 		#region IQueryProvider Implementation
 
 		/// <see cref="IQueryProvider.CreateQuery"/>
-		public IQueryable CreateQuery(Expression expression)
-		{
-			return new TestCaseQueryable<TElement>(_innerQuery.Provider.CreateQuery<TElement>(expression), Project);
-		}
+		public IQueryable CreateQuery(Expression expression) 
+            => new TestCaseQueryable<TElement>(_innerQuery.Provider.CreateQuery<TElement>(expression), Project);
 
-		/// <see cref="IQueryProvider.CreateQuery{TElement}"/>
-		public IQueryable<T> CreateQuery<T>(Expression expression)
-		{
-			return new TestCaseQueryable<T>(_innerQuery.Provider.CreateQuery<T>(expression), Project);
-		}
+	    /// <see cref="IQueryProvider.CreateQuery{TElement}"/>
+		public IQueryable<T> CreateQuery<T>(Expression expression) 
+            => new TestCaseQueryable<T>(_innerQuery.Provider.CreateQuery<T>(expression), Project);
 
-		/// <see cref="IQueryProvider.Execute"/>
-		public object Execute(Expression expression)
-		{
-			return _innerQuery.Provider.Execute(expression);
-		}
+	    /// <see cref="IQueryProvider.Execute"/>
+		public object Execute(Expression expression) => _innerQuery.Provider.Execute(expression);
 
-		/// <see cref="IQueryProvider.Execute{TResult}"/>
-		public TResult Execute<TResult>(Expression expression)
-		{
-			return _innerQuery.Provider.Execute<TResult>(expression);
-		}
+	    /// <see cref="IQueryProvider.Execute{TResult}"/>
+		public TResult Execute<TResult>(Expression expression) 
+            => _innerQuery.Provider.Execute<TResult>(expression);
 
-		#endregion IQueryProvider Implementation
+	    #endregion IQueryProvider Implementation
 
 		private readonly IQueryable<TElement> _innerQuery;
-		private readonly ITestManagementTeamProject _project;
 	}
 }

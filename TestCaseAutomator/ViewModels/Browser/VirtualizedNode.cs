@@ -38,12 +38,9 @@ namespace TestCaseAutomator.ViewModels.Browser
 		#region Implementation of IVirtualizedNode
 
 		/// <see cref="IVirtualizedNode.IsRealized"/>
-		public bool IsRealized
-		{
-			get { return !(Children.Count == 1 && Children.Single() == DummyNode); }
-		}
+		public bool IsRealized => !(Children.Count == 1 && Children.Single() == DummyNode);
 
-		/// <see cref="IVirtualizedNode.Reset"/>
+	    /// <see cref="IVirtualizedNode.Reset"/>
 		public void Reset()
 		{
 			Children.Clear();
@@ -51,7 +48,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 		}
 
 		/// <see cref="IVirtualizedNode.RefreshCommand"/>
-		public ICommand RefreshCommand { get; private set; }
+		public ICommand RefreshCommand { get; }
 
 		#endregion
 

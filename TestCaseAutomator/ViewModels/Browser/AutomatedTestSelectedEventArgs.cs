@@ -22,11 +22,11 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// <summary>
 		/// The test case associated with the automated test.
 		/// </summary>
-		public ITestCaseViewModel TestCase { get; private set; }
+		public ITestCaseViewModel TestCase { get; }
 
 		/// <summary>
 		/// The selected automated test.
 		/// </summary>
-		public ITestAutomation TestAutomation { get; private set; }
+		public ITestAutomation TestAutomation { get; }
 	}
 }

@@ -28,12 +28,9 @@ namespace TestCaseAutomator.ViewModels
 		/// Gets a value indicating whether the control is in design mode
 		/// (running in Blend or Visual Studio).
 		/// </summary>
-		public static bool IsInDesignMode
-		{
-			get { return _isInDesignMode.Value; }
-		}
+		public static bool IsInDesignMode => _isInDesignMode.Value;
 
-		/// <summary>
+	    /// <summary>
 		/// Holds the intance of the runtime version of the ViewModel that is instantiated only when application is really running by retrieving the instance from IOC container
 		/// </summary>
 		protected TViewModel RuntimeViewModel
@@ -58,15 +55,9 @@ namespace TestCaseAutomator.ViewModels
 		/// <summary>
 		/// Gets current ViewModel instance so if we are in designer its <see cref="DesigntimeViewModel"/> and if its runtime then its <see cref="RuntimeViewModel"/>.
 		/// </summary>
-		public TViewModel ViewModel
-		{
-			get
-			{
-				return IsInDesignMode ? DesigntimeViewModel : RuntimeViewModel;
-			}
-		}
+		public TViewModel ViewModel => IsInDesignMode ? DesigntimeViewModel : RuntimeViewModel;
 
-		/// <summary>
+	    /// <summary>
 		/// Holds the instance of the design-time version of the ViewModel that is instantiated only when application is opened in IDE designer (VisualStudio, Blend etc).
 		/// </summary>
 		public TViewModel DesigntimeViewModel
@@ -82,9 +73,7 @@ namespace TestCaseAutomator.ViewModels
 
 		private void OnPropertyChanged(string propertyName)
 		{
-			var localEvent = PropertyChanged;
-			if (localEvent != null)
-				localEvent(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
 		#endregion

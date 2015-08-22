@@ -23,26 +23,18 @@ namespace TestCaseAutomator.TeamFoundation
 		/// <summary>
 		/// A node's resource display name.
 		/// </summary>
-		public string Name
-		{
-			get { return _node.Resource.DisplayName; }
-		}
+		public string Name => _node.Resource.DisplayName;
 
-		/// <summary>
+	    /// <summary>
 		/// A node's resource description.
 		/// </summary>
-		public string Description
-		{
-			get { return _node.Resource.Description; }
-		}
+		public string Description => _node.Resource.Description;
 
-		/// <see cref="ICatalogNode.QueryChildren"/>
-		public IEnumerable<ICatalogNode> QueryChildren(IEnumerable<Guid> resourceTypeFilters, bool recurse, CatalogQueryOptions queryOptions)
-		{
-			return _node.QueryChildren(resourceTypeFilters, recurse, queryOptions)
-			            .Select(n => new CatalogNodeAdapter(n)).ToList();
-		}
+	    /// <see cref="ICatalogNode.QueryChildren"/>
+		public IEnumerable<ICatalogNode> QueryChildren(IEnumerable<Guid> resourceTypeFilters, bool recurse, CatalogQueryOptions queryOptions) 
+            => _node.QueryChildren(resourceTypeFilters, recurse, queryOptions)
+                    .Select(n => new CatalogNodeAdapter(n)).ToList();
 
-		private readonly CatalogNode _node;
+	    private readonly CatalogNode _node;
 	}
 }

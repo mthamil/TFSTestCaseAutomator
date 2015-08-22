@@ -20,15 +20,15 @@ namespace TestCaseAutomator
 
 		private void Application_Exit(object sender, ExitEventArgs e)
 		{
-			if (_container != null)
-				_container.Dispose();
+		    _container?.Dispose();
 		}
 
-		/// <summary>
+	    /// <summary>
 		/// The application's IoC container.
 		/// </summary>
-		public static IContainer Container { get { return _container; } }
-		private static IContainer _container;
+		public static IContainer Container => _container;
+
+	    private static IContainer _container;
 
 		private static UnhandledErrorHandler _errorHandler;
 	}

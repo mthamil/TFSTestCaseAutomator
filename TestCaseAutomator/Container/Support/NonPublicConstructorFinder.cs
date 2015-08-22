@@ -9,9 +9,7 @@ namespace TestCaseAutomator.Container.Support
     /// </summary>
     public class NonPublicConstructorFinder : IConstructorFinder
     {
-        public ConstructorInfo[] FindConstructors(Type targetType)
-        {
-            return targetType.GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance);
-        }
+        public ConstructorInfo[] FindConstructors(Type targetType) 
+            => targetType.GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance);
     }
 }

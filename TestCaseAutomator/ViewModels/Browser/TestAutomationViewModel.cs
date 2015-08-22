@@ -17,14 +17,11 @@ namespace TestCaseAutomator.ViewModels.Browser
 		}
 
 		/// <see cref="INodeViewModel.Name"/>
-		public override string Name
-		{
-			get { return TestAutomation.Name; }
-		}
+		public override string Name => TestAutomation.Name;
 
-		/// <summary>
+	    /// <summary>
 		/// The backing automated test.
 		/// </summary>
-		public ITestAutomation TestAutomation { get; private set; }
+		public ITestAutomation TestAutomation { get; }
 	}
 }

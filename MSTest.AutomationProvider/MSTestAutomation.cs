@@ -15,24 +15,24 @@ namespace MSTest.AutomationProvider
 		/// </summary>
 		public MSTestAutomation(TestMethod testMethod)
 		{
-			Name = String.Format("{0}.{1}", testMethod.FullClassName, testMethod.Name);
-			Identifier = _identifierFactory.CreateIdentifier(Name);
+			Name = $"{testMethod.FullClassName}.{testMethod.Name}";
+			Identifier = IdentifierFactory.CreateIdentifier(Name);
 			Storage = Path.GetFileName(testMethod.AssemblyName);
 			TestType = "Unit Test";
 		}
 
 		/// <see cref="ITestAutomation.Identifier"/>
-		public Guid Identifier { get; private set; }
+		public Guid Identifier { get; }
 
 		/// <see cref="ITestAutomation.Name"/>
-		public string Name { get; private set; }
+		public string Name { get; }
 
 		/// <see cref="ITestAutomation.TestType"/>
-		public string TestType { get; private set; }
+		public string TestType { get; }
 
 		/// <see cref="ITestAutomation.Storage"/>
-		public string Storage { get; private set; }
+		public string Storage { get; }
 
-		private static readonly ITestIdentifierFactory _identifierFactory = new HashedIdentifierFactory();
+		private static readonly ITestIdentifierFactory IdentifierFactory = new HashedIdentifierFactory();
 	}
 }

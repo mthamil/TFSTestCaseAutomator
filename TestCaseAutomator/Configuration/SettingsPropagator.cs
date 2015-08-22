@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using SharpEssentials.Reflection;
 using TestCaseAutomator.ViewModels;
 
 namespace TestCaseAutomator.Configuration
@@ -26,21 +25,23 @@ namespace TestCaseAutomator.Configuration
 
 		void application_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == serverUriPropName)
-				_settings.TfsServerLocation = _application.ServerUri;
-			else if (e.PropertyName == projectNamePropName)
-				_settings.TfsProjectName = _application.ProjectName;
+		    switch (e.PropertyName)
+		    {
+		        case nameof(IApplication.ServerUri):
+		            _settings.TfsServerLocation = _application.ServerUri;
+		            break;
+		        case nameof(IApplication.ProjectName):
+		            _settings.TfsProjectName = _application.ProjectName;
+		            break;
+		    }
 		}
 
-		private void application_Closing(object sender, System.EventArgs e)
+	    private void application_Closing(object sender, System.EventArgs e)
 		{
 			_settings.Save();	// Save before the app shuts down.
 		}
 
 		private readonly IApplication _application;
 		private readonly ISettings _settings;
-
-		private static readonly string serverUriPropName = Reflect.PropertyOf<IApplication>(a => a.ServerUri).Name;
-		private static readonly string projectNamePropName = Reflect.PropertyOf<IApplication>(a => a.ProjectName).Name;
 	}
 }

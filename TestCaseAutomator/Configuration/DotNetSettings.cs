@@ -44,7 +44,7 @@ namespace TestCaseAutomator.Configuration
 		}
 
 		/// <see cref="ISettings.TestDiscoveryPluginLocation"/>
-		public DirectoryInfo TestDiscoveryPluginLocation { get; private set; }
+		public DirectoryInfo TestDiscoveryPluginLocation { get; }
 
 		/// <see cref="ISettings.Save"/>
 		public void Save()

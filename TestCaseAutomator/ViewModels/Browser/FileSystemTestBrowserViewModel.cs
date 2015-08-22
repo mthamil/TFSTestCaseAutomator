@@ -112,25 +112,20 @@ namespace TestCaseAutomator.ViewModels.Browser
 
 		private void OnAutomatedTestSelected()
 		{
-			var localEvent = AutomatedTestSelected;
-			if (localEvent != null)
-				localEvent(this, new AutomatedTestSelectedEventArgs(TestCase, SelectedTest.TestAutomation));
+            AutomatedTestSelected?.Invoke(this, new AutomatedTestSelectedEventArgs(TestCase, SelectedTest.TestAutomation));
 		}
 
 		/// <summary>
 		/// Command that invokes <see cref="SaveTestCase"/>.
 		/// </summary>
-		public ICommand SaveTestCaseCommand { get; private set; }
+		public ICommand SaveTestCaseCommand { get; }
 
 		/// <summary>
 		/// Whether the current test case can be saved.
 		/// </summary>
-		public bool CanSaveTestCase
-		{
-			get { return SelectedTest != null; }
-		}
+		public bool CanSaveTestCase => SelectedTest != null;
 
-		/// <summary>
+	    /// <summary>
 		/// Saves a test case with the associated automation.
 		/// </summary>
 		public void SaveTestCase()

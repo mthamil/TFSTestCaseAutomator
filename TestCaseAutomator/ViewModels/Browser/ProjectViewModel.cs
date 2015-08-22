@@ -33,18 +33,12 @@ namespace TestCaseAutomator.ViewModels.Browser
 		public IReadOnlyCollection<string> FileExtensions { get; set; }
 
 		/// <see cref="INodeViewModel.Name"/>
-		public override string Name
-		{
-			get { return _project.Name; }
-		}
+		public override string Name => _project.Name;
 
-		/// <see cref="VirtualizedNode{TChild}.DummyNode"/>
-		protected override AutomationSourceViewModel DummyNode
-		{
-			get { return _dummy; }
-		}
+	    /// <see cref="VirtualizedNode{TChild}.DummyNode"/>
+		protected override AutomationSourceViewModel DummyNode => Dummy;
 
-		/// <see cref="VirtualizedNode{TChild}.LoadChildrenAsync"/>
+	    /// <see cref="VirtualizedNode{TChild}.LoadChildrenAsync"/>
 		protected override Task<IReadOnlyCollection<AutomationSourceViewModel>> LoadChildrenAsync(IProgress<AutomationSourceViewModel> progress)
 		{
 			Invalidate();	// Reload on next query.
@@ -63,12 +57,12 @@ namespace TestCaseAutomator.ViewModels.Browser
 		
 		private readonly TaskScheduler _scheduler;
 
-		private static readonly DummySource _dummy = new DummySource();
+		private static readonly DummySource Dummy = new DummySource();
 
 		private class DummySource : AutomationSourceViewModel
 		{
 			public DummySource() : base(null, null, null, null) { }
-			public override string Name { get { return "Loading..."; } }
+			public override string Name => "Loading...";
 		}
 	}
 }

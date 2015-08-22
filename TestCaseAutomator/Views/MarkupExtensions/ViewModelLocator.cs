@@ -15,7 +15,7 @@ namespace TestCaseAutomator.Views.MarkupExtensions
 		/// Default constructor required by XAML.
 		/// </summary>
 		public ViewModelLocator()
-			: base(viewModelLocatorType) { }
+			: base(ViewModelLocatorType) { }
 
 		/// <summary>
 		/// Default constructor required by XAML.
@@ -49,6 +49,6 @@ namespace TestCaseAutomator.Views.MarkupExtensions
 
 		#endregion
 
-		private static readonly Type viewModelLocatorType = typeof(AutofacViewModelLocator<>);
+		private static readonly Type ViewModelLocatorType = typeof(AutofacViewModelLocator<>);
 	}
 }

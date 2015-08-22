@@ -15,13 +15,13 @@ namespace MSTest.AutomationProvider
 	public class MSTestAutomationDiscoverer : ITestAutomationDiscoverer
 	{
 		/// <see cref="ITestAutomationDiscoverer.SupportedFileExtensions"/>
-		public IEnumerable<string> SupportedFileExtensions { get { return _extensions; } }
+		public IEnumerable<string> SupportedFileExtensions => _extensions;
 
-		/// <see cref="ITestAutomationDiscoverer.DiscoverAutomatedTests"/>
+	    /// <see cref="ITestAutomationDiscoverer.DiscoverAutomatedTests"/>
 		public IEnumerable<ITestAutomation> DiscoverAutomatedTests(IEnumerable<string> sources)
 		{
 			if (sources == null)
-				throw new ArgumentNullException("sources");
+				throw new ArgumentNullException(nameof(sources));
 
 			var warnings = new List<string>();
 			var tests = sources

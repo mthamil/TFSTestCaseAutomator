@@ -28,25 +28,23 @@ namespace TestCaseAutomator.TeamFoundation
 		}
 
 		/// <see cref="ITfsServer.TestManagement"/>
-		public ITestManagementService TestManagement { get { return _testManagement.Value; } }
+		public ITestManagementService TestManagement => _testManagement.Value;
 
-		/// <see cref="ITfsServer.VersionControl"/>
-		public IVersionControl VersionControl { get { return _versionControl.Value; } }
+	    /// <see cref="ITfsServer.VersionControl"/>
+		public IVersionControl VersionControl => _versionControl.Value;
 
-		/// <see cref="ITfsServer.ProjectCollectionService"/>
-		public ITeamProjectCollectionService ProjectCollectionService { get { return _projectCollectionService.Value; } }
+	    /// <see cref="ITfsServer.ProjectCollectionService"/>
+		public ITeamProjectCollectionService ProjectCollectionService => _projectCollectionService.Value;
 
-		/// <see cref="ITfsServer.CatalogRoot"/>
-		public ICatalogNode CatalogRoot { get { return _catalogRoot.Value; } }
+	    /// <see cref="ITfsServer.CatalogRoot"/>
+		public ICatalogNode CatalogRoot => _catalogRoot.Value;
 
-        /// <see cref="ITfsServer.ConnectionStatusChanged"/>
+	    /// <see cref="ITfsServer.ConnectionStatusChanged"/>
         public event EventHandler<ConnectionStatusChangedEventArgs> ConnectionStatusChanged;
 
 	    private void OnConnectionStatusChanged(bool status)
 	    {
-	        var localEvent = ConnectionStatusChanged;
-	        if (localEvent != null)
-	            localEvent(this, new ConnectionStatusChangedEventArgs(status));
+            ConnectionStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArgs(status));
 	    }
 
         void connection_ConnectivityFailureStatusChanged(object sender, ConnectivityFailureStatusChangedEventArgs e)
@@ -55,12 +53,9 @@ namespace TestCaseAutomator.TeamFoundation
         }
 
 	    /// <see cref="ITfsServer.Uri"/>
-		public Uri Uri
-		{
-			get { return _connection.Uri; }
-		}
+		public Uri Uri => _connection.Uri;
 
-		/// <see cref="DisposableBase.OnDisposing"/>
+	    /// <see cref="DisposableBase.OnDisposing"/>
 		protected override void OnDisposing()
 		{
             _versionControl.Dispose();

@@ -18,23 +18,14 @@ namespace TestCaseAutomator.TeamFoundation
 		}
 
 		/// <see cref="IVersionedItem.ServerItem"/>
-		public string ServerItem 
-		{
-			get { return _item.ServerItem; }
-		}
+		public string ServerItem => _item.ServerItem;
 
-		/// <see cref="IVersionedItem.ItemType"/>
-		public ItemType ItemType 
-		{ 
-			get { return _item.ItemType; } 
-		}
+	    /// <see cref="IVersionedItem.ItemType"/>
+		public ItemType ItemType => _item.ItemType;
 
-		/// <see cref="IVersionedItem.DownloadFile"/>
-		public Stream DownloadFile()
-		{
-			return _item.DownloadFile();
-		}
+	    /// <see cref="IVersionedItem.DownloadFile"/>
+		public Stream DownloadFile() => _item.DownloadFile();
 
-		private readonly Item _item;
+	    private readonly Item _item;
 	}
 }

@@ -7,7 +7,6 @@ using TestCaseAutomator.AutomationProviders.Interfaces;
 using TestCaseAutomator.TeamFoundation.TestCaseAssociation;
 using SharpEssentials.Controls.Mvvm;
 using SharpEssentials.Controls.Mvvm.Commands;
-using SharpEssentials.Reflection;
 
 namespace TestCaseAutomator.ViewModels
 {
@@ -34,24 +33,18 @@ namespace TestCaseAutomator.ViewModels
 		}
 
 		/// <see cref="ITestCaseViewModel.Id"/>
-		public int Id
-		{
-			get { return _testCase.Id; }
-		}
+		public int Id => _testCase.Id;
 
-		/// <see cref="ITestCaseViewModel.Title"/>
-		public string Title 
-		{ 
-			get { return _testCase.Title; } 
-		}
+	    /// <see cref="ITestCaseViewModel.Title"/>
+		public string Title => _testCase.Title;
 
-		/// <see cref="ITestCaseViewModel.AssociatedAutomation"/>
-		public string AssociatedAutomation
-		{
-			get { return _testCase.IsAutomated ? _testCase.Implementation.DisplayText : string.Empty; }
-		}
+	    /// <see cref="ITestCaseViewModel.AssociatedAutomation"/>
+		public string AssociatedAutomation 
+            => _testCase.IsAutomated 
+                    ? _testCase.Implementation.DisplayText 
+                    : string.Empty;
 
-		/// <see cref="ITestCaseViewModel.UpdateAutomation"/>
+	    /// <see cref="ITestCaseViewModel.UpdateAutomation"/>
 		public void UpdateAutomation(ITestAutomation testAutomation)
 		{
 			_automationService.AssociateWithAutomation(_testCase, testAutomation);
@@ -60,31 +53,26 @@ namespace TestCaseAutomator.ViewModels
 		/// <summary>
 		/// Command that invokes <see cref="RemoveAutomation"/>.
 		/// </summary>
-		public ICommand RemoveAutomationCommand { get; private set; }
+		public ICommand RemoveAutomationCommand { get; }
 
 		/// <see cref="ITestCaseViewModel.CanRemoveAutomation"/>
-		public bool CanRemoveAutomation
-		{
-			get { return _testCase.IsAutomated; }
-		}
+		public bool CanRemoveAutomation => _testCase.IsAutomated;
 
-		/// <see cref="ITestCaseViewModel.RemoveAutomation"/>
+	    /// <see cref="ITestCaseViewModel.RemoveAutomation"/>
 		public void RemoveAutomation()
 		{
 			_automationService.RemoveAutomation(_testCase);
 		}
 
 		/// <see cref="ITestCaseViewModel.GetAutomation"/>
-		public ITestAutomation GetAutomation()
-		{
-			return _automationService.GetExistingAutomation(_testCase);
-		}
+		public ITestAutomation GetAutomation() 
+            => _automationService.GetExistingAutomation(_testCase);
 
-		private void testCase_PropertyChanged(object sender, PropertyChangedEventArgs e)
+	    private void testCase_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (_propertyMap.ContainsKey(e.PropertyName))
+			if (PropertyMap.ContainsKey(e.PropertyName))
 			{
-				foreach (var property in _propertyMap[e.PropertyName])
+				foreach (var property in PropertyMap[e.PropertyName])
 					OnPropertyChanged(property);
 			}
 		}
@@ -92,15 +80,10 @@ namespace TestCaseAutomator.ViewModels
 		private readonly ITestCase _testCase;
 		private readonly ITestCaseAutomationService _automationService;
 
-		private static readonly IDictionary<string, IEnumerable<string>> _propertyMap = new Dictionary<string, IEnumerable<string>>
+		private static readonly IDictionary<string, IEnumerable<string>> PropertyMap = new Dictionary<string, IEnumerable<string>>
 		{
-			{ Reflect.PropertyOf<ITestCase>(p => p.Title).Name, new[] { Reflect.PropertyOf<TestCaseViewModel>(p => p.Title).Name } },
-			{ Reflect.PropertyOf<ITestCase>(p => p.Implementation).Name, new[] 
-				{ 
-					Reflect.PropertyOf<TestCaseViewModel>(p => p.AssociatedAutomation).Name,
-					Reflect.PropertyOf<TestCaseViewModel>(p => p.CanRemoveAutomation).Name
-				}
-			}
+			{ nameof(ITestCase.Title), new[] { nameof(Title) } },
+			{ nameof(ITestCase.Implementation), new[] { nameof(AssociatedAutomation), nameof(CanRemoveAutomation) } }
 		};
 	}
 }

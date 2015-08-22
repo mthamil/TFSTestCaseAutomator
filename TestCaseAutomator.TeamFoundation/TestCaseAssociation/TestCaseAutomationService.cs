@@ -40,12 +40,12 @@ namespace TestCaseAutomator.TeamFoundation.TestCaseAssociation
 		/// Returns an <see cref="ITestAutomation"/> representing a <see cref="ITestCase"/>'s
 		/// existing automation if it has any.
 		/// </summary>
-		public ITestAutomation GetExistingAutomation(ITestCase testCase)
-		{
-			return testCase.IsAutomated ? new ExistingTestAutomation((ITmiTestImplementation)testCase.Implementation) : null;
-		}
+		public ITestAutomation GetExistingAutomation(ITestCase testCase) 
+            => testCase.IsAutomated 
+                ? new ExistingTestAutomation((ITmiTestImplementation)testCase.Implementation) 
+                : null;
 
-		private class ExistingTestAutomation : ITestAutomation
+	    private class ExistingTestAutomation : ITestAutomation
 		{
 			public ExistingTestAutomation(ITmiTestImplementation existingAutomation)
 			{
@@ -55,10 +55,10 @@ namespace TestCaseAutomator.TeamFoundation.TestCaseAssociation
 				Storage = existingAutomation.Storage;
 			}
 
-			public Guid Identifier { get; private set; }
-			public string Name { get; private set; }
-			public string TestType { get; private set; }
-			public string Storage { get; private set; }
+			public Guid Identifier { get; }
+			public string Name { get; }
+			public string TestType { get; }
+			public string Storage { get; }
 		}
 	}
 }

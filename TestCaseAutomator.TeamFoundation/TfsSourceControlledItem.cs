@@ -21,42 +21,30 @@ namespace TestCaseAutomator.TeamFoundation
 		/// <summary>
 		/// An item's name.
 		/// </summary>
-		public string Name
-		{
-			get { return Path.GetFileName(Item.ServerItem); }
-		}
+		public string Name => Path.GetFileName(Item.ServerItem);
 
-		/// <summary>
+	    /// <summary>
 		/// The path to an item in source control.
 		/// </summary>
-		public string ServerPath
-		{
-			get { return Item.ServerItem; }
-		}
+		public string ServerPath => Item.ServerItem;
 
-		/// <summary>
+	    /// <summary>
 		/// Downloads the contents of an item from source control.
 		/// </summary>
 		/// <returns>A stream with an item's contents</returns>
-		public Stream Download()
-		{
-			return Item.DownloadFile();
-		}
+		public Stream Download() => Item.DownloadFile();
 
-		/// <summary>
+	    /// <summary>
 		/// The source controlled item.
 		/// </summary>
-		protected IVersionedItem Item { get; private set; }
+		protected IVersionedItem Item { get; }
 
 		/// <summary>
 		/// The item's associated source control.
 		/// </summary>
-		protected IVersionControl VersionControl { get; private set; }
+		protected IVersionControl VersionControl { get; }
 
 		/// <see cref="object.ToString"/>
-		public override string ToString()
-		{
-			return ServerPath;
-		}
+		public override string ToString() => ServerPath;
 	}
 }

@@ -20,6 +20,6 @@ namespace TestCaseAutomator.TeamFoundation
         /// <summary>
         /// Whether the connection has failed.
         /// </summary>
-        public bool ConnectionFailed { get; private set; }
+        public bool ConnectionFailed { get; }
     }
 }

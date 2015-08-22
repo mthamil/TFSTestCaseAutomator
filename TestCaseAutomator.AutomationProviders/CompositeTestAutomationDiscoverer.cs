@@ -20,16 +20,12 @@ namespace TestCaseAutomator.AutomationProviders
 
 		/// <see cref="ITestAutomationDiscoverer.SupportedFileExtensions"/>
 		public IEnumerable<string> SupportedFileExtensions
-		{
-			get { return _childDiscoverers.SelectMany(d => d.SupportedFileExtensions).Distinct(); }
-		}
+            => _childDiscoverers.SelectMany(d => d.SupportedFileExtensions).Distinct();
 
-		/// <see cref="ITestAutomationDiscoverer.DiscoverAutomatedTests"/>
-		public IEnumerable<ITestAutomation> DiscoverAutomatedTests(IEnumerable<string> sources)
-		{
-			return _childDiscoverers.SelectMany(d => d.DiscoverAutomatedTests(sources));
-		}
+	    /// <see cref="ITestAutomationDiscoverer.DiscoverAutomatedTests"/>
+		public IEnumerable<ITestAutomation> DiscoverAutomatedTests(IEnumerable<string> sources) 
+            => _childDiscoverers.SelectMany(d => d.DiscoverAutomatedTests(sources));
 
-		private readonly IEnumerable<ITestAutomationDiscoverer> _childDiscoverers;
+	    private readonly IEnumerable<ITestAutomationDiscoverer> _childDiscoverers;
 	}
 }

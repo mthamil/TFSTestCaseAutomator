@@ -44,7 +44,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 		}
 
 		/// <see cref="IAutomationSelector.TestCase"/>
-		public ITestCaseViewModel TestCase { get; private set; }
+		public ITestCaseViewModel TestCase { get; }
 
 		/// <summary>
 		/// An automated test's name.
@@ -76,22 +76,16 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// <summary>
 		/// Command that invokes <see cref="SaveTestCase"/>.
 		/// </summary>
-		public ICommand SaveTestCaseCommand { get; private set; }
+		public ICommand SaveTestCaseCommand { get; }
 
 		/// <summary>
 		/// Whether the current test case can be saved.
 		/// </summary>
-		public bool CanSaveTestCase
-		{
-			get
-			{
-				return !String.IsNullOrWhiteSpace(Name) &&
-				       !String.IsNullOrWhiteSpace(StorageLocation) &&
-				       !String.IsNullOrWhiteSpace(TestType);
-			}
-		}
+		public bool CanSaveTestCase => !String.IsNullOrWhiteSpace(Name) &&
+		                               !String.IsNullOrWhiteSpace(StorageLocation) &&
+		                               !String.IsNullOrWhiteSpace(TestType);
 
-		/// <summary>
+	    /// <summary>
 		/// Saves a test case with the associated automation.
 		/// </summary>
 		public void SaveTestCase()
@@ -121,9 +115,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 
 		private void OnAutomatedTestSelected(ITestAutomation testAutomation)
 		{
-			var localEvent = AutomatedTestSelected;
-			if (localEvent != null)
-				localEvent(this, new AutomatedTestSelectedEventArgs(TestCase, testAutomation));
+            AutomatedTestSelected?.Invoke(this, new AutomatedTestSelectedEventArgs(TestCase, testAutomation));
 		}
 
 		private readonly Property<string> _name;
@@ -138,8 +130,8 @@ namespace TestCaseAutomator.ViewModels.Browser
 				_identifier = new Lazy<Guid>(() => new HashedIdentifierFactory().CreateIdentifier(Name));
 			}
 
-			public Guid Identifier { get { return _identifier.Value; } }
-			public string Name { get; set; }
+			public Guid Identifier => _identifier.Value;
+		    public string Name { get; set; }
 			public string TestType { get; set; }
 			public string Storage { get; set; }
 

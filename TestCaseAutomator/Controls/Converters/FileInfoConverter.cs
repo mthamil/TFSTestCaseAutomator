@@ -17,20 +17,14 @@ namespace TestCaseAutomator.Controls.Converters
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			var file = value as FileInfo;
-			if (file == null)
-				return string.Empty;
-
-			return file.FullName;
+			return file?.FullName ?? string.Empty;
 		}
 
 		/// <see cref="IValueConverter.ConvertBack"/>
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			string path = value as string;
-			if (String.IsNullOrEmpty(path))
-				return null;
-
-			return new FileInfo(path);
+			return String.IsNullOrEmpty(path) ? null : new FileInfo(path);
 		}
 
 		#endregion

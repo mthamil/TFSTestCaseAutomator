@@ -40,7 +40,7 @@ namespace xUnit.AutomationProvider
 		public IEnumerable<ITestAutomation> DiscoverAutomatedTests(IEnumerable<string> sources)
 		{
 			if (sources == null)
-				throw new ArgumentNullException("sources");
+				throw new ArgumentNullException(nameof(sources));
 
 			return sources.Where(IsTestAssembly)
 						  .SelectMany(source =>

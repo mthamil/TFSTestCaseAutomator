@@ -22,7 +22,7 @@ namespace TestCaseAutomator.TeamFoundation
 		public TfsExplorer(ITfsServer server,
 		                   Func<ITestManagementTeamProject, ITfsProjectWorkItemCollection> workItemsFactory)
 		{
-			_server = server;
+			Server = server;
 			_workItemsFactory = workItemsFactory;
 		}
 
@@ -33,41 +33,33 @@ namespace TestCaseAutomator.TeamFoundation
 		/// <returns>An object providing access to a project's child objects</returns>
 		public ITfsProjectWorkItemCollection WorkItems(string projectName)
 		{
-			var project = _server.TestManagement.GetTeamProject(projectName);
+			var project = Server.TestManagement.GetTeamProject(projectName);
 			return _workItemsFactory(project);
 		}
 
-		/// <summary>
-		/// Retrieves the Team Projects for the given connection.
-		/// </summary>
-		public IEnumerable<ICatalogNode> TeamProjects()
-		{
-			return _server.CatalogRoot.QueryChildren(CatalogResourceTypes.TeamProject.ToEnumerable(),
-													 false,
-													 CatalogQueryOptions.None);
-		}
+	    /// <summary>
+	    /// Retrieves the Team Projects for the given connection.
+	    /// </summary>
+	    public IEnumerable<ICatalogNode> TeamProjects()
+	        => Server.CatalogRoot.QueryChildren(CatalogResourceTypes.TeamProject.ToEnumerable(),
+	                                             false,
+	                                             CatalogQueryOptions.None);
 
-		/// <summary>
+	    /// <summary>
 		/// Provides access to Visual Studio solutions in source control.
 		/// </summary>
-		public IEnumerable<TfsSolution> Solutions()
-		{
-			var solutions = _server.VersionControl.GetItems("$/*.sln", RecursionType.Full);
-			return solutions.Select(item => new TfsSolution(item, _server.VersionControl));
-		}
+		public IEnumerable<TfsSolution> Solutions() 
+            => Server.VersionControl.GetItems("$/*.sln", RecursionType.Full)
+                                     .Select(item => new TfsSolution(item, Server.VersionControl));
 
-		/// <summary>
+	    /// <summary>
 		/// The Team Foundation Server.
 		/// </summary>
-		public ITfsServer Server { get { return _server; } }
+		public ITfsServer Server { get; }
 
-		/// <see cref="DisposableBase.OnDisposing"/>
-		protected override void OnDisposing()
-		{
-			_server.Dispose();
-		}
+	    /// <see cref="DisposableBase.OnDisposing"/>
+		protected override void OnDisposing() => Server.Dispose();
 
-		private readonly Func<ITestManagementTeamProject, ITfsProjectWorkItemCollection> _workItemsFactory;
-		private readonly ITfsServer _server;
+	    private readonly Func<ITestManagementTeamProject, ITfsProjectWorkItemCollection> _workItemsFactory;
 	}
 }
