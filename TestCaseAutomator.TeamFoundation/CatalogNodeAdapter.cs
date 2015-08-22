@@ -9,13 +9,13 @@ namespace TestCaseAutomator.TeamFoundation
 	/// <summary>
 	/// Wraps a <see cref="CatalogNode"/>.
 	/// </summary>
-	public class CatalogNodeWrapper : ICatalogNode
+	public class CatalogNodeAdapter : ICatalogNode
 	{
 		/// <summary>
-		/// Initializes a new <see cref="CatalogNodeWrapper"/>.
+		/// Initializes a new <see cref="CatalogNodeAdapter"/>.
 		/// </summary>
 		/// <param name="node">The wrapped node</param>
-		public CatalogNodeWrapper(CatalogNode node)
+		public CatalogNodeAdapter(CatalogNode node)
 		{
 			_node = node;
 		}
@@ -40,7 +40,7 @@ namespace TestCaseAutomator.TeamFoundation
 		public IEnumerable<ICatalogNode> QueryChildren(IEnumerable<Guid> resourceTypeFilters, bool recurse, CatalogQueryOptions queryOptions)
 		{
 			return _node.QueryChildren(resourceTypeFilters, recurse, queryOptions)
-			            .Select(n => new CatalogNodeWrapper(n)).ToList();
+			            .Select(n => new CatalogNodeAdapter(n)).ToList();
 		}
 
 		private readonly CatalogNode _node;
