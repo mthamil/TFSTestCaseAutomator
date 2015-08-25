@@ -39,7 +39,7 @@ namespace TestCaseAutomator.ViewModels
             _projectName = Property.New(this, p => p.ProjectName, OnPropertyChanged);
             _status = Property.New(this, p => p.Status, OnPropertyChanged);
 
-            ConnectCommand = new AsyncRelayCommand(Connect);
+            ConnectCommand = new AsyncRelayCommand(ConnectAsync);
             CloseCommand = new RelayCommand(OnClosing);
 
             PropertyChanged += OnPropertyChanged;
@@ -91,9 +91,9 @@ namespace TestCaseAutomator.ViewModels
         public ICommand ConnectCommand { get; }
 
 		/// <summary>
-		/// Refreshes data from the server.
+		/// Connects to the TFS server specified by <see cref="ServerUri"/>.
 		/// </summary>
-		public async Task Connect()
+		public async Task ConnectAsync()
 		{
 			await HandleServerError(async () =>
 			{

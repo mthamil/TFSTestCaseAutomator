@@ -6,6 +6,7 @@ using SharpEssentials.Testing;
 using TestCaseAutomator.TeamFoundation;
 using TestCaseAutomator.ViewModels;
 using Xunit;
+using Xunit.Extensions;
 
 namespace Tests.Unit.TestCaseAutomator.ViewModels
 {
@@ -26,23 +27,14 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 		}
 
 		[Fact]
-		public void Test_ServerUri_Updates_Explorer()
-		{
-			// Act.
-			_underTest.ServerUri = new Uri("http://test/");
-
-			// Assert.
-            _explorer.Verify(e => e.Connect(new Uri("http://test/")));
-		}
-
-		[Fact]
-		public void Test_ProjectName_Updates_WorkItems()
+		public async Task Test_ProjectName_Updates_WorkItems()
 		{
 			// Arrange.
 			_underTest.ServerUri = new Uri("http://test/");
+            await _underTest.ConnectAsync();
 
-			// Act.
-			_underTest.ProjectName = "TestProject";
+            // Act.
+            _underTest.ProjectName = "TestProject";
 
 			// Assert.
 			Assert.NotNull(_workItems);
@@ -64,34 +56,54 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 		}
 
 		[Fact]
-		public void Test_ProjectName_Status_When_TFS_Unavailable()
+		public async Task Test_ProjectName_Status_When_TFS_Unavailable()
 		{
 			// Arrange.
-			_underTest.ServerUri = new Uri("http://test/");
-
 		    _explorer.Setup(e => e.WorkItems(It.IsAny<string>()))
 		             .Throws(new TeamFoundationServiceUnavailableException(""));
 
-			// Act.
-			_underTest.ProjectName = "TestProject";
+            _underTest.ServerUri = new Uri("http://test/");
+		    await _underTest.ConnectAsync();
+
+            // Act.
+            _underTest.ProjectName = "TestProject";
 
 			// Assert.
 			Assert.NotNull(_underTest.Status);
 		}
 
 		[Fact]
-		public void Test_Refresh()
+		public async Task Test_Connect()
 		{
 			// Arrange.
 			_underTest.ServerUri = new Uri("http://test/");
-			_underTest.ProjectName = "TestProject";
+            _underTest.ProjectName = "TestProject";
 
-			// Act.
-			_underTest.Connect();
+            // Act.
+            await _underTest.ConnectAsync();
 
 			// Assert.
-            _workItems.Verify(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()), Times.Exactly(2));
-		}
+            Assert.True(_underTest.IsConnected);
+            _workItems.Verify(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()), Times.Once());
+        }
+
+        [Theory]
+        [InlineData(true, "http://test/")]
+        [InlineData(true, "http://test")]
+        [InlineData(false, "http://test2/")]
+        public async Task Test_CanRefresh(bool expected, string serverUri)
+        {
+            // Arrange.
+            _underTest.ServerUri = new Uri(serverUri);
+            _server.SetupGet(s => s.Uri).Returns(new Uri("http://test/"));
+            await _underTest.ConnectAsync();
+
+            // Act.
+            bool actual = _underTest.CanRefresh;
+
+            // Assert.
+            Assert.Equal(expected, actual);
+        }
 
         [Fact]
 		public void Test_CloseCommand_Raises_Closing_Event()
