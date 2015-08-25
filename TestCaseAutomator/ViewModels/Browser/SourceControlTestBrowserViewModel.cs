@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Input;
 using TestCaseAutomator.TeamFoundation;
 using SharpEssentials.Controls.Mvvm;
-using SharpEssentials.Controls.Mvvm.Commands;
 using SharpEssentials.Observable;
 
 namespace TestCaseAutomator.ViewModels.Browser
@@ -13,34 +10,26 @@ namespace TestCaseAutomator.ViewModels.Browser
 	/// <summary>
 	/// View-model for selection of automated tests from source control.
 	/// </summary>
-	public class SourceControlTestBrowserViewModel : ViewModelBase, IAutomationSelector
+	public class SourceControlTestBrowserViewModel : ViewModelBase
 	{
 	    /// <summary>
 	    /// Initializes a new <see cref="SourceControlTestBrowserViewModel"/>.
 	    /// </summary>
-	    /// <param name="solutions">Existing solutions in source control</param>
-	    /// <param name="testCase">The test case to associate with automation</param>
+	    /// <param name="explorer">The current TFS explorer</param>
 	    /// <param name="solutionFactory">Creates solution view-models</param>
-	    public SourceControlTestBrowserViewModel(IEnumerable<TfsSolution> solutions,
-	                                             ITestCaseViewModel testCase,
+	    public SourceControlTestBrowserViewModel(ITfsExplorer explorer,
 	                                             Func<TfsSolution, SolutionViewModel> solutionFactory)
+            : this()
 	    {
-	        TestCase = testCase;
-
-	        _solutions = Property.New(this, p => p.Solutions, OnPropertyChanged);
-	        _selectedTest = Property.New(this, p => p.SelectedTest, OnPropertyChanged)
-	                                .AlsoChanges(p => p.CanSaveTestCase);
-	        _hasBeenSaved = Property.New(this, p => p.HasBeenSaved, OnPropertyChanged);
-
-	        Solutions = new ObservableCollection<SolutionViewModel>(solutions.Select(solutionFactory));
-
-	        SaveTestCaseCommand = Command.For(this)
-	                                     .DependsOn(p => p.CanSaveTestCase)
-	                                     .Executes(SaveTestCase);
+	        _explorer = explorer;
+	        _solutionFactory = solutionFactory;
 	    }
 
-	    /// <see cref="IAutomationSelector.TestCase"/>
-		public ITestCaseViewModel TestCase { get; }
+	    private SourceControlTestBrowserViewModel()
+	    {
+            _selectedTest = Property.New(this, p => p.SelectedTest, OnPropertyChanged)
+                                    .AlsoChanges(p => p.CanSaveTestCase);
+        }
 
 		/// <summary>
 		/// The currently selected test.
@@ -51,53 +40,19 @@ namespace TestCaseAutomator.ViewModels.Browser
 			set { _selectedTest.Value = value; }
 		}
 
-		/// <see cref="IAutomationSelector.AutomatedTestSelected"/>
-		public event EventHandler<AutomatedTestSelectedEventArgs> AutomatedTestSelected;
-
-		private void OnAutomatedTestSelected()
-		{
-            AutomatedTestSelected?.Invoke(this, new AutomatedTestSelectedEventArgs(TestCase, ((TestAutomationViewModel)SelectedTest).TestAutomation));
-		}
-
-		/// <summary>
-		/// Command that invokes <see cref="SaveTestCase"/>.
-		/// </summary>
-		public ICommand SaveTestCaseCommand { get; }
-
 		/// <summary>
 		/// Whether the current test case can be saved.
 		/// </summary>
-		public bool CanSaveTestCase => SelectedTest != null && SelectedTest is TestAutomationViewModel;
-
-	    /// <summary>
-		/// Saves a test case with the associated automation.
-		/// </summary>
-		public void SaveTestCase()
-		{
-			OnAutomatedTestSelected();
-			HasBeenSaved = true;
-		}
-
-		/// <summary>
-		/// Whether test automation has been chosen.
-		/// </summary>
-		public bool? HasBeenSaved
-		{
-			get { return _hasBeenSaved.Value; }
-			set { _hasBeenSaved.Value = value; }
-		}
+		public bool CanSaveTestCase => SelectedTest != null && SelectedTest is TestAutomationNodeViewModel;
 
 		/// <summary>
 		/// The available solutions in source control.
 		/// </summary>
-		public ICollection<SolutionViewModel> Solutions
-		{
-			get { return _solutions.Value; }
-			private set { _solutions.Value = value; }
-		}
+		public IEnumerable<SolutionViewModel> Solutions => _explorer.Solutions().Select(_solutionFactory);
 
-		private readonly Property<ViewModelBase> _selectedTest;
-		private readonly Property<bool?> _hasBeenSaved;
-		private readonly Property<ICollection<SolutionViewModel>> _solutions;
+	    private readonly Property<ViewModelBase> _selectedTest;
+
+        private readonly ITfsExplorer _explorer;
+	    private readonly Func<TfsSolution, SolutionViewModel> _solutionFactory;
 	}
 }

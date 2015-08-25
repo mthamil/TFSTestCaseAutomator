@@ -8,12 +8,22 @@ namespace TestCaseAutomator.TeamFoundation
 	/// </summary>
 	public interface ITfsExplorer
 	{
-		/// <summary>
-		/// Provides access to the work items of a given project.
-		/// </summary>
-		/// <param name="projectName">The TFS project to access</param>
-		/// <returns>An object providing access to a project's child objects</returns>
-		ITfsProjectWorkItemCollection WorkItems(string projectName);
+	    /// <summary>
+	    /// Connects to a TFS server..
+	    /// </summary>
+	    void Connect(Uri serverUri);
+
+        /// <summary>
+        /// The Team Foundation Server.
+        /// </summary>
+        ITfsServer Server { get; }
+
+        /// <summary>
+        /// Provides access to the work items of a given project.
+        /// </summary>
+        /// <param name="projectName">The TFS project to access</param>
+        /// <returns>An object providing access to a project's child objects</returns>
+        ITfsProjectWorkItemCollection WorkItems(string projectName);
 
 		/// <summary>
 		/// Retrieves the Team Projects for the given connection.
@@ -24,10 +34,5 @@ namespace TestCaseAutomator.TeamFoundation
 		/// Provides access to Visual Studio solutions in source control.
 		/// </summary>
 		IEnumerable<TfsSolution> Solutions();
-
-		/// <summary>
-		/// The Team Foundation Server.
-		/// </summary>
-		ITfsServer Server { get; }
 	}
 }

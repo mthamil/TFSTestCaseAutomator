@@ -114,17 +114,18 @@
     <Compile Include="UnhandledErrorHandler.cs" />
     <Compile Include="ViewModels\AutofacViewModelLocator.cs" />
     <Compile Include="ViewModels\Browser\AutomatedTestSelectedEventArgs.cs" />
-    <Compile Include="ViewModels\Browser\TestAutomationViewModel.cs" />
+    <Compile Include="ViewModels\Browser\TestAutomationUpdate.cs" />
+    <Compile Include="ViewModels\Browser\TestAutomationNodeViewModel.cs" />
     <Compile Include="ViewModels\Browser\AutomationSourceViewModel.cs" />
     <Compile Include="ViewModels\Browser\FileSystemTestBrowserViewModel.cs" />
     <Compile Include="ViewModels\Browser\INodeViewModel.cs" />
     <Compile Include="ViewModels\Browser\IAutomationSelector.cs" />
     <Compile Include="ViewModels\Browser\IVirtualizedNode.cs" />
-    <Compile Include="ViewModels\Browser\ManualAutomationEntryViewModel.cs" />
     <Compile Include="ViewModels\Browser\NodeViewModel.cs" />
     <Compile Include="ViewModels\Browser\ProjectViewModel.cs" />
     <Compile Include="ViewModels\Browser\SolutionViewModel.cs" />
     <Compile Include="ViewModels\Browser\SourceControlTestBrowserViewModel.cs" />
+    <Compile Include="ViewModels\Browser\TestBrowserViewModel.cs" />
     <Compile Include="ViewModels\Browser\VirtualizedNode.cs" />
     <Compile Include="ViewModels\IApplication.cs" />
     <Compile Include="ViewModels\ITestCaseViewModel.cs" />
@@ -141,6 +142,9 @@
     </Compile>
     <Compile Include="Views\Browser\SourceControlTestBrowser.xaml.cs">
       <DependentUpon>SourceControlTestBrowser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Browser\TestBrowser.xaml.cs">
+      <DependentUpon>TestBrowser.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -165,6 +169,10 @@
     <Page Include="Views\Browser\SourceControlTestBrowser.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Browser\TestBrowser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -233,6 +241,9 @@
   <ItemGroup>
     <Resource Include="Resources\Icons\plug-connect-16x16.png" />
     <Resource Include="Resources\Icons\plug-disconnect-16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\arrow-24x24.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

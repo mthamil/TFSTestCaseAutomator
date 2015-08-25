@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Autofac;
+using SharpEssentials.Controls.Mvvm;
 using TestCaseAutomator.AutomationProviders.Interfaces;
 using TestCaseAutomator.Configuration;
 using TestCaseAutomator.ViewModels;
@@ -15,6 +16,11 @@ namespace TestCaseAutomator.Container
 		/// <see cref="Module.Load"/>
 		protected override void Load(ContainerBuilder builder)
 		{
+		    builder.RegisterAssemblyTypes(ThisAssembly)
+		           .Where(t => t.IsAssignableTo<ViewModelBase>())
+                   .AsSelf()
+                   .AsImplementedInterfaces();
+
 			builder.RegisterType<MainViewModel>()
 			       .OnActivating(c =>
 			       {
@@ -24,25 +30,9 @@ namespace TestCaseAutomator.Container
 			       .As<MainViewModel, IApplication>()
 				   .SingleInstance();
 
-		    builder.RegisterType<TestSelectionViewModel>();
-
-			builder.RegisterType<SourceControlTestBrowserViewModel>();
-
-			builder.RegisterType<FileSystemTestBrowserViewModel>();
-
-			builder.RegisterType<WorkItemsViewModel>().As<IWorkItems>();
-
-			builder.RegisterType<TestCaseViewModel>().As<ITestCaseViewModel>();
-
-			builder.RegisterType<SolutionViewModel>();
-
 			builder.RegisterType<ProjectViewModel>()
 				.OnActivating(c => c.Instance.FileExtensions = 
 					c.Context.Resolve<ITestAutomationDiscoverer>().SupportedFileExtensions.ToList());
-
-			builder.RegisterType<AutomationSourceViewModel>();
-
-			builder.RegisterType<TestAutomationViewModel>();
 		}
 	}
 }

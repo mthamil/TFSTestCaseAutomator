@@ -11,6 +11,7 @@ using TestCaseAutomator.TeamFoundation;
 using SharpEssentials.Collections;
 using SharpEssentials.Controls.Mvvm;
 using SharpEssentials.Controls.Mvvm.Commands;
+using SharpEssentials.Net;
 using SharpEssentials.Observable;
 
 namespace TestCaseAutomator.ViewModels
@@ -20,34 +21,26 @@ namespace TestCaseAutomator.ViewModels
 	/// </summary>
 	public class MainViewModel : ViewModelBase, IApplication
 	{
-		public MainViewModel(
-			Func<Uri, ITfsExplorer> explorerFactory, 
-			IWorkItems workItems,
-			TestSelectionViewModel testSelection)
-                : this()
+		public MainViewModel(ITfsExplorer explorer, 
+			                 IWorkItems workItems,
+			                 TestSelectionViewModel testSelection) : this()
 		{
-			_explorerFactory = explorerFactory;
+			_explorer = explorer;
 		    WorkItems = workItems;
             TestSelection = testSelection;
-
-            // ugh, hacky
-		    TestSelection.SolutionRetriever = () =>
-		    {
-		        IEnumerable<TfsSolution> solutions = null;
-                HandleServerError(() => solutions = _explorer.Solutions());
-		        return solutions;
-		    };
 		}
 
 	    private MainViewModel()
 	    {
-            _serverUri = Property.New(this, p => p.ServerUri, OnPropertyChanged);
+            _isConnected = Property.New(this, p => p.IsConnected, OnPropertyChanged)
+                                   .AlsoChanges(p => p.CanRefresh);
+            _serverUri = Property.New(this, p => p.ServerUri, OnPropertyChanged)
+	                             .AlsoChanges(p => p.CanRefresh);
             _projectName = Property.New(this, p => p.ProjectName, OnPropertyChanged);
             _status = Property.New(this, p => p.Status, OnPropertyChanged);
-	        _connectionIsUp = Property.New(this, p => p.IsConnected, OnPropertyChanged);
 
-            RefreshCommand = new AsyncRelayCommand(Refresh);
-            CloseCommand = new RelayCommand(Close);
+            ConnectCommand = new AsyncRelayCommand(Connect);
+            CloseCommand = new RelayCommand(OnClosing);
 
             PropertyChanged += OnPropertyChanged;
 	    }
@@ -57,22 +50,15 @@ namespace TestCaseAutomator.ViewModels
         /// </summary>
         public bool IsConnected
         {
-            get { return _connectionIsUp.Value; }
-            set { _connectionIsUp.Value = value; }
+            get { return _isConnected.Value; }
+            set { _isConnected.Value = value; }
         }
 
 	    /// <see cref="IApplication.ServerUri"/>
 		public Uri ServerUri
 		{
 			get { return _serverUri.Value; }
-			set
-			{
-				if (_serverUri.TrySetValue(value))
-				{
-				   HandleServerError(() => 
-                       ConnectToServer(value));
-				}
-			}
+			set { _serverUri.Value = value; }
 		}
 
 		/// <see cref="IApplication.ProjectName"/>
@@ -94,15 +80,20 @@ namespace TestCaseAutomator.ViewModels
 
         public TestSelectionViewModel TestSelection { get; }
 
-		/// <summary>
-		/// Command that forces a server refresh.
-		/// </summary>
-		public ICommand RefreshCommand { get; }
+        /// <summary>
+        /// Whether connecting would refresh an existing connection or not.
+        /// </summary>
+        public bool CanRefresh => IsConnected && UriEqualityComparer.Instance.Equals(ServerUri, _explorer.Server.Uri);
+
+        /// <summary>
+        /// Command that forces a server refresh.
+        /// </summary>
+        public ICommand ConnectCommand { get; }
 
 		/// <summary>
 		/// Refreshes data from the server.
 		/// </summary>
-		public async Task Refresh()
+		public async Task Connect()
 		{
 			await HandleServerError(async () =>
 			{
@@ -115,11 +106,6 @@ namespace TestCaseAutomator.ViewModels
 		/// Command invoked when the application is closing.
 		/// </summary>
 		public ICommand CloseCommand { get; }
-
-		private void Close()
-		{
-			OnClosing();
-		}
 
 		/// <see cref="IApplication.Closing"/>
 		public event EventHandler<EventArgs> Closing;
@@ -140,9 +126,9 @@ namespace TestCaseAutomator.ViewModels
 
 		private async void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
 		{
-			if (propertyChangedEventArgs.PropertyName == _projectName.Name)
+			if (propertyChangedEventArgs.PropertyName == nameof(ProjectName))
 			{
-				if (_explorer != null)
+				if (IsConnected)
 				{
 					await HandleServerError(async () => 
                         await LoadWorkItemsAsync());
@@ -152,24 +138,21 @@ namespace TestCaseAutomator.ViewModels
 
         private void ConnectToServer(Uri serverUrl)
         {
-            if (_explorer != null)
+            if (_explorer.Server != null)
                 _explorer.Server.ConnectionStatusChanged -= Server_ConnectionStatusChanged;
 
-            _explorer = _explorerFactory(serverUrl);
+            _explorer.Connect(serverUrl);
             _explorer.Server.ConnectionStatusChanged += Server_ConnectionStatusChanged;
-            LoadProjectNames();
+
+            _projectNames.Clear();
+            _projectNames.AddRange(_explorer.TeamProjects().Select(n => n.Name));
+
             IsConnected = true;
         }
 
         private void Server_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
         {
             IsConnected = !e.ConnectionFailed;
-        }
-
-        private void LoadProjectNames()
-        {
-            _projectNames.Clear();
-            _projectNames.AddRange(_explorer.TeamProjects().Select(n => n.Name));
         }
 
         private async Task LoadWorkItemsAsync()
@@ -180,49 +163,45 @@ namespace TestCaseAutomator.ViewModels
             await WorkItems.LoadAsync(_explorer.WorkItems(ProjectName));
 	    }
 
-		private void HandleServerError(Action action)
-		{
-			try
-			{
-				action();
-				Status = null;
-			}
-			catch (TeamFoundationServiceUnavailableException tfsUnavailableEx)
-			{
-				Status = tfsUnavailableEx.Message;
-			}
-			catch (TestObjectNotFoundException testObjectNotFoundEx)
-			{
-				Status = testObjectNotFoundEx.Message;
-			}
-		}
-
 		private async Task HandleServerError(Func<Task> action)
 		{
-			try
-			{
-				await action();
-				Status = null;
-			}
-			catch (TeamFoundationServiceUnavailableException tfsUnavailableEx)
-			{
-				Status = tfsUnavailableEx.Message;
-			}
-			catch (TestObjectNotFoundException testObjectNotFoundEx)
-			{
-				Status = testObjectNotFoundEx.Message;
-			}
+		    string errorMessage = null;
+		    try
+		    {
+		        await action();
+		        Status = null;
+		    }
+		    catch (TestObjectNotFoundException testObjectNotFoundEx)
+		    {
+		        errorMessage = testObjectNotFoundEx.Message;
+		    }
+            catch (TeamFoundationServiceUnavailableException tfsUnavailableEx)
+            {
+                errorMessage = tfsUnavailableEx.Message; ;
+            }
+            catch (Exception e) when (e.InnerException != null &&
+		                              e.InnerException.GetType() == typeof(TeamFoundationServiceUnavailableException))
+		    {
+		        errorMessage = e.InnerException.Message;
+		    }
+		    finally
+		    {
+                if (errorMessage != null)
+                {
+                    Status = errorMessage;
+                    IsConnected = false;
+                    _projectNames.Clear();
+                }
+            }
 		}
-
-		private ITfsExplorer _explorer;
 
 		private readonly Property<Uri> _serverUri;
 		private readonly Property<string> _projectName;
 		private readonly Property<string> _status;
-	    private readonly Property<bool> _connectionIsUp;
+	    private readonly Property<bool> _isConnected;
 
 		private readonly ICollection<string> _projectNames = new ObservableCollection<string>(); 
 
-		private readonly Func<Uri, ITfsExplorer> _explorerFactory;
+		private readonly ITfsExplorer _explorer;
 	}
 }

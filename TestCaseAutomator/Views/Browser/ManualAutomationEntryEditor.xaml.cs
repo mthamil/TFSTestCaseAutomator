@@ -1,27 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace TestCaseAutomator.Views.Browser
 {
 	/// <summary>
 	/// Interaction logic for ManualAutomationEntryEditor.xaml
 	/// </summary>
-	public partial class ManualAutomationEntryEditor : Window
+	public partial class ManualAutomationEntryEditor
 	{
 		public ManualAutomationEntryEditor()
 		{
 			InitializeComponent();
 		}
-	}
+
+        public string AutomationName
+        {
+            get { return (string)GetValue(AutomationNameProperty); }
+            set { SetValue(AutomationNameProperty, value); }
+        }
+
+        public static readonly DependencyProperty AutomationNameProperty = 
+            DependencyProperty.Register(
+                nameof(AutomationName), 
+                typeof(string), 
+                typeof(ManualAutomationEntryEditor), 
+                new PropertyMetadata(default(string)));
+
+        public string AutomationStorage
+        {
+            get { return (string)GetValue(AutomationStorageProperty); }
+            set { SetValue(AutomationStorageProperty, value); }
+        }
+
+        public static readonly DependencyProperty AutomationStorageProperty =
+            DependencyProperty.Register(
+                nameof(AutomationStorage),
+                typeof(string),
+                typeof(ManualAutomationEntryEditor),
+                new PropertyMetadata(default(string)));
+
+        public string AutomationTestType
+        {
+            get { return (string)GetValue(AutomationTestTypeProperty); }
+            set { SetValue(AutomationTestTypeProperty, value); }
+        }
+
+        public static readonly DependencyProperty AutomationTestTypeProperty =
+            DependencyProperty.Register(
+                nameof(AutomationTestType),
+                typeof(string),
+                typeof(ManualAutomationEntryEditor),
+                new PropertyMetadata(default(string)));
+    }
 }

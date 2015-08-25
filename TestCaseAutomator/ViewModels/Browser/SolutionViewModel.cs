@@ -19,7 +19,8 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// <param name="solution">The actual solution object</param>
 		/// <param name="projectFactory">Creates project view-models</param>
 		/// <param name="scheduler">Used to schedule background tasks</param>
-		public SolutionViewModel(TfsSolution solution, Func<TfsSolutionProject, ProjectViewModel> projectFactory,
+		public SolutionViewModel(TfsSolution solution, 
+                                 Func<TfsSolutionProject, ProjectViewModel> projectFactory,
 		                         TaskScheduler scheduler)
 		{
 			_solution = solution;

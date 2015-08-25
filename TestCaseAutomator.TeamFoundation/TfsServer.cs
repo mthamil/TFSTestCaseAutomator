@@ -19,6 +19,7 @@ namespace TestCaseAutomator.TeamFoundation
 		public TfsServer(TfsTeamProjectCollection connection)
 		{
 			_connection = connection;
+            _connection.EnsureAuthenticated();
             _connection.ConnectivityFailureStatusChanged += connection_ConnectivityFailureStatusChanged;
 
 			_testManagement = new Lazy<ITestManagementService>(() => _connection.GetService<ITestManagementService>());

@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.TeamFoundation;
 using Moq;
 using SharpEssentials.Testing;
-using TestCaseAutomator.AutomationProviders.Interfaces;
 using TestCaseAutomator.TeamFoundation;
-using SharpEssentials.Concurrency;
 using TestCaseAutomator.ViewModels;
-using TestCaseAutomator.ViewModels.Browser;
 using Xunit;
 
 namespace Tests.Unit.TestCaseAutomator.ViewModels
@@ -17,150 +13,100 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 	{
 		public MainViewModelTests()
 		{
-            workItems = new Mock<IWorkItems>();
-		    workItems.Setup(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()))
-		             .Returns(Task.FromResult<object>(null));
+		    _workItems.Setup(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()))
+		              .Returns(Task.FromResult<object>(null));
 
-			viewModel = new MainViewModel(CreateExplorer, workItems.Object,
-			                              new TestSelectionViewModel(CreateSourceControlBrowser, CreateFileSystemBrowser));
+            _explorer.SetupGet(e => e.Server).Returns(_server.Object);
+		    _explorer.Setup(e => e.WorkItems(It.IsAny<string>()))
+		             .Returns((string name) => Mock.Of<ITfsProjectWorkItemCollection>(wi => wi.ProjectName == name));
+
+		    _underTest = new MainViewModel(_explorer.Object,
+		                                   _workItems.Object,
+		                                   new TestSelectionViewModel(null));
 		}
 
 		[Fact]
 		public void Test_ServerUri_Updates_Explorer()
 		{
 			// Act.
-			viewModel.ServerUri = new Uri("http://test/");
+			_underTest.ServerUri = new Uri("http://test/");
 
 			// Assert.
-			Assert.NotNull(explorer);
-			Assert.Equal(new Uri("http://test/"), serverUri);
+            _explorer.Verify(e => e.Connect(new Uri("http://test/")));
 		}
 
 		[Fact]
 		public void Test_ProjectName_Updates_WorkItems()
 		{
 			// Arrange.
-			viewModel.ServerUri = new Uri("http://test/");
+			_underTest.ServerUri = new Uri("http://test/");
 
 			// Act.
-			viewModel.ProjectName = "TestProject";
+			_underTest.ProjectName = "TestProject";
 
 			// Assert.
-			Assert.NotNull(workItems);
-            workItems.Verify(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()), Times.Once());
+			Assert.NotNull(_workItems);
+            _workItems.Verify(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()), Times.Once());
 		}
 
 		[Fact]
 		public void Test_ProjectName_With_No_Server()
 		{
+            // Arrange.
+		    _explorer.SetupGet(e => e.Server)
+		             .Returns((ITfsServer)null);
+
 			// Act.
-			viewModel.ProjectName = "TestProject";
+			_underTest.ProjectName = "TestProject";
 
 			// Assert.
-            workItems.Verify(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()), Times.Never);
+            _workItems.Verify(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()), Times.Never);
 		}
 
 		[Fact]
 		public void Test_ProjectName_Status_When_TFS_Unavailable()
 		{
 			// Arrange.
-			viewModel.ServerUri = new Uri("http://test/");
+			_underTest.ServerUri = new Uri("http://test/");
 
-			explorer.Setup(e => e.WorkItems(It.IsAny<string>()))
-			        .Throws(new TeamFoundationServiceUnavailableException(""));
+		    _explorer.Setup(e => e.WorkItems(It.IsAny<string>()))
+		             .Throws(new TeamFoundationServiceUnavailableException(""));
 
 			// Act.
-			viewModel.ProjectName = "TestProject";
+			_underTest.ProjectName = "TestProject";
 
 			// Assert.
-			Assert.NotNull(viewModel.Status);
+			Assert.NotNull(_underTest.Status);
 		}
 
 		[Fact]
 		public void Test_Refresh()
 		{
 			// Arrange.
-			viewModel.ServerUri = new Uri("http://test/");
-			viewModel.ProjectName = "TestProject";
+			_underTest.ServerUri = new Uri("http://test/");
+			_underTest.ProjectName = "TestProject";
 
 			// Act.
-			viewModel.Refresh();
+			_underTest.Connect();
 
 			// Assert.
-            workItems.Verify(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()), Times.Exactly(2));
+            _workItems.Verify(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()), Times.Exactly(2));
 		}
 
-		[Fact]
-		public void Test_SourceControlBrowser()
-		{
-			// Arrange.
-			viewModel.ServerUri = new Uri("http://test/");
-
-			explorer.Setup(e => e.Solutions())
-			        .Returns(new[]
-			        {
-				        new TfsSolution(Mock.Of<IVersionedItem>(), versionControl.Object),
-				        new TfsSolution(Mock.Of<IVersionedItem>(), versionControl.Object)
-			        });
-
-			// Act.
-			viewModel.TestSelection.SelectedTestCase = Mock.Of<ITestCaseViewModel>();
-
-			// Assert.
-            Assert.NotNull(viewModel.TestSelection.SourceControlTestBrowser);
-            Assert.Equal(viewModel.TestSelection.SelectedTestCase, viewModel.TestSelection.SourceControlTestBrowser.Value.TestCase);
-            Assert.Equal(2, viewModel.TestSelection.SourceControlTestBrowser.Value.Solutions.Count);
-		}
-
-		[Fact]
-		public void Test_FileSystemBrowser()
-		{
-			// Arrange.
-			viewModel.ServerUri = new Uri("http://test/");
-
-			// Act.
-            viewModel.TestSelection.SelectedTestCase = Mock.Of<ITestCaseViewModel>();
-
-			// Assert.
-            Assert.NotNull(viewModel.TestSelection.FileSystemTestBrowser);
-            Assert.Equal(viewModel.TestSelection.SelectedTestCase, viewModel.TestSelection.FileSystemTestBrowser.Value.TestCase);
-		}
-
-		[Fact]
+        [Fact]
 		public void Test_CloseCommand_Raises_Closing_Event()
 		{
 			// Act/Assert.
-			AssertThat.Raises<IApplication>(viewModel, 
+			AssertThat.Raises<IApplication>(_underTest, 
 				vm => vm.Closing += null, 
-				() => viewModel.CloseCommand.Execute(null));
+				() => _underTest.CloseCommand.Execute(null));
 		}
 
-		private ITfsExplorer CreateExplorer(Uri uri)
-		{
-		    serverUri = uri;
-			explorer = new Mock<ITfsExplorer>();
-			explorer.SetupGet(e => e.Server).Returns(server.Object);
-			explorer.Setup(e => e.WorkItems(It.IsAny<string>()))
-			        .Returns((string name) => Mock.Of<ITfsProjectWorkItemCollection>(wi => wi.ProjectName == name));
-			return explorer.Object;
-		}
+		private readonly MainViewModel _underTest;
 
-		private SourceControlTestBrowserViewModel CreateSourceControlBrowser(IEnumerable<TfsSolution> solutions, ITestCaseViewModel testCase)
-		{
-			return new SourceControlTestBrowserViewModel(solutions, testCase, _ => null);
-		}
-
-		private FileSystemTestBrowserViewModel CreateFileSystemBrowser(ITestCaseViewModel testCase)
-		{
-			return new FileSystemTestBrowserViewModel(testCase, _ => null, Mock.Of<ITestAutomationDiscoverer>(), new SynchronousTaskScheduler());
-		}
-
-		private readonly MainViewModel viewModel;
-
-	    private Uri serverUri;
- 		private Mock<ITfsExplorer> explorer;
-        private readonly Mock<ITfsServer> server = new Mock<ITfsServer>();
-        private readonly Mock<IWorkItems> workItems;
-		private readonly Mock<IVersionControl> versionControl = new Mock<IVersionControl>();
+ 		private readonly Mock<ITfsExplorer> _explorer = new Mock<ITfsExplorer>();
+        private readonly Mock<ITfsServer> _server = new Mock<ITfsServer>();
+        private readonly Mock<IWorkItems> _workItems = new Mock<IWorkItems>();
+		private readonly Mock<IVersionControl> _versionControl = new Mock<IVersionControl>();
 	}
 }

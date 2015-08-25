@@ -1,58 +1,42 @@
-﻿<Window x:Class="TestCaseAutomator.Views.Browser.ManualAutomationEntryEditor"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-        xmlns:behaviors="clr-namespace:SharpEssentials.Controls.Behaviors;assembly=SharpEssentials.Controls"
-        Title="Test Automation Manual Entry" Height="500" Width="600"
-        WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
-        behaviors:WindowBehaviors.DialogResult="{Binding HasBeenSaved}">
-
-    <i:Interaction.Behaviors>
-        <behaviors:TitleBarOptions ShowButtons="False"/>
-    </i:Interaction.Behaviors>
+﻿<UserControl x:Class="TestCaseAutomator.Views.Browser.ManualAutomationEntryEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="500" d:DesignWidth="600">
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0" Padding="5,2,0,2" HorizontalAlignment="Left" VerticalAlignment="Center">
-            <TextBlock.Text>
-                <MultiBinding StringFormat="Enter automation details for Test Case {0}: '{1}'">
-                    <Binding Path="TestCase.Id"/>
-                    <Binding Path="TestCase.Title"/>
-                </MultiBinding>
-            </TextBlock.Text>
+            Enter automation details:
         </TextBlock>
 
-        <StackPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Stretch" Margin="2,5,2,0">
+        <StackPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Stretch" Margin="2,2,2,0">
 
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,10,5,0">
                 <TextBlock Text="Automated test name:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBox Text="{Binding AutomationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Center" Width="Auto"/>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,10,5,0">
                 <TextBlock Text="Automated test storage:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding StorageLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBox Text="{Binding AutomationStorage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Center" Width="Auto"/>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,10,5,0">
                 <TextBlock Text="Automated test type:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding TestType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBox Text="{Binding AutomationTestType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Center" Width="Auto"/>
             </StackPanel>
 
         </StackPanel>
 
-        <DockPanel Grid.Row="2" Dock="Left" HorizontalAlignment="Right">
-            <Button Content="OK" Command="{Binding SaveTestCaseCommand}" Width="100" Margin="5,3,5,3" HorizontalAlignment="Right"/>
-            <Button Content="Cancel" Width="100" Margin="5,3,5,3" HorizontalAlignment="Right" IsDefault="True" IsCancel="True"/>
-        </DockPanel>
-
     </Grid>
-</Window>
+</UserControl>

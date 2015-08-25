@@ -23,15 +23,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Resources/Icons/Icons.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            
-            <cmds:OpenDialogCommand x:Key="FileSelectorCmd" Type="{x:Type vw:FileSystemTestBrowser}" 
-                                    Owner="{Binding Source={x:Static Application.Current}, Path=MainWindow}"/>
-
-            <cmds:OpenDialogCommand x:Key="SCSelectorCmd" Type="{x:Type vw:SourceControlTestBrowser}" 
-                                    Owner="{Binding Source={x:Static Application.Current}, Path=MainWindow}"/>
-
-            <cmds:OpenDialogCommand x:Key="ManualEditCmd" Type="{x:Type vw:ManualAutomationEntryEditor}" 
-                                    Owner="{Binding Source={x:Static Application.Current}, Path=MainWindow}"/>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -51,7 +42,8 @@
             
             <DockPanel Grid.Column="0" Dock="Left">
                 <TextBlock Text="Server:" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                <TextBox Text="{Binding ServerUri}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Center" Width="Auto"/>
+                <TextBox Text="{Binding ServerUri, UpdateSourceTrigger=PropertyChanged}" Width="Auto"
+                         HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Center"/>
             </DockPanel>
             
             <DockPanel Grid.Column="1" Margin="10,0,0,0" Dock="Left">
@@ -70,11 +62,24 @@
                     </ComboBox.Style>
                 </ComboBox>
             </DockPanel>
-            
-            <Button Grid.Column="2" Command="{Binding RefreshCommand}" Height="30" Width="30" HorizontalAlignment="Right"
-                    ToolTip="Reconnect to TFS.">
-                <Image Source="{StaticResource RefreshIcon}" Style="{StaticResource DisableableIcon}" 
-                       RenderOptions.BitmapScalingMode="NearestNeighbor" RenderOptions.EdgeMode="Aliased"/>
+
+            <Button Grid.Column="2" Command="{Binding ConnectCommand}" Height="30" Width="30" HorizontalAlignment="Right">
+                <Image RenderOptions.BitmapScalingMode="NearestNeighbor" RenderOptions.EdgeMode="Aliased">
+                    <Image.Style>
+                        <Style TargetType="{x:Type Image}" BasedOn="{StaticResource DisableableIcon}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CanRefresh}" Value="True">
+                                    <Setter Property="Source" Value="{StaticResource RefreshIcon}"/>
+                                    <Setter Property="ToolTip" Value="Reconnect to TFS."/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding CanRefresh}" Value="False">
+                                    <Setter Property="Source" Value="{StaticResource ConnectIcon}"/>
+                                    <Setter Property="ToolTip" Value="Connect to TFS."/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
             </Button>
         </Grid>
         
@@ -127,29 +132,13 @@
                                         <Image Source="{StaticResource RemoveIcon}" Style="{StaticResource DisableableIcon}" 
                                                RenderOptions.BitmapScalingMode="NearestNeighbor" RenderOptions.EdgeMode="Aliased"/>
                                     </Button>
-                                    
-                                    <Button ToolTip="Choose automated test from the file system..." 
-                                            HorizontalAlignment="Right" VerticalContentAlignment="Center" Width="25" Height="25"
-                                            Command="{StaticResource FileSelectorCmd}"
-                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestSelection.FileSystemTestBrowser, Mode=OneWay}">
-                                        <Image Source="{StaticResource BrowseFileSystemIcon}" Style="{StaticResource DisableableIcon}" 
-                                               RenderOptions.BitmapScalingMode="NearestNeighbor" RenderOptions.EdgeMode="Aliased"/>
-                                    </Button>
-                                
-                                    <Button ToolTip="Choose automated test from a source controlled file..." 
-                                            HorizontalAlignment="Right" Width="25" Height="25"
-                                            Command="{StaticResource SCSelectorCmd}"
-                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestSelection.SourceControlTestBrowser, Mode=OneWay}">
-                                        <Image Source="{StaticResource BrowseSourceControlIcon}" Style="{StaticResource DisableableIcon}" 
-                                               RenderOptions.BitmapScalingMode="NearestNeighbor" RenderOptions.EdgeMode="Aliased"/>
-                                    </Button>
 
-                                    <Button ToolTip="Manually enter test automation information..." 
-                                            HorizontalAlignment="Right" Width="25" Height="25"
-                                            Command="{StaticResource ManualEditCmd}"
-                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestSelection.ManualEntry, Mode=OneWay}">
-                                        <Image Source="{StaticResource ManualEntryIcon}" Style="{StaticResource DisableableIcon}" 
-                                               RenderOptions.BitmapScalingMode="NearestNeighbor" RenderOptions.EdgeMode="Aliased"/>
+                                    <Button ToolTip="Edit a test case..." HorizontalAlignment="Right" Width="25" Height="25"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestSelection.TestBrowser, Mode=OneWay}">
+                                        <Button.Command>
+                                            <cmds:OpenDialogCommand Type="{x:Type vw:TestBrowser}" 
+                                                                    Owner="{Binding Source={x:Static Application.Current}, Path=MainWindow}"/>
+                                        </Button.Command>
                                     </Button>
 
                                 </DockPanel>

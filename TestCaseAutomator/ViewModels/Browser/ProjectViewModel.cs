@@ -19,7 +19,8 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// <param name="project">A project belonging to a solution</param>
 		/// <param name="sourceFactory">Creates test source view-models</param>
 		/// <param name="scheduler">Used to schedule background tasks</param>
-		public ProjectViewModel(TfsSolutionProject project, Func<TfsFile, AutomationSourceViewModel> sourceFactory,
+		public ProjectViewModel(TfsSolutionProject project, 
+                                Func<TfsFile, AutomationSourceViewModel> sourceFactory,
 								TaskScheduler scheduler)
 		{
 			_project = project;
@@ -61,7 +62,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 
 		private class DummySource : AutomationSourceViewModel
 		{
-			public DummySource() : base(null, null, null, null) { }
+			public DummySource() : base(null, null, null) { }
 			public override string Name => "Loading...";
 		}
 	}

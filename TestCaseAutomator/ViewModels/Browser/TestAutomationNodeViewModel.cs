@@ -3,15 +3,15 @@
 namespace TestCaseAutomator.ViewModels.Browser
 {
 	/// <summary>
-	/// Represents a test that can be associated with a test case.
+	/// Represents a tree node viewmodel that can be associated with test case automation.
 	/// </summary>
-	public class TestAutomationViewModel : NodeViewModel<object>
+	public class TestAutomationNodeViewModel : NodeViewModel<object>
 	{
 		/// <summary>
-		/// Initializes a new <see cref="TestAutomationViewModel"/>.
+		/// Initializes a new <see cref="TestAutomationNodeViewModel"/>.
 		/// </summary>
 		/// <param name="testAutomation">An automated test</param>
-		public TestAutomationViewModel(ITestAutomation testAutomation)
+		public TestAutomationNodeViewModel(ITestAutomation testAutomation)
 		{
 			TestAutomation = testAutomation;
 		}

@@ -10,6 +10,7 @@
         </Style.Triggers>
     </Style>
 
+    <BitmapImage x:Key="ConnectIcon" UriSource="../Icons/arrow-24x24.png"/>
     <BitmapImage x:Key="RefreshIcon" UriSource="../Icons/arrow-circle-double-135-24x24.png"/>
     <BitmapImage x:Key="ConnectedIcon" UriSource="../Icons/plug-connect-16x16.png"/>
     <BitmapImage x:Key="DisconnectedIcon" UriSource="../Icons/plug-disconnect-16x16.png"/>

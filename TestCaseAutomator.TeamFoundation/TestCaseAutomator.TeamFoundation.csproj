@@ -117,6 +117,7 @@
     <Compile Include="IVersionControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestCaseAssociation\ITestCaseAutomationService.cs" />
+    <Compile Include="TestCaseAssociation\WorkItemValidationException.cs" />
     <Compile Include="TfsServer.cs" />
     <Compile Include="VersionedItem.cs" />
     <Compile Include="SolutionFileParser.cs" />

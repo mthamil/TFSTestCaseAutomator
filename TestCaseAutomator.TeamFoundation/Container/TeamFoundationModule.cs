@@ -1,8 +1,7 @@
 ﻿using System;
 using Autofac;
 using Microsoft.TeamFoundation.Client;
-using Microsoft.TeamFoundation.TestManagement.Client;
-using Microsoft.TeamFoundation.VersionControl.Client;
+using TestCaseAutomator.AutomationProviders.Interfaces;
 using TestCaseAutomator.TeamFoundation.TestCaseAssociation;
 
 namespace TestCaseAutomator.TeamFoundation.Container
@@ -21,18 +20,18 @@ namespace TestCaseAutomator.TeamFoundation.Container
 			builder.Register((c, p) => new TfsServer(c.Resolve<Func<Uri, TfsTeamProjectCollection>>()(p.TypedAs<Uri>())))
 			       .As<ITfsServer>();
 
-			builder.Register((c, p) => new TfsExplorer(
-				                           c.Resolve<Func<Uri, ITfsServer>>()(p.TypedAs<Uri>()),
-				                           c.Resolve<Func<ITestManagementTeamProject, ITfsProjectWorkItemCollection>>()))
-			       .As<ITfsExplorer>();
+			builder.RegisterType<TfsExplorer>()
+			       .As<ITfsExplorer>()
+                   .SingleInstance();
 
 			builder.RegisterType<TfsProjectWorkItemCollection>()
-			       .As<ITfsProjectWorkItemCollection>();
+			       .AsImplementedInterfaces();
 
-			builder.Register((c, p) => new VersionControlServerAdapter(p.TypedAs<TfsConnection>().GetService<VersionControlServer>()))
-			       .As<IVersionControl>();
+		    builder.RegisterType<TestCaseAutomationService>()
+		           .AsImplementedInterfaces();
 
-			builder.RegisterType<TestCaseAutomationService>().As<ITestCaseAutomationService>();
-		}
+            builder.RegisterType<HashedIdentifierFactory>()
+                   .AsImplementedInterfaces();
+        }
 	}
 }

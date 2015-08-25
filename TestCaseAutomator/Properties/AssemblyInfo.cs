@@ -11,7 +11,7 @@ using System.Windows;
 [assembly: AssemblyDescription("An application that enables association of Team Foundation Server test cases with automation.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyProduct("TFSTestCaseAutomator")]
-[assembly: AssemblyCopyright("Copyright © Matt Hamilton 2013")]
+[assembly: AssemblyCopyright("Copyright © Matt Hamilton 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

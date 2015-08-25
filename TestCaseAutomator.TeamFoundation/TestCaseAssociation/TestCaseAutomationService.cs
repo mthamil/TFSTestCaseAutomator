@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.TeamFoundation.TestManagement.Client;
+using Microsoft.TeamFoundation.WorkItemTracking.Client;
 using TestCaseAutomator.AutomationProviders.Interfaces;
 
 namespace TestCaseAutomator.TeamFoundation.TestCaseAssociation
@@ -22,6 +24,11 @@ namespace TestCaseAutomator.TeamFoundation.TestCaseAssociation
 			// bulk saving too (outside of this method) for performance reason.
 			testCase.WorkItem.Open();
 			testCase.Implementation = implementation;
+
+		    var invalidFields = testCase.WorkItem.Validate();
+            if (invalidFields.Count > 0)
+                throw new WorkItemValidationException(invalidFields.Cast<Field>());
+
 			testCase.Save();
 		}
 
