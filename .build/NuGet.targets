@@ -24,7 +24,7 @@
                OutputDirectory="$(OutputDirectory)" 
                Version="$(Major).$(Minor).$(Build).$(Revision)" 
                Properties="id=$(MSBuildProjectName);copyright=$(CopyrightNotice)" 
-               ToolPath="$(SolutionDir)\packages\NuGet.CommandLine.2.8.3\tools\"/>
+               ToolPath="$(SolutionDir)packages\NuGet.CommandLine.2.8.6\tools\"/>
     <RemoveDir Directories="$(StagingDirectory)" />
   </Target>
 
