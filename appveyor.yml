@@ -43,7 +43,7 @@ build:
 #---------------------------------#
 
 test_script:
-  - ps: '&"C:\projects\TFSTestCaseAutomator\packages\xunit.runner.console*\tools\xunit.console.exe" "C:\projects\TFSTestCaseAutomator\Tests.Unit\bin\$(CONFIGURATION)\Tests.Unit.dll" -appveyor'
+  - ps: '&"$($env:APPVEYOR_BUILD_FOLDER)\packages\xunit.runner.console*\tools\xunit.console.exe" "$($env:APPVEYOR_BUILD_FOLDER)\Tests.Unit\bin\$($env:CONFIGURATION)\Tests.Unit.dll" -appveyor'
 
 
 #---------------------------------#
