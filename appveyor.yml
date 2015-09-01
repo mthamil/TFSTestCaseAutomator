@@ -1,0 +1,54 @@
+# Notes:
+#   - Indent each level of configuration with 2 spaces. Do not use tabs!
+#   - All section names are case-sensitive.
+#   - Section names should be unique on each level.
+
+#---------------------------------#
+#      general configuration      #
+#---------------------------------#
+
+# version format
+version: 0.0.{build}
+
+#---------------------------------#
+#    environment configuration    #
+#---------------------------------#
+
+# Operating system (build VM template)
+os: Visual Studio 2015
+
+# scripts that are called at very beginning, before repo cloning
+init:
+  - git config --global core.autocrlf true
+
+#---------------------------------#
+#       build configuration       #
+#---------------------------------#
+
+# build Configuration, i.e. Debug, Release, etc.
+configuration: Package
+
+# scripts to run before build
+before_build:
+  - git submodule update --init --recursive
+  - nuget restore
+
+build:
+  project: TFSTestCaseAutomator.sln
+  verbosity: minimal               # MSBuild verbosity level
+
+
+#---------------------------------#
+#       tests configuration       #
+#---------------------------------#
+
+test_script:
+  - ps: '&"C:\projects\TFSTestCaseAutomator\packages\xunit.runner.console*\tools\xunit.console.exe" "C:\projects\TFSTestCaseAutomator\Tests.Unit\bin\$(CONFIGURATION)\Tests.Unit.dll" -appveyor'
+
+
+#---------------------------------#
+#      artifacts configuration    #
+#---------------------------------#
+
+artifacts:
+  - path: TestCaseAutomator.Setup\bin\$(CONFIGURATION)\TestCaseAutomator.msi
