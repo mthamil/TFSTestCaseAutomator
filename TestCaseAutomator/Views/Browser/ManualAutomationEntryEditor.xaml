@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vw="clr-namespace:TestCaseAutomator.Views.Browser"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="600">
 
@@ -20,19 +21,28 @@
 
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,10,5,0">
                 <TextBlock Text="Automated test name:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding AutomationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBox Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type vw:ManualAutomationEntryEditor}}, 
+                                        Path=AutomationName, 
+                                        Mode=TwoWay, 
+                                        UpdateSourceTrigger=PropertyChanged}" 
                          HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Center" Width="Auto"/>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,10,5,0">
                 <TextBlock Text="Automated test storage:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding AutomationStorage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBox Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type vw:ManualAutomationEntryEditor}}, 
+                                        Path=AutomationStorage, 
+                                        Mode=TwoWay, 
+                                        UpdateSourceTrigger=PropertyChanged}" 
                          HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Center" Width="Auto"/>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,10,5,0">
                 <TextBlock Text="Automated test type:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding AutomationTestType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBox Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type vw:ManualAutomationEntryEditor}}, 
+                                        Path=AutomationTestType, 
+                                        Mode=TwoWay, 
+                                        UpdateSourceTrigger=PropertyChanged}" 
                          HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Center" Width="Auto"/>
             </StackPanel>
 

@@ -115,6 +115,7 @@
     <Compile Include="ViewModels\AutofacViewModelLocator.cs" />
     <Compile Include="ViewModels\Browser\AutomatedTestSelectedEventArgs.cs" />
     <Compile Include="ViewModels\Browser\TestAutomationUpdate.cs" />
+    <Compile Include="ViewModels\Browser\TestAutomationViewModel.cs" />
     <Compile Include="ViewModels\Browser\TestAutomationNodeViewModel.cs" />
     <Compile Include="ViewModels\Browser\AutomationSourceViewModel.cs" />
     <Compile Include="ViewModels\Browser\FileSystemTestBrowserViewModel.cs" />

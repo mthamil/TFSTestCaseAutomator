@@ -51,12 +51,9 @@
                     </StackPanel>
                 </TabItem.Header>
                 <vw:ManualAutomationEntryEditor 
-                    AutomationName="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, 
-                                             Path=DataContext.AutomationName}"
-                    AutomationTestType="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, 
-                                                 Path=DataContext.AutomationTestType}"
-                    AutomationStorage="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, 
-                                                Path=DataContext.AutomationStorage}" />
+                    AutomationName="{Binding TestAutomation.Name, Mode=TwoWay}"
+                    AutomationTestType="{Binding TestAutomation.TestType, Mode=TwoWay}"
+                    AutomationStorage="{Binding TestAutomation.Storage, Mode=TwoWay}" />
             </TabItem>
             
             <TabItem>
@@ -67,7 +64,7 @@
                         <TextBlock Text="File System" />
                     </StackPanel>
                 </TabItem.Header>
-                <vw:FileSystemTestBrowser/>
+                <vw:FileSystemTestBrowser DataContext="{Binding FileSystemBrowser}"/>
             </TabItem>
             
             <TabItem>
@@ -78,7 +75,7 @@
                         <TextBlock Text="Source Control" />
                     </StackPanel>
                 </TabItem.Header>
-                <vw:SourceControlTestBrowser/>
+                <vw:SourceControlTestBrowser DataContext="{Binding SourceControlBrowser}"/>
             </TabItem>
             
         </TabControl>

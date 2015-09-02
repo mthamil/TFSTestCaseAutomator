@@ -6,11 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using TestCaseAutomator.AutomationProviders.Interfaces;
 using SharpEssentials.Collections;
 using SharpEssentials.Controls.Mvvm;
-using SharpEssentials.Controls.Mvvm.Commands;
 using SharpEssentials.Observable;
 
 namespace TestCaseAutomator.ViewModels.Browser
@@ -40,20 +38,14 @@ namespace TestCaseAutomator.ViewModels.Browser
 
             _tests = Property.New(this, p => p.Tests, OnPropertyChanged);
 
-            _selectedTest = Property.New(this, p => p.SelectedTest, OnPropertyChanged)
-                                    .AlsoChanges(p => p.CanSaveTestCase);
-
-            _hasBeenSaved = Property.New(this, p => p.HasBeenSaved, OnPropertyChanged);
+            _selectedTest = Property.New(this, p => p.SelectedTest, OnPropertyChanged);
 
             _canBrowse = Property.New(this, p => p.CanBrowse, OnPropertyChanged);
             CanBrowse = true;
 
             Tests = new ObservableCollection<TestAutomationNodeViewModel>();
-            SaveTestCaseCommand = Command.For(this)
-                                         .DependsOn(p => p.CanSaveTestCase)
-                                         .Executes(SaveTestCase);
 
-            PropertyChanged += FileSystemTestBrowserViewModel_PropertyChanged;
+            PropertyChanged += OnPropertyChanged;
         }
 
         /// <summary>
@@ -69,7 +61,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 			}
 		}
 
-        private async void FileSystemTestBrowserViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private async void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(SelectedFile))
             {
@@ -116,34 +108,6 @@ namespace TestCaseAutomator.ViewModels.Browser
 		}
 
 		/// <summary>
-		/// Command that invokes <see cref="SaveTestCase"/>.
-		/// </summary>
-		public ICommand SaveTestCaseCommand { get; }
-
-		/// <summary>
-		/// Whether the current test case can be saved.
-		/// </summary>
-		public bool CanSaveTestCase => SelectedTest != null;
-
-	    /// <summary>
-		/// Saves a test case with the associated automation.
-		/// </summary>
-		public void SaveTestCase()
-		{
-			//OnAutomatedTestSelected();
-			HasBeenSaved = true;
-		}
-
-		/// <summary>
-		/// Whether test automation has been chosen.
-		/// </summary>
-		public bool? HasBeenSaved
-		{
-			get { return _hasBeenSaved.Value; }
-			set { _hasBeenSaved.Value = value; }
-		}
-
-		/// <summary>
 		/// Whether a file can be selected.
 		/// </summary>
 		public bool CanBrowse
@@ -155,7 +119,6 @@ namespace TestCaseAutomator.ViewModels.Browser
 		private readonly Property<FileInfo> _selectedFile;
 		private readonly Property<ICollection<TestAutomationNodeViewModel>> _tests;
 		private readonly Property<TestAutomationNodeViewModel> _selectedTest;
-		private readonly Property<bool?> _hasBeenSaved;
 		private readonly Property<bool> _canBrowse;
 
 		private readonly ITestAutomationDiscoverer _testDiscoverer;

@@ -10,30 +10,22 @@ namespace TestCaseAutomator.ViewModels.Browser
     public class TestBrowserViewModel : ViewModelBase, IAutomationSelector
     {
         public TestBrowserViewModel(ITestCaseViewModel testCase, 
-                                    ITestIdentifierFactory identifierFactory)
+                                    ITestIdentifierFactory identifierFactory,
+                                    FileSystemTestBrowserViewModel fileSystemBrowser,
+                                    SourceControlTestBrowserViewModel sourceControlBrowser)
             : this()
         {
             _identifierFactory = identifierFactory;
+            FileSystemBrowser = fileSystemBrowser;
+            SourceControlBrowser = sourceControlBrowser;
             TestCase = testCase;
-            var existingAutomation = TestCase.GetAutomation();
-            AutomationIdentifier = existingAutomation?.Identifier;
-            AutomationName = existingAutomation?.Name;
-            AutomationTestType = existingAutomation?.TestType;
-            AutomationStorage = existingAutomation?.Storage;
+            TestAutomation = TestCase.GetAutomation();
         }
 
         private TestBrowserViewModel()
         {
-            _automationIdentifier = Property.New(this, p => p.AutomationIdentifier, OnPropertyChanged);
-
-            _automationName = Property.New(this, p => p.AutomationName, OnPropertyChanged)
+            _testAutomation = Property.New(this, p => p.TestAutomation, OnPropertyChanged)
                                       .AlsoChanges(p => p.CanSave);
-
-            _automationTestType = Property.New(this, p => p.AutomationTestType, OnPropertyChanged)
-                                          .AlsoChanges(p => p.CanSave);
-
-            _automationStorage = Property.New(this, p => p.AutomationStorage, OnPropertyChanged)
-                                         .AlsoChanges(p => p.CanSave);
 
             _hasBeenSaved = Property.New(this, p => p.HasBeenSaved, OnPropertyChanged);
 
@@ -44,48 +36,26 @@ namespace TestCaseAutomator.ViewModels.Browser
 
         public ITestCaseViewModel TestCase { get; }
 
-        /// <summary>
-        /// A test's unique identifier.
-        /// </summary>
-        public Guid? AutomationIdentifier
+        public ITestAutomation TestAutomation
         {
-            get { return _automationIdentifier.Value; }
-            set { _automationIdentifier.Value = value; }
-        }
-
-        /// <summary>
-        /// The test name.
-        /// </summary>
-        public string AutomationName
-        {
-            get { return _automationName.Value; }
-            set { _automationName.Value = value; }
-        }
-
-        /// <summary>
-        /// A string representation of the test's type.
-        /// </summary>
-        public string AutomationTestType
-        {
-            get { return _automationTestType.Value; }
-            set { _automationTestType.Value = value; }
-        }
-
-        /// <summary>
-        /// A string representation of where a test is located. For example,
-        /// this may be the path of a DLL or source file.
-        /// </summary>
-        public string AutomationStorage
-        {
-            get { return _automationStorage.Value; }
-            set { _automationStorage.Value = value; }
+            get { return _testAutomation.Value; }
+            set
+            {
+                _testAutomation.Value = new TestAutomationViewModel
+                {
+                    Identifier = value?.Identifier ?? default(Guid),
+                    Name = value?.Name,
+                    TestType = value?.TestType,
+                    Storage = value?.Storage
+                };
+            }
         }
 
         public ICommand SaveCommand { get; }
 
-        public bool CanSave => !String.IsNullOrWhiteSpace(AutomationName) &&
-                               !String.IsNullOrWhiteSpace(AutomationStorage) &&
-                               !String.IsNullOrWhiteSpace(AutomationTestType);
+        public bool CanSave => !String.IsNullOrWhiteSpace(TestAutomation.Name) &&
+                               !String.IsNullOrWhiteSpace(TestAutomation.TestType) &&
+                               !String.IsNullOrWhiteSpace(TestAutomation.Storage);
 
         /// <summary>
         /// Saves a test case with the associated automation.
@@ -94,10 +64,12 @@ namespace TestCaseAutomator.ViewModels.Browser
         {
             OnAutomatedTestSelected(new TestAutomationUpdate
             {
-                Identifier = AutomationIdentifier ?? _identifierFactory.CreateIdentifier(AutomationName),
-                Name = AutomationName,
-                TestType = AutomationTestType,
-                Storage = AutomationStorage
+                Identifier = TestAutomation.Identifier == default(Guid) 
+                                ? _identifierFactory.CreateIdentifier(TestAutomation.Name) 
+                                : TestAutomation.Identifier,
+                Name = TestAutomation.Name,
+                TestType = TestAutomation.TestType,
+                Storage = TestAutomation.Storage
             });
             HasBeenSaved = true;
         }
@@ -111,6 +83,9 @@ namespace TestCaseAutomator.ViewModels.Browser
             set { _hasBeenSaved.Value = value; }
         }
 
+        public FileSystemTestBrowserViewModel FileSystemBrowser { get; }
+        public SourceControlTestBrowserViewModel SourceControlBrowser { get; }
+
         public event EventHandler<AutomatedTestSelectedEventArgs> AutomatedTestSelected;
 
         private void OnAutomatedTestSelected(ITestAutomation testAutomation)
@@ -119,11 +94,7 @@ namespace TestCaseAutomator.ViewModels.Browser
         }
 
         private readonly Property<bool?> _hasBeenSaved;
-
-        private readonly Property<Guid?> _automationIdentifier;
-        private readonly Property<string> _automationName;
-        private readonly Property<string> _automationTestType;
-        private readonly Property<string> _automationStorage;
+        private readonly Property<ITestAutomation> _testAutomation;
 
         private readonly ITestIdentifierFactory _identifierFactory;
     }

@@ -9,10 +9,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d"
              xmlns:vm="clr-namespace:TestCaseAutomator.ViewModels.Browser"
-             xmlns:xt="clr-namespace:TestCaseAutomator.Views.MarkupExtensions"
              d:DesignHeight="500" d:DesignWidth="600"
-             d:DataContext="{d:DesignInstance Type=vm:FileSystemTestBrowserViewModel, IsDesignTimeCreatable=False}"
-             DataContext="{Binding Source={xt:ViewModelLocator {x:Type vm:FileSystemTestBrowserViewModel}}, Path=ViewModel}">
+             d:DataContext="{d:DesignInstance Type=vm:FileSystemTestBrowserViewModel, IsDesignTimeCreatable=False}">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -20,16 +18,7 @@
             <convert:StringIsNullOrEmptyConverter x:Key="StringIsEmptyConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
-
-    <!--<UserControl.Style>
-        <Style TargetType="{x:Type vw:FileSystemTestBrowser}">
-            <Setter Property="vw:FileSystemTestBrowser.AutomationName"
-                    Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, 
-                                    Path=DataContext.SelectedTest.Name}" />
-        </Style>
-    </UserControl.Style>-->
-
-    
+   
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -71,10 +60,10 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}">
-                        <TextBlock.InputBindings>
+                        <!--<TextBlock.InputBindings>
                             <MouseBinding Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=vw:FileSystemTestBrowser}, 
                                                             Path=DataContext.SaveTestCaseCommand}" MouseAction="LeftDoubleClick" />
-                        </TextBlock.InputBindings>
+                        </TextBlock.InputBindings>-->
                     </TextBlock>
                 </DataTemplate>
             </ListBox.ItemTemplate>
