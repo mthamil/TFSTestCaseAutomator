@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using TestCaseAutomator.TeamFoundation;
+using SharpEssentials.Collections;
 using SharpEssentials.Controls.Mvvm;
 using SharpEssentials.Observable;
 
@@ -15,14 +14,11 @@ namespace TestCaseAutomator.ViewModels.Browser
 	    /// <summary>
 	    /// Initializes a new <see cref="SourceControlTestBrowserViewModel"/>.
 	    /// </summary>
-	    /// <param name="explorer">The current TFS explorer</param>
-	    /// <param name="solutionFactory">Creates solution view-models</param>
-	    public SourceControlTestBrowserViewModel(ITfsExplorer explorer,
-	                                             Func<TfsSolution, SolutionViewModel> solutionFactory)
+	    /// 
+	    public SourceControlTestBrowserViewModel(Func<SourceRootNodeViewModel> rootFactory)
             : this()
 	    {
-	        _explorer = explorer;
-	        _solutionFactory = solutionFactory;
+	        SourceTree = rootFactory().ToEnumerable();
 	    }
 
 	    private SourceControlTestBrowserViewModel()
@@ -45,14 +41,8 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// </summary>
 		public bool CanSaveTestCase => SelectedTest != null && SelectedTest is TestAutomationNodeViewModel;
 
-		/// <summary>
-		/// The available solutions in source control.
-		/// </summary>
-		public IEnumerable<SolutionViewModel> Solutions => _explorer.Solutions().Select(_solutionFactory);
+        public IEnumerable<INodeViewModel> SourceTree { get; }
 
 	    private readonly Property<ViewModelBase> _selectedTest;
-
-        private readonly ITfsExplorer _explorer;
-	    private readonly Func<TfsSolution, SolutionViewModel> _solutionFactory;
 	}
 }

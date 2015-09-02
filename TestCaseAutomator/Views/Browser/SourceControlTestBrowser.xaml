@@ -24,7 +24,7 @@
         </TextBlock>
 
         <TreeView Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  ItemsSource="{Binding Solutions}" Margin="2,0,2,0">
+                  ItemsSource="{Binding SourceTree}" Margin="2,0,2,0">
 
             <i:Interaction.Behaviors>
                 <behaviors:TreeViewBindableSelectedItem SelectedItem="{Binding SelectedTest, Mode=TwoWay}"/>

@@ -37,7 +37,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 		public override string Name => _project.Name;
 
 	    /// <see cref="VirtualizedNode{TChild}.DummyNode"/>
-		protected override AutomationSourceViewModel DummyNode => Dummy;
+		protected override AutomationSourceViewModel DummyNode => DummySource.Instance;
 
 	    /// <see cref="VirtualizedNode{TChild}.LoadChildrenAsync"/>
 		protected override Task<IReadOnlyCollection<AutomationSourceViewModel>> LoadChildrenAsync(IProgress<AutomationSourceViewModel> progress)
@@ -58,12 +58,12 @@ namespace TestCaseAutomator.ViewModels.Browser
 		
 		private readonly TaskScheduler _scheduler;
 
-		private static readonly DummySource Dummy = new DummySource();
-
 		private class DummySource : AutomationSourceViewModel
 		{
-			public DummySource() : base(null, null, null) { }
+		    private DummySource() : base(null, null, null) { }
 			public override string Name => "Loading...";
-		}
+
+            public static readonly DummySource Instance = new DummySource();
+        }
 	}
 }
