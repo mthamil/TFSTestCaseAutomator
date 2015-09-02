@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using SharpEssentials.Collections;
 using TestCaseAutomator.TeamFoundation;
@@ -18,37 +17,31 @@ namespace TestCaseAutomator.ViewModels.Browser
         /// </summary>
         /// <param name="explorer">The current TFS explorer</param>
         /// <param name="solutionFactory">Creates solution view-models</param>
-        /// <param name="scheduler">Used to schedule background tasks</param>
         public SourceRootNodeViewModel(ITfsExplorer explorer,
-                                       Func<TfsSolution, SolutionViewModel> solutionFactory,
-                                       TaskScheduler scheduler)
+                                       Func<TfsSolution, SolutionViewModel> solutionFactory)
         {
             _explorer = explorer;
             _solutionFactory = solutionFactory;
-            _scheduler = scheduler;
         }
 
         public override string Name => "$/";
 
         protected override SolutionViewModel DummyNode => DummySolution.Instance;
 
-        protected override Task<IReadOnlyCollection<SolutionViewModel>> LoadChildrenAsync(IProgress<SolutionViewModel> progress)
+        protected override async Task<IReadOnlyCollection<SolutionViewModel>> LoadChildrenAsync(IProgress<SolutionViewModel> progress)
         {
-            return Task<IReadOnlyCollection<SolutionViewModel>>.Factory.StartNew(() =>
-                _explorer.Solutions()
-                         .Select(_solutionFactory)
-                         .Tee(progress.Report)
-                         .ToList(),
-                    CancellationToken.None, TaskCreationOptions.None, _scheduler);
+            return (await _explorer.SolutionsAsync())
+                                   .Select(_solutionFactory)
+                                   .Tee(progress.Report)
+                                   .ToList();
         }
 
         private readonly ITfsExplorer _explorer;
         private readonly Func<TfsSolution, SolutionViewModel> _solutionFactory;
-        private readonly TaskScheduler _scheduler;
 
         private class DummySolution : SolutionViewModel
         {
-            private DummySolution() : base(null, null, null) { }
+            private DummySolution() : base(null, null) { }
             public override string Name => "Loading...";
 
             public static readonly DummySolution Instance = new DummySolution();

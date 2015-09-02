@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Autofac;
 using Microsoft.TeamFoundation.Client;
 using TestCaseAutomator.AutomationProviders.Interfaces;
@@ -17,7 +18,8 @@ namespace TestCaseAutomator.TeamFoundation.Container
 			builder.Register((c, p) => TfsTeamProjectCollectionFactory.GetTeamProjectCollection(p.TypedAs<Uri>()))
 			       .As<TfsConnection, TfsTeamProjectCollection>();
 
-			builder.Register((c, p) => new TfsServer(c.Resolve<Func<Uri, TfsTeamProjectCollection>>()(p.TypedAs<Uri>())))
+			builder.Register((c, p) => new TfsServer(c.Resolve<Func<Uri, TfsTeamProjectCollection>>()(p.TypedAs<Uri>()), 
+                                                     c.Resolve<TaskScheduler>()))
 			       .As<ITfsServer>();
 
 			builder.RegisterType<TfsExplorer>()

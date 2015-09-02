@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace TestCaseAutomator.TeamFoundation
 {
@@ -33,6 +34,6 @@ namespace TestCaseAutomator.TeamFoundation
 		/// <summary>
 		/// Provides access to Visual Studio solutions in source control.
 		/// </summary>
-		IEnumerable<TfsSolution> Solutions();
+		Task<IEnumerable<TfsSolution>> SolutionsAsync();
 	}
 }

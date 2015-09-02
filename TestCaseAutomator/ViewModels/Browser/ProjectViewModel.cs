@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using TestCaseAutomator.TeamFoundation;
 using SharpEssentials.Collections;
@@ -18,14 +17,11 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// </summary>
 		/// <param name="project">A project belonging to a solution</param>
 		/// <param name="sourceFactory">Creates test source view-models</param>
-		/// <param name="scheduler">Used to schedule background tasks</param>
 		public ProjectViewModel(TfsSolutionProject project, 
-                                Func<TfsFile, AutomationSourceViewModel> sourceFactory,
-								TaskScheduler scheduler)
+                                Func<TfsFile, AutomationSourceViewModel> sourceFactory)
 		{
 			_project = project;
 			_sourceFactory = sourceFactory;
-			_scheduler = scheduler;
 		}
 
 		/// <summary>
@@ -40,23 +36,17 @@ namespace TestCaseAutomator.ViewModels.Browser
 		protected override AutomationSourceViewModel DummyNode => DummySource.Instance;
 
 	    /// <see cref="VirtualizedNode{TChild}.LoadChildrenAsync"/>
-		protected override Task<IReadOnlyCollection<AutomationSourceViewModel>> LoadChildrenAsync(IProgress<AutomationSourceViewModel> progress)
+		protected override async Task<IReadOnlyCollection<AutomationSourceViewModel>> LoadChildrenAsync(IProgress<AutomationSourceViewModel> progress)
 		{
 			Invalidate();	// Reload on next query.
-			return Task<IReadOnlyCollection<AutomationSourceViewModel>>.Factory.StartNew(() =>
-				_project.Files(FileExtensions)
-						.Select(f => _sourceFactory(f))
-						.Tee(progress.Report)
-						.ToList(),
-					CancellationToken.None,
-					TaskCreationOptions.None,
-					_scheduler);
+	        return (await _project.FilesAsync(FileExtensions))
+	                              .Select(f => _sourceFactory(f))
+	                              .Tee(progress.Report)
+	                              .ToList();
 		}
 
 		private readonly TfsSolutionProject _project;
 		private readonly Func<TfsFile, AutomationSourceViewModel> _sourceFactory;
-		
-		private readonly TaskScheduler _scheduler;
 
 		private class DummySource : AutomationSourceViewModel
 		{

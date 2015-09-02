@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.TeamFoundation.VersionControl.Client;
+using static SharpEssentials.Collections.EnumerableExtensions;
 
 namespace TestCaseAutomator.TeamFoundation
 {
@@ -24,15 +26,15 @@ namespace TestCaseAutomator.TeamFoundation
 		/// The projects in a solution. This does not include solution folders.
 		/// </summary>
 		/// <returns></returns>
-		public IEnumerable<TfsSolutionProject> Projects()
+		public async Task<IEnumerable<TfsSolutionProject>> ProjectsAsync()
 		{
 			var solutionDir = Path.GetDirectoryName(ServerPath);
 			var solutionParser = new SolutionFileParser(Download());
-			return solutionParser.GetProjects()
-			                     .Select(p => Path.Combine(solutionDir, p))
-			                     .Select(p => VersionControl.GetItem(p))
-			                     .Where(p => p.ItemType == ItemType.File)
-			                     .Select(p => new TfsSolutionProject(p, VersionControl));
+			return (await solutionParser.GetProjects()
+			                            .Select(p => Path.Combine(solutionDir, p))
+			                            .Select(p => VersionControl.GetItemAsync(p)))
+			                            .Where(p => p.ItemType == ItemType.File)
+			                            .Select(p => new TfsSolutionProject(p, VersionControl));
 		}
 	}
 }

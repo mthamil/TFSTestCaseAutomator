@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.TeamFoundation.TestManagement.Client;
@@ -12,18 +13,21 @@ namespace TestCaseAutomator.TeamFoundation
 	/// </summary>
 	public class TfsServer : DisposableBase, ITfsServer
 	{
-		/// <summary>
-		/// Initializes a new <see cref="TfsServer"/>.
-		/// </summary>
-		/// <param name="connection">The TFS connection</param>
-		public TfsServer(TfsTeamProjectCollection connection)
+        /// <summary>
+        /// Initializes a new <see cref="TfsServer"/>.
+        /// </summary>
+        /// <param name="connection">The TFS connection</param>
+        /// <param name="scheduler">Used to schedule background tasks</param>
+        public TfsServer(TfsTeamProjectCollection connection, TaskScheduler scheduler)
 		{
-			_connection = connection;
-            _connection.EnsureAuthenticated();
+            _scheduler = scheduler;
+
+            _connection = connection;
+	        _connection.EnsureAuthenticated();
             _connection.ConnectivityFailureStatusChanged += connection_ConnectivityFailureStatusChanged;
 
 			_testManagement = new Lazy<ITestManagementService>(() => _connection.GetService<ITestManagementService>());
-			_versionControl = new Lazy<IVersionControl>(() => new VersionControlServerAdapter(_connection.GetService<VersionControlServer>()));
+			_versionControl = new Lazy<IVersionControl>(() => new VersionControlServerAdapter(_connection.GetService<VersionControlServer>(), _scheduler));
 			_projectCollectionService = new Lazy<ITeamProjectCollectionService>(() => _connection.ConfigurationServer.GetService<ITeamProjectCollectionService>());
 			_catalogRoot = new Lazy<ICatalogNode>(() => new CatalogNodeAdapter(_connection.CatalogNode));
 		}
@@ -65,6 +69,7 @@ namespace TestCaseAutomator.TeamFoundation
 		}
 
 		private readonly TfsTeamProjectCollection _connection;
+	    private readonly TaskScheduler _scheduler;
 
 	    private readonly Lazy<ITestManagementService> _testManagement;
 	    private readonly Lazy<IVersionControl> _versionControl;

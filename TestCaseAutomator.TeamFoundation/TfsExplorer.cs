@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.TeamFoundation.Framework.Common;
 using Microsoft.TeamFoundation.TestManagement.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
@@ -62,9 +63,9 @@ namespace TestCaseAutomator.TeamFoundation
 	    /// <summary>
 		/// Provides access to Visual Studio solutions in source control.
 		/// </summary>
-		public IEnumerable<TfsSolution> Solutions() 
-            => Server.VersionControl.GetItems("$/*.sln", RecursionType.Full)
-                                     .Select(item => new TfsSolution(item, Server.VersionControl));
+		public async Task<IEnumerable<TfsSolution>> SolutionsAsync() 
+            => (await Server.VersionControl.GetItemsAsync("$/*.sln", RecursionType.Full).ConfigureAwait(false))
+                                           .Select(item => new TfsSolution(item, Server.VersionControl));
 
         /// <see cref="DisposableBase.OnDisposing"/>
         protected override void OnDisposing() => Server?.Dispose();

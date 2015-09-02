@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using TestCaseAutomator.TeamFoundation;
 using SharpEssentials.Collections;
@@ -18,14 +17,11 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// </summary>
 		/// <param name="solution">The actual solution object</param>
 		/// <param name="projectFactory">Creates project view-models</param>
-		/// <param name="scheduler">Used to schedule background tasks</param>
 		public SolutionViewModel(TfsSolution solution, 
-                                 Func<TfsSolutionProject, ProjectViewModel> projectFactory,
-		                         TaskScheduler scheduler)
+                                 Func<TfsSolutionProject, ProjectViewModel> projectFactory)
 		{
 			_solution = solution;
 			_projectFactory = projectFactory;
-			_scheduler = scheduler;
 		}
 
 		/// <see cref="INodeViewModel.Name"/>
@@ -35,24 +31,21 @@ namespace TestCaseAutomator.ViewModels.Browser
 		protected override ProjectViewModel DummyNode => DummyProject.Instance;
 
 	    /// <see cref="VirtualizedNode{TChild}.LoadChildrenAsync"/>
-		protected override Task<IReadOnlyCollection<ProjectViewModel>> LoadChildrenAsync(IProgress<ProjectViewModel> progress)
+		protected override async Task<IReadOnlyCollection<ProjectViewModel>> LoadChildrenAsync(IProgress<ProjectViewModel> progress)
 		{
 			Invalidate();	// Reload on next query.
-			return Task<IReadOnlyCollection<ProjectViewModel>>.Factory.StartNew(() =>
-				_solution.Projects()
-						 .Select(p => _projectFactory(p))
-						 .Tee(progress.Report)
-						 .ToList(),
-					CancellationToken.None, TaskCreationOptions.None, _scheduler);
+			return (await _solution.ProjectsAsync())
+						           .Select(p => _projectFactory(p))
+						           .Tee(progress.Report)
+						           .ToList();
 		}
 
 		private readonly TfsSolution _solution;
 		private readonly Func<TfsSolutionProject, ProjectViewModel> _projectFactory;
-		private readonly TaskScheduler _scheduler;
 
 		private class DummyProject : ProjectViewModel
 		{
-		    private DummyProject() : base(null, null, null) { }
+		    private DummyProject() : base(null, null) { }
 			public override string Name => "Loading...";
 
             public static readonly DummyProject Instance = new DummyProject();

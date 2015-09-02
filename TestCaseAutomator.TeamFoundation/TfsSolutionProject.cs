@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Linq;
+using static SharpEssentials.Collections.EnumerableExtensions;
 
 namespace TestCaseAutomator.TeamFoundation
 {
@@ -39,16 +41,16 @@ namespace TestCaseAutomator.TeamFoundation
 		/// </summary>
 		/// <param name="fileExtensionFilter">Any file extensions to filter out. If empty, all file extensions are returned.</param>
 		/// <returns></returns>
-		public IEnumerable<TfsFile> Files(IReadOnlyCollection<string> fileExtensionFilter)
+		public async Task<IEnumerable<TfsFile>> FilesAsync(IReadOnlyCollection<string> fileExtensionFilter)
 		{
 			var projectDir = Path.GetDirectoryName(ServerPath);
 
-			return _projectDocument.Value
+			return (await _projectDocument.Value
 				.Descendants(XName.Get("Compile", ProjectNamespace)).Concat(_projectDocument.Value
 				.Descendants(XName.Get("None", ProjectNamespace)))
 				.Select(e => Path.Combine(projectDir, e.Attribute(XName.Get("Include")).Value))
 				.Where(p => fileExtensionFilter.Count == 0 || fileExtensionFilter.Contains(Path.GetExtension(p)))
-				.Select(p => VersionControl.GetItem(p))
+				.Select(p => VersionControl.GetItemAsync(p)))
 				.Select(i => new TfsFile(i, VersionControl));
 		}
 
