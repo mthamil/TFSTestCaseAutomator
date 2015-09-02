@@ -138,6 +138,8 @@ namespace TestCaseAutomator.ViewModels
 
         private void ConnectToServer(Uri serverUrl)
         {
+            bool serverChanged = !UriEqualityComparer.Instance.Equals(serverUrl, _explorer.Server?.Uri);
+
             if (_explorer.Server != null)
                 _explorer.Server.ConnectionStatusChanged -= Server_ConnectionStatusChanged;
 
@@ -146,6 +148,9 @@ namespace TestCaseAutomator.ViewModels
 
             _projectNames.Clear();
             _projectNames.AddRange(_explorer.TeamProjects().Select(n => n.Name));
+
+            if (serverChanged)
+                ProjectName = null;
 
             IsConnected = true;
         }
@@ -158,7 +163,10 @@ namespace TestCaseAutomator.ViewModels
         private async Task LoadWorkItemsAsync()
         {
             if (String.IsNullOrWhiteSpace(ProjectName))
+            {
+                WorkItems.TestCases.Clear();
                 return;
+            }
 
             await WorkItems.LoadAsync(_explorer.WorkItems(ProjectName));
 	    }
