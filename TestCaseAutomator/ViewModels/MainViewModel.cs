@@ -36,7 +36,8 @@ namespace TestCaseAutomator.ViewModels
                                    .AlsoChanges(p => p.CanRefresh);
             _serverUri = Property.New(this, p => p.ServerUri, OnPropertyChanged)
 	                             .AlsoChanges(p => p.CanRefresh);
-            _projectName = Property.New(this, p => p.ProjectName, OnPropertyChanged);
+	        _projectName = Property.New(this, p => p.ProjectName, OnPropertyChanged)
+	                               .AlsoChanges(p => p.CanRefresh);
             _status = Property.New(this, p => p.Status, OnPropertyChanged);
 
             ConnectCommand = new AsyncRelayCommand(ConnectAsync);
@@ -97,8 +98,29 @@ namespace TestCaseAutomator.ViewModels
 		{
 			await HandleServerError(async () =>
 			{
-                ConnectToServer(ServerUri);
-			    await LoadWorkItemsAsync();
+			    var serverUrl = ServerUri;
+                bool serverChanged = !UriEqualityComparer.Instance.Equals(serverUrl, _explorer.Server?.Uri);
+
+                if (_explorer.Server != null)
+                    _explorer.Server.ConnectionStatusChanged -= Server_ConnectionStatusChanged;
+
+                _explorer.Connect(serverUrl);
+                _explorer.Server.ConnectionStatusChanged += Server_ConnectionStatusChanged;
+
+                var currentProjectName = ProjectName;
+                _projectNames.Clear();
+                _projectNames.AddRange(_explorer.TeamProjects().Select(n => n.Name));
+
+                // Restore project name on reconnect.
+                if (_projectNames.Contains(currentProjectName) && !serverChanged)
+                    ProjectName = currentProjectName;
+
+                if (serverChanged)
+                    ProjectName = null;
+
+                IsConnected = true;
+
+                await Task.CompletedTask;
 			});
 		}
 
@@ -135,25 +157,6 @@ namespace TestCaseAutomator.ViewModels
 				}
 			}
 		}
-
-        private void ConnectToServer(Uri serverUrl)
-        {
-            bool serverChanged = !UriEqualityComparer.Instance.Equals(serverUrl, _explorer.Server?.Uri);
-
-            if (_explorer.Server != null)
-                _explorer.Server.ConnectionStatusChanged -= Server_ConnectionStatusChanged;
-
-            _explorer.Connect(serverUrl);
-            _explorer.Server.ConnectionStatusChanged += Server_ConnectionStatusChanged;
-
-            _projectNames.Clear();
-            _projectNames.AddRange(_explorer.TeamProjects().Select(n => n.Name));
-
-            if (serverChanged)
-                ProjectName = null;
-
-            IsConnected = true;
-        }
 
         private void Server_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
         {
