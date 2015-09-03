@@ -24,13 +24,10 @@ namespace TestCaseAutomator.AutomationProviders
             => _childDiscoverers.SelectMany(d => d.SupportedFileExtensions).Distinct();
 
 	    /// <see cref="ITestAutomationDiscoverer.DiscoverAutomatedTestsAsync"/>
-	    public async Task<IEnumerable<ITestAutomation>> DiscoverAutomatedTestsAsync(IEnumerable<string> sources)
-	    {
-	        var tests = Enumerable.Empty<ITestAutomation>();
-	        foreach (var discoverer in _childDiscoverers)
-	            tests = tests.Concat(await discoverer.DiscoverAutomatedTestsAsync(sources).ConfigureAwait(false));
-	        return tests;
-	    }
+	    public Task<IEnumerable<ITestAutomation>> DiscoverAutomatedTestsAsync(IEnumerable<string> sources)
+            => _childDiscoverers.Aggregate(Task.FromResult(Enumerable.Empty<ITestAutomation>()), 
+                    async (tests, discoverer) => (await tests.ConfigureAwait(false)).Concat(
+                                                 (await discoverer.DiscoverAutomatedTestsAsync(sources).ConfigureAwait(false))));
              
 	    private readonly IEnumerable<ITestAutomationDiscoverer> _childDiscoverers;
 	}
