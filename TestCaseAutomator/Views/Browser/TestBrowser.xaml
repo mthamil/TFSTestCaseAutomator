@@ -8,7 +8,7 @@
         xmlns:vw="clr-namespace:TestCaseAutomator.Views.Browser"
         xmlns:vm="clr-namespace:TestCaseAutomator.ViewModels.Browser"
         d:DataContext="{d:DesignInstance Type=vm:TestBrowserViewModel, IsDesignTimeCreatable=False}" 
-        Title="TestBrowser" Height="500" Width="600"
+        Title="Test Automation Browser" Height="500" Width="600"
         WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
         behaviors:WindowBehaviors.DialogResult="{Binding HasBeenSaved}">
 
