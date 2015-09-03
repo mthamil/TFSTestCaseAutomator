@@ -43,10 +43,11 @@ namespace xUnit.AutomationProvider
 				throw new ArgumentNullException(nameof(sources));
 
 	        return sources.Where(IsTestAssembly)
+                          .Select(src => FindAsync(_discovererFactory(src)))
                           .Aggregate(Task.FromResult(Enumerable.Empty<ITestAutomation>()), 
-                                async (current, source) => 
-                                    (await current.ConfigureAwait(false)).Concat(
-                                     await FindAsync(_discovererFactory(source)).ConfigureAwait(false)));
+                                async (tests, current) => 
+                                    (await tests.ConfigureAwait(false)).Concat(
+                                     await current.ConfigureAwait(false)));
 		}
 
         private static Task<IEnumerable<ITestAutomation>> FindAsync(ITestFrameworkDiscoverer discoverer)
@@ -58,7 +59,7 @@ namespace xUnit.AutomationProvider
                 tests.AddRange(
                     message.TestCases.Select(testCase =>
                         new XunitTestAutomation(testCase, message.TestAssembly)));
-            }, _ => tcs.SetResult(tests)), TestFrameworkOptions.ForDiscovery(new TestAssemblyConfiguration { UseAppDomain = false }));
+            }, () => tcs.SetResult(tests)), TestFrameworkOptions.ForDiscovery(new TestAssemblyConfiguration { UseAppDomain = false }));
 
             return tcs.Task;
         }
@@ -75,7 +76,7 @@ namespace xUnit.AutomationProvider
 	    private class DiscoveryMessageSink : LongLivedMarshalByRefObject, IMessageSink
 	    {
 	        public DiscoveryMessageSink(Action<ITestCaseDiscoveryMessage> testHandler, 
-                                        Action<IDiscoveryCompleteMessage> completionHandler)
+                                        Action completionHandler)
 	        {
 	            _testHandler = testHandler;
 	            _completionHandler = completionHandler;
@@ -93,7 +94,7 @@ namespace xUnit.AutomationProvider
 	                var completionMessage = message as IDiscoveryCompleteMessage;
 	                if (completionMessage != null)
 	                {
-	                    _completionHandler(completionMessage);
+	                    _completionHandler();
 	                }
 	            }
 
@@ -101,7 +102,7 @@ namespace xUnit.AutomationProvider
 	        }
 
             private readonly Action<ITestCaseDiscoveryMessage> _testHandler;
-	        private readonly Action<IDiscoveryCompleteMessage> _completionHandler;
+	        private readonly Action _completionHandler;
 	    }
     }
 }
