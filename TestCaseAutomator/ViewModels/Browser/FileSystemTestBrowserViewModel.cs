@@ -59,7 +59,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 
         private async void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(SelectedFile))
+            if (e.PropertyName == nameof(SelectedFile) && SelectedFile != null)
             {
                 await DiscoverTestsAsync(new Progress<TestAutomationNodeViewModel>(test => Tests.Add(test)));
             }
