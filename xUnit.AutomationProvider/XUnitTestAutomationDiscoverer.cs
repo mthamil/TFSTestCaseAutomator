@@ -4,9 +4,9 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml;
 using TestCaseAutomator.AutomationProviders.Interfaces;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace xUnit.AutomationProvider
 {
@@ -14,58 +14,94 @@ namespace xUnit.AutomationProvider
 	/// Finds xUnit.net tests for test case automation.
 	/// </summary>
 	[Export(typeof(ITestAutomationDiscoverer))]
-	public class XUnitTestAutomationDiscoverer : ITestAutomationDiscoverer
+	public class XunitTestAutomationDiscoverer : ITestAutomationDiscoverer
 	{
-		/// <summary>
-		/// Initializes a new <see cref="XUnitTestAutomationDiscoverer"/>.
+	    /// <summary>
+		/// Initializes a new <see cref="XunitTestAutomationDiscoverer"/>.
 		/// </summary>
 		[ImportingConstructor]
-		public XUnitTestAutomationDiscoverer()
-			: this(source => new ExecutorWrapper(source, null, true))
+		public XunitTestAutomationDiscoverer()
+            : this(source => new XunitFrontController(false, source, sourceInformationProvider: new NullSourceInformationProvider()))
 		{
 		}
 
-		/// <summary>
-		/// Initializes a new <see cref="XUnitTestAutomationDiscoverer"/>.
-		/// </summary>
-		/// <param name="discovererFactory">Creates objects that discover tests in assembly files</param>
-		public XUnitTestAutomationDiscoverer(Func<string, IExecutorWrapper> discovererFactory)
-		{
-			_discovererFactory = discovererFactory;
-		}
+        /// <summary>
+        /// Initializes a new <see cref="XunitTestAutomationDiscoverer"/>.
+        /// </summary>
+        public XunitTestAutomationDiscoverer(Func<string, ITestFrameworkDiscoverer> discovererFactory)
+	    {
+	        _discovererFactory = discovererFactory;
+	    }
 
-		/// <see cref="ITestAutomationDiscoverer.SupportedFileExtensions"/>
-		public IEnumerable<string> SupportedFileExtensions { get { return _extensions; } }
+	    /// <see cref="ITestAutomationDiscoverer.SupportedFileExtensions"/>
+		public IEnumerable<string> SupportedFileExtensions => Extensions;
 
-		/// <see cref="ITestAutomationDiscoverer.DiscoverAutomatedTestsAsync"/>
+	    /// <see cref="ITestAutomationDiscoverer.DiscoverAutomatedTestsAsync"/>
 		public Task<IEnumerable<ITestAutomation>> DiscoverAutomatedTestsAsync(IEnumerable<string> sources)
 		{
 			if (sources == null)
 				throw new ArgumentNullException(nameof(sources));
 
-			return Task.FromResult<IEnumerable<ITestAutomation>>(
-                   sources.Where(IsTestAssembly)
-						  .SelectMany(source =>
-						  {
-							  using (var executor = _discovererFactory(source))
-								  return executor.EnumerateTests().SelectNodes("//method")
-								                 .Cast<XmlNode>()
-								                 .Select(methodNode =>
-								                         new XUnitTestAutomation(
-									                         Path.GetFileName(source),
-									                         methodNode.Attributes["type"].Value,
-									                         methodNode.Attributes["method"].Value));
-						  }));
+	        return sources.Where(IsTestAssembly)
+                          .Aggregate(Task.FromResult(Enumerable.Empty<ITestAutomation>()), 
+                                async (current, source) => 
+                                    (await current.ConfigureAwait(false)).Concat(
+                                     await FindAsync(_discovererFactory(source)).ConfigureAwait(false)));
 		}
 
-		private static bool IsTestAssembly(string source)
+        private static Task<IEnumerable<ITestAutomation>> FindAsync(ITestFrameworkDiscoverer discoverer)
+        {
+            var tcs = new TaskCompletionSource<IEnumerable<ITestAutomation>>();
+            var tests = new List<ITestAutomation>();
+            discoverer.Find(false, new DiscoveryMessageSink(message =>
+            {
+                tests.AddRange(
+                    message.TestCases.Select(testCase =>
+                        new XunitTestAutomation(testCase, message.TestAssembly)));
+            }, _ => tcs.SetResult(tests)), TestFrameworkOptions.ForDiscovery(new TestAssemblyConfiguration { UseAppDomain = false }));
+
+            return tcs.Task;
+        }
+
+        private static bool IsTestAssembly(string source)
 		{
-			return _extensions.Contains(Path.GetExtension(source)) &&						// Easy check for .NET assembly file extensions.
-			       File.Exists(Path.Combine(Path.GetDirectoryName(source), "xunit.dll"));	// Ensure there is an xunit.dll in the same directory, otherwise an exception will be thrown.
+		    return Extensions.Contains(Path.GetExtension(source));  // Quick check for .NET assembly file extensions.
 		}
 
-		private readonly Func<string, IExecutorWrapper> _discovererFactory;
+        private readonly Func<string, ITestFrameworkDiscoverer> _discovererFactory;
 
-		private static readonly ICollection<string> _extensions = new HashSet<string> { ".dll", ".exe" }; 
-	}
+        private static readonly ICollection<string> Extensions = new HashSet<string> { ".dll", ".exe" };
+
+	    private class DiscoveryMessageSink : LongLivedMarshalByRefObject, IMessageSink
+	    {
+	        public DiscoveryMessageSink(Action<ITestCaseDiscoveryMessage> testHandler, 
+                                        Action<IDiscoveryCompleteMessage> completionHandler)
+	        {
+	            _testHandler = testHandler;
+	            _completionHandler = completionHandler;
+	        }
+
+	        public bool OnMessage(IMessageSinkMessage message)
+	        {
+	            var testMessage = message as ITestCaseDiscoveryMessage;
+	            if (testMessage != null)
+	            {
+	                _testHandler(testMessage);
+	            }
+	            else
+	            {
+	                var completionMessage = message as IDiscoveryCompleteMessage;
+	                if (completionMessage != null)
+	                {
+	                    _completionHandler(completionMessage);
+	                }
+	            }
+
+	            return true;
+	        }
+
+            private readonly Action<ITestCaseDiscoveryMessage> _testHandler;
+	        private readonly Action<IDiscoveryCompleteMessage> _completionHandler;
+	    }
+    }
 }

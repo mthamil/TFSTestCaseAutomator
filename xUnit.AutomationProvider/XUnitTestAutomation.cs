@@ -1,24 +1,25 @@
 ﻿using System;
+using System.IO;
 using TestCaseAutomator.AutomationProviders.Interfaces;
+using Xunit.Abstractions;
 
 namespace xUnit.AutomationProvider
 {
 	/// <summary>
 	/// Represents an xUnit.net automated test.
 	/// </summary>
-	public class XUnitTestAutomation : ITestAutomation
+	public class XunitTestAutomation : ITestAutomation
 	{
-		/// <summary>
-		/// Initializes a new <see cref="XUnitTestAutomation"/>.
-		/// </summary>
-		/// <param name="assemblyName">The file name of the assembly containing the test</param>
-		/// <param name="typeName">The full name of the type containing the test</param>
-		/// <param name="methodName">The method name of the test</param>
-		public XUnitTestAutomation(string assemblyName, string typeName, string methodName)
+	    /// <summary>
+	    /// Initializes a new <see cref="XunitTestAutomation"/>.
+	    /// </summary>
+	    /// <param name="testCase">An xUnit test case</param>
+	    /// <param name="testAssembly">The assembly containing the test case</param>
+	    public XunitTestAutomation(ITestCase testCase, ITestAssembly testAssembly)
 		{
-			Name = $"{typeName}.{methodName}";
+			Name = testCase.DisplayName;
 			Identifier = IdentifierFactory.CreateIdentifier(Name);
-			Storage = assemblyName;
+			Storage = Path.GetFileName(testAssembly.Assembly.AssemblyPath);
 			TestType = "Unit Test";
 		}
 
