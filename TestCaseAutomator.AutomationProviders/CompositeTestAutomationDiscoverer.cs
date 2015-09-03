@@ -27,7 +27,7 @@ namespace TestCaseAutomator.AutomationProviders
 	    public Task<IEnumerable<ITestAutomation>> DiscoverAutomatedTestsAsync(IEnumerable<string> sources)
             => _childDiscoverers.Aggregate(Task.FromResult(Enumerable.Empty<ITestAutomation>()), 
                     async (tests, discoverer) => (await tests.ConfigureAwait(false)).Concat(
-                                                 (await discoverer.DiscoverAutomatedTestsAsync(sources).ConfigureAwait(false))));
+                                                  await discoverer.DiscoverAutomatedTestsAsync(sources).ConfigureAwait(false)));
              
 	    private readonly IEnumerable<ITestAutomationDiscoverer> _childDiscoverers;
 	}
