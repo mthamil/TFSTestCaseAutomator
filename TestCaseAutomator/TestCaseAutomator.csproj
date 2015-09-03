@@ -114,6 +114,7 @@
     <Compile Include="UnhandledErrorHandler.cs" />
     <Compile Include="ViewModels\AutofacViewModelLocator.cs" />
     <Compile Include="ViewModels\Browser\AutomatedTestSelectedEventArgs.cs" />
+    <Compile Include="ViewModels\Browser\SourceDirectoryViewModel.cs" />
     <Compile Include="ViewModels\Browser\SourceRootNodeViewModel.cs" />
     <Compile Include="ViewModels\Browser\TestAutomationUpdate.cs" />
     <Compile Include="ViewModels\Browser\TestAutomationViewModel.cs" />

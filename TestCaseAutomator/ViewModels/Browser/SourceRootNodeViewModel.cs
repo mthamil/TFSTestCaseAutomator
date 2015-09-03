@@ -10,41 +10,48 @@ namespace TestCaseAutomator.ViewModels.Browser
     /// <summary>
     /// Represents the visual root of the source control tree.
     /// </summary>
-    public class SourceRootNodeViewModel : VirtualizedNode<SolutionViewModel>
+    public class SourceRootNodeViewModel : VirtualizedNode<IVirtualizedNode>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SourceRootNodeViewModel"/> class.
         /// </summary>
         /// <param name="explorer">The current TFS explorer</param>
-        /// <param name="solutionFactory">Creates solution view-models</param>
+        /// <param name="fileFactory">Creates file view-models</param>
+        /// <param name="directoryFactory">Creates directory view models</param>
         public SourceRootNodeViewModel(ITfsExplorer explorer,
-                                       Func<TfsSolution, SolutionViewModel> solutionFactory)
+                                       Func<TfsFile, AutomationSourceViewModel> fileFactory,
+                                       Func<TfsDirectory, SourceDirectoryViewModel> directoryFactory)
         {
             _explorer = explorer;
-            _solutionFactory = solutionFactory;
+            _fileFactory = fileFactory;
+            _directoryFactory = directoryFactory;
         }
 
         public override string Name => "$/";
 
-        protected override SolutionViewModel DummyNode => DummySolution.Instance;
+        protected override IVirtualizedNode DummyNode => Dummy.Instance;
 
-        protected override async Task<IReadOnlyCollection<SolutionViewModel>> LoadChildrenAsync(IProgress<SolutionViewModel> progress)
+        protected override async Task<IReadOnlyCollection<IVirtualizedNode>> LoadChildrenAsync(IProgress<IVirtualizedNode> progress)
         {
-            return (await _explorer.SolutionsAsync())
-                                   .Select(_solutionFactory)
+            return (await _explorer.GetSourceTreeAsync())
+                                   .Select(item => item is TfsDirectory 
+                                                       ? _directoryFactory((TfsDirectory)item) 
+                                                       : (IVirtualizedNode)_fileFactory(item as TfsFile))
                                    .Tee(progress.Report)
                                    .ToList();
         }
 
         private readonly ITfsExplorer _explorer;
-        private readonly Func<TfsSolution, SolutionViewModel> _solutionFactory;
+        private readonly Func<TfsFile, AutomationSourceViewModel> _fileFactory;
+        private readonly Func<TfsDirectory, SourceDirectoryViewModel> _directoryFactory;
 
-        private class DummySolution : SolutionViewModel
+        private class Dummy : SourceRootNodeViewModel
         {
-            private DummySolution() : base(null, null) { }
+            private Dummy() : base(null, null, null) { }
+
             public override string Name => "Loading...";
 
-            public static readonly DummySolution Instance = new DummySolution();
+            public static readonly Dummy Instance = new Dummy();
         }
     }
 }

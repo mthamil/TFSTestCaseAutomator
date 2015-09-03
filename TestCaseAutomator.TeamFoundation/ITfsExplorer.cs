@@ -35,5 +35,10 @@ namespace TestCaseAutomator.TeamFoundation
 		/// Provides access to Visual Studio solutions in source control.
 		/// </summary>
 		Task<IEnumerable<TfsSolution>> SolutionsAsync();
+
+        /// <summary>
+        /// Retrieves the source control tree.
+        /// </summary>
+        Task<IEnumerable<TfsSourceControlledItem>> GetSourceTreeAsync();
 	}
 }

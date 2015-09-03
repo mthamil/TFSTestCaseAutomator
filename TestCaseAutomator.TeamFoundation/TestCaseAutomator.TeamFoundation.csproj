@@ -118,7 +118,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestCaseAssociation\ITestCaseAutomationService.cs" />
     <Compile Include="TestCaseAssociation\WorkItemValidationException.cs" />
+    <Compile Include="TfsDirectory.cs" />
     <Compile Include="TfsServer.cs" />
+    <Compile Include="TfsSourceTreeRoot.cs" />
     <Compile Include="VersionedItem.cs" />
     <Compile Include="SolutionFileParser.cs" />
     <Compile Include="TestCaseAssociation\TestCaseAutomationService.cs" />

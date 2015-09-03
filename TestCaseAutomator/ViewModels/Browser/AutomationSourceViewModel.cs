@@ -34,7 +34,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 		public override string Name => _file.Name;
 
 	    /// <see cref="VirtualizedNode{TChild}.DummyNode"/>
-		protected override TestAutomationNodeViewModel DummyNode => Dummy;
+		protected override TestAutomationNodeViewModel DummyNode => Dummy.Instance;
 
 	    /// <see cref="VirtualizedNode{TChild}.LoadChildrenAsync"/>
 		protected override Task<IReadOnlyCollection<TestAutomationNodeViewModel>> LoadChildrenAsync(IProgress<TestAutomationNodeViewModel> progress)
@@ -64,12 +64,12 @@ namespace TestCaseAutomator.ViewModels.Browser
 		private readonly ITestAutomationDiscoverer _testDiscoverer;
 		private readonly TaskScheduler _scheduler;
 
-		private static readonly DummyTestAutomationNode Dummy = new DummyTestAutomationNode();
-
-		private class DummyTestAutomationNode : TestAutomationNodeViewModel
+		private class Dummy : TestAutomationNodeViewModel
 		{
-			public DummyTestAutomationNode() : base(null) { }
+		    private Dummy() : base(null) { }
 			public override string Name => "Loading...";
+
+            public static readonly Dummy Instance = new Dummy();
 		}
 	}
 }

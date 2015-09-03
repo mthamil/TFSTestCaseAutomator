@@ -67,6 +67,12 @@ namespace TestCaseAutomator.TeamFoundation
             => (await Server.VersionControl.GetItemsAsync("$/*.sln", RecursionType.Full).ConfigureAwait(false))
                                            .Select(item => new TfsSolution(item, Server.VersionControl));
 
+	    /// <summary>
+	    /// Retrieves the source control tree.
+	    /// </summary>
+	    public Task<IEnumerable<TfsSourceControlledItem>> GetSourceTreeAsync()
+            => new TfsSourceTreeRoot(Server.VersionControl).GetItemsAsync();
+
         /// <see cref="DisposableBase.OnDisposing"/>
         protected override void OnDisposing() => Server?.Dispose();
 
