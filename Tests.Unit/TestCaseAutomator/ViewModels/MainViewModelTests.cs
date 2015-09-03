@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.TeamFoundation;
 using Moq;
@@ -16,6 +17,8 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 		{
 		    _workItems.Setup(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()))
 		              .Returns(Task.FromResult<object>(null));
+
+		    _workItems.SetupGet(wi => wi.TestCases).Returns(new List<ITestCaseViewModel>());
 
             _explorer.SetupGet(e => e.Server).Returns(_server.Object);
 		    _explorer.Setup(e => e.WorkItems(It.IsAny<string>()))
@@ -84,7 +87,24 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 
 			// Assert.
             Assert.True(_underTest.IsConnected);
-            _workItems.Verify(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()), Times.Once());
+            _workItems.Verify(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()), Times.Never);  // ProjectName will be null.
+        }
+
+        [Fact]
+        public async Task Test_Reconnect()
+        {
+            // Arrange.
+            _underTest.ServerUri = new Uri("http://test/");
+            await _underTest.ConnectAsync();
+
+            _underTest.ProjectName = "TestProject";
+
+            // Act.
+            await _underTest.ConnectAsync();
+
+            // Assert.
+            Assert.True(_underTest.IsConnected);
+            _workItems.Verify(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()), Times.Once);
         }
 
         [Theory]
