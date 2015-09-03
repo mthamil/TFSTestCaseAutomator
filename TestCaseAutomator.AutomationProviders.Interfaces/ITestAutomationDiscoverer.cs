@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace TestCaseAutomator.AutomationProviders.Interfaces
 {
@@ -18,6 +19,6 @@ namespace TestCaseAutomator.AutomationProviders.Interfaces
 		/// </summary>
 		/// <param name="sources">A collection of potential test sources. These are usually file paths.</param>
 		/// <returns>Any tests found in the given sources</returns>
-		IEnumerable<ITestAutomation> DiscoverAutomatedTests(IEnumerable<string> sources);
+		Task<IEnumerable<ITestAutomation>> DiscoverAutomatedTestsAsync(IEnumerable<string> sources);
 	}
 }

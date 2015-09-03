@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using TestCaseAutomator.AutomationProviders.Interfaces;
 using TestCaseAutomator.TeamFoundation;
@@ -20,14 +19,11 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// </summary>
 		/// <param name="file">A file that may contain automated tests</param>
 		/// <param name="testDiscoverer">Finds tests in files</param>
-		/// <param name="scheduler">Used to schedule background tasks</param>
 		public AutomationSourceViewModel(TfsFile file,
-		                                 ITestAutomationDiscoverer testDiscoverer, 
-                                         TaskScheduler scheduler)
+		                                 ITestAutomationDiscoverer testDiscoverer)
 		{
 			_file = file;
 			_testDiscoverer = testDiscoverer;
-			_scheduler = scheduler;
 		}
 
 		/// <see cref="INodeViewModel.Name"/>
@@ -40,29 +36,24 @@ namespace TestCaseAutomator.ViewModels.Browser
 		protected override Task<IReadOnlyCollection<TestAutomationNodeViewModel>> LoadChildrenAsync(IProgress<TestAutomationNodeViewModel> progress)
 		{
 			Invalidate();	// Reload on next query.
-			return Task.Factory.StartNew(() => 
-				DiscoverTests(progress), 
-					CancellationToken.None, 
-					TaskCreationOptions.None, 
-					_scheduler);
+	        return DiscoverTests(progress);
 		}
 
-		private IReadOnlyCollection<TestAutomationNodeViewModel> DiscoverTests(IProgress<TestAutomationNodeViewModel> progress)
+		private async Task<IReadOnlyCollection<TestAutomationNodeViewModel>> DiscoverTests(IProgress<TestAutomationNodeViewModel> progress)
 		{
 			var localPath = _file.ServerPath.Replace("$/", string.Empty).Replace('/', '\\');
 			using (var tempFile = new TemporaryFile(localPath))
 			{
-				_file.DownloadTo(tempFile.File.FullName);
-				return _testDiscoverer.DiscoverAutomatedTests(tempFile.File.FullName.ToEnumerable())
-				                      .Select(t => new TestAutomationNodeViewModel(t))
-				                      .Tee(progress.Report)
-				                      .ToList();
+				await _file.DownloadToAsync(tempFile.File.FullName).ConfigureAwait(false);
+				return (await _testDiscoverer.DiscoverAutomatedTestsAsync(tempFile.File.FullName.ToEnumerable()))
+				                             .Select(t => new TestAutomationNodeViewModel(t))
+				                             .Tee(progress.Report)
+				                             .ToList();
 			}
 		}
 
 		private readonly TfsFile _file;
 		private readonly ITestAutomationDiscoverer _testDiscoverer;
-		private readonly TaskScheduler _scheduler;
 
 		private class Dummy : TestAutomationNodeViewModel
 		{

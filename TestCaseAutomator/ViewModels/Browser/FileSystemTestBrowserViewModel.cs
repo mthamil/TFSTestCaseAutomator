@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using TestCaseAutomator.AutomationProviders.Interfaces;
 using SharpEssentials.Collections;
@@ -22,13 +21,10 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// Initializes a new <see cref="FileSystemTestBrowserViewModel"/>.
 		/// </summary>
 		/// <param name="testDiscoverer">Finds tests in files</param>
-		/// <param name="scheduler">Used to schedule background tasks</param>
-		public FileSystemTestBrowserViewModel(ITestAutomationDiscoverer testDiscoverer, 
-                                              TaskScheduler scheduler)
+		public FileSystemTestBrowserViewModel(ITestAutomationDiscoverer testDiscoverer)
             : this()
 		{
 			_testDiscoverer = testDiscoverer;
-			_scheduler = scheduler;
 		}
 
 	    private FileSystemTestBrowserViewModel()
@@ -74,14 +70,10 @@ namespace TestCaseAutomator.ViewModels.Browser
 			CanBrowse = false;
 			try
 			{
-				await Task.Factory.StartNew(() =>
-					_testDiscoverer.DiscoverAutomatedTests(SelectedFile.FullName.ToEnumerable())
-								   .Select(test => new TestAutomationNodeViewModel(test))
-								   .Tee(progress.Report)
-								   .ToList(),
-						CancellationToken.None,
-						TaskCreationOptions.None,
-						_scheduler);
+				(await _testDiscoverer.DiscoverAutomatedTestsAsync(SelectedFile.FullName.ToEnumerable()))
+								      .Select(test => new TestAutomationNodeViewModel(test))
+								      .Tee(progress.Report)
+								      .ToList();
 			}
 			finally
 			{
@@ -122,6 +114,5 @@ namespace TestCaseAutomator.ViewModels.Browser
 		private readonly Property<bool> _canBrowse;
 
 		private readonly ITestAutomationDiscoverer _testDiscoverer;
-		private readonly TaskScheduler _scheduler;
 	}
 }

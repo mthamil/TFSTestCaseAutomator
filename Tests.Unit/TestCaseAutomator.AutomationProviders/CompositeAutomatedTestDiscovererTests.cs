@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Moq;
 using SharpEssentials.Testing;
 using TestCaseAutomator.AutomationProviders;
@@ -35,21 +36,27 @@ namespace Tests.Unit.TestCaseAutomator.AutomationProviders
 		}
 
 		[Fact]
-		public void Test_DiscoverAutomatedTests()
+		public async Task Test_DiscoverAutomatedTestsAsync()
 		{
 			// Arrange.
 			childDiscoverers.AddRange(new[]
 			{
-				Mock.Of<ITestAutomationDiscoverer>(d => d.DiscoverAutomatedTests(It.IsAny<IEnumerable<string>>()) == 
-					Mock.Of<ITestAutomation>(t => t.Name == "Test1").ToEnumerable()),
-				Mock.Of<ITestAutomationDiscoverer>(d => d.DiscoverAutomatedTests(It.IsAny<IEnumerable<string>>()) == 
-					new[] { Mock.Of<ITestAutomation>(t => t.Name == "Test2"), Mock.Of<ITestAutomation>(t => t.Name == "Test3") }),
-				Mock.Of<ITestAutomationDiscoverer>(d => d.DiscoverAutomatedTests(It.IsAny<IEnumerable<string>>()) == 
-					Mock.Of<ITestAutomation>(t => t.Name == "Test4").ToEnumerable())
+				Mock.Of<ITestAutomationDiscoverer>(d => d.DiscoverAutomatedTestsAsync(It.IsAny<IEnumerable<string>>()) ==
+                    Task.FromResult(Mock.Of<ITestAutomation>(t => t.Name == "Test1").ToEnumerable())),
+
+				Mock.Of<ITestAutomationDiscoverer>(d => d.DiscoverAutomatedTestsAsync(It.IsAny<IEnumerable<string>>()) == 
+					Task.FromResult<IEnumerable<ITestAutomation>>(new[]
+					{
+					    Mock.Of<ITestAutomation>(t => t.Name == "Test2"),
+                        Mock.Of<ITestAutomation>(t => t.Name == "Test3")
+					})),
+
+				Mock.Of<ITestAutomationDiscoverer>(d => d.DiscoverAutomatedTestsAsync(It.IsAny<IEnumerable<string>>()) ==
+                    Task.FromResult(Mock.Of<ITestAutomation>(t => t.Name == "Test4").ToEnumerable()))
 			});
 
 			// Act.
-			var tests = discoverer.DiscoverAutomatedTests(new[] { @"C:\sometests" }).ToList();
+			var tests = (await discoverer.DiscoverAutomatedTestsAsync(new[] { @"C:\sometests" })).ToList();
 
 			// Assert.
 			Assert.Equal(4, tests.Count);

@@ -33,7 +33,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 		public override string Name => _project.Name;
 
 	    /// <see cref="VirtualizedNode{TChild}.DummyNode"/>
-		protected override AutomationSourceViewModel DummyNode => DummySource.Instance;
+		protected override AutomationSourceViewModel DummyNode => Dummy.Instance;
 
 	    /// <see cref="VirtualizedNode{TChild}.LoadChildrenAsync"/>
 		protected override async Task<IReadOnlyCollection<AutomationSourceViewModel>> LoadChildrenAsync(IProgress<AutomationSourceViewModel> progress)
@@ -48,12 +48,12 @@ namespace TestCaseAutomator.ViewModels.Browser
 		private readonly TfsSolutionProject _project;
 		private readonly Func<TfsFile, AutomationSourceViewModel> _sourceFactory;
 
-		private class DummySource : AutomationSourceViewModel
+		private class Dummy : AutomationSourceViewModel
 		{
-		    private DummySource() : base(null, null, null) { }
+		    private Dummy() : base(null, null) { }
 			public override string Name => "Loading...";
 
-            public static readonly DummySource Instance = new DummySource();
+            public static readonly Dummy Instance = new Dummy();
         }
 	}
 }

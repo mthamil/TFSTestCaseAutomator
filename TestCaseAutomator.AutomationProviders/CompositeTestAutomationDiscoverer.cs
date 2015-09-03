@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TestCaseAutomator.AutomationProviders.Interfaces;
 
 namespace TestCaseAutomator.AutomationProviders
@@ -22,10 +23,15 @@ namespace TestCaseAutomator.AutomationProviders
 		public IEnumerable<string> SupportedFileExtensions
             => _childDiscoverers.SelectMany(d => d.SupportedFileExtensions).Distinct();
 
-	    /// <see cref="ITestAutomationDiscoverer.DiscoverAutomatedTests"/>
-		public IEnumerable<ITestAutomation> DiscoverAutomatedTests(IEnumerable<string> sources) 
-            => _childDiscoverers.SelectMany(d => d.DiscoverAutomatedTests(sources));
-
+	    /// <see cref="ITestAutomationDiscoverer.DiscoverAutomatedTestsAsync"/>
+	    public async Task<IEnumerable<ITestAutomation>> DiscoverAutomatedTestsAsync(IEnumerable<string> sources)
+	    {
+	        var tests = Enumerable.Empty<ITestAutomation>();
+	        foreach (var discoverer in _childDiscoverers)
+	            tests = tests.Concat(await discoverer.DiscoverAutomatedTestsAsync(sources).ConfigureAwait(false));
+	        return tests;
+	    }
+             
 	    private readonly IEnumerable<ITestAutomationDiscoverer> _childDiscoverers;
 	}
 }

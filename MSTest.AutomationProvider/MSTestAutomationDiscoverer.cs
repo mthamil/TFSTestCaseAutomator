@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestPlatform.MSTestFramework;
 using TestCaseAutomator.AutomationProviders.Interfaces;
 
@@ -17,8 +18,8 @@ namespace MSTest.AutomationProvider
 		/// <see cref="ITestAutomationDiscoverer.SupportedFileExtensions"/>
 		public IEnumerable<string> SupportedFileExtensions => _extensions;
 
-	    /// <see cref="ITestAutomationDiscoverer.DiscoverAutomatedTests"/>
-		public IEnumerable<ITestAutomation> DiscoverAutomatedTests(IEnumerable<string> sources)
+	    /// <see cref="ITestAutomationDiscoverer.DiscoverAutomatedTestsAsync"/>
+		public Task<IEnumerable<ITestAutomation>> DiscoverAutomatedTestsAsync(IEnumerable<string> sources)
 		{
 			if (sources == null)
 				throw new ArgumentNullException(nameof(sources));
@@ -29,7 +30,7 @@ namespace MSTest.AutomationProvider
 				.SelectMany(source => GetTests(source, warnings))
 				.Select(testElement => new MSTestAutomation(testElement.TestMethod));
 
-			return tests;
+			return Task.FromResult<IEnumerable<ITestAutomation>>(tests);
 		}
 
 		private static IEnumerable<UnitTestElement> GetTests(string source, List<string> warnings)

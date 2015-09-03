@@ -1,4 +1,5 @@
 using System.IO;
+using System.Threading.Tasks;
 
 namespace TestCaseAutomator.TeamFoundation
 {
@@ -21,7 +22,7 @@ namespace TestCaseAutomator.TeamFoundation
 		/// Downloads a file to a given file path.
 		/// </summary>
 		/// <param name="path">The local path to download to</param>
-		public void DownloadTo(string path)
+		public async Task DownloadToAsync(string path)
 		{
 			var downloadStream = Download();
 
@@ -30,7 +31,7 @@ namespace TestCaseAutomator.TeamFoundation
 				Directory.CreateDirectory(directoryPath);
 
 			using (var fileStream = File.OpenWrite(path))
-				downloadStream.CopyTo(fileStream);
+				await downloadStream.CopyToAsync(fileStream).ConfigureAwait(false);
 		}
 	}
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml;
 using TestCaseAutomator.AutomationProviders.Interfaces;
 using Xunit;
@@ -36,13 +37,14 @@ namespace xUnit.AutomationProvider
 		/// <see cref="ITestAutomationDiscoverer.SupportedFileExtensions"/>
 		public IEnumerable<string> SupportedFileExtensions { get { return _extensions; } }
 
-		/// <see cref="ITestAutomationDiscoverer.DiscoverAutomatedTests"/>
-		public IEnumerable<ITestAutomation> DiscoverAutomatedTests(IEnumerable<string> sources)
+		/// <see cref="ITestAutomationDiscoverer.DiscoverAutomatedTestsAsync"/>
+		public Task<IEnumerable<ITestAutomation>> DiscoverAutomatedTestsAsync(IEnumerable<string> sources)
 		{
 			if (sources == null)
 				throw new ArgumentNullException(nameof(sources));
 
-			return sources.Where(IsTestAssembly)
+			return Task.FromResult<IEnumerable<ITestAutomation>>(
+                   sources.Where(IsTestAssembly)
 						  .SelectMany(source =>
 						  {
 							  using (var executor = _discovererFactory(source))
@@ -53,7 +55,7 @@ namespace xUnit.AutomationProvider
 									                         Path.GetFileName(source),
 									                         methodNode.Attributes["type"].Value,
 									                         methodNode.Attributes["method"].Value));
-						  });
+						  }));
 		}
 
 		private static bool IsTestAssembly(string source)
