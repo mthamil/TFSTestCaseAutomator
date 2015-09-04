@@ -1,6 +1,6 @@
 using System.Windows.Input;
 
-namespace TestCaseAutomator.ViewModels.Browser
+namespace TestCaseAutomator.ViewModels.Browser.Nodes
 {
 	/// <summary>
 	/// Interface for a node that doesn't load its children until it is expanded.

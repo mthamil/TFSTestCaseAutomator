@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using SharpEssentials.Collections;
 using TestCaseAutomator.TeamFoundation;
 
-namespace TestCaseAutomator.ViewModels.Browser
+namespace TestCaseAutomator.ViewModels.Browser.Nodes
 {
     /// <summary>
     /// Represents the visual root of the source control tree.

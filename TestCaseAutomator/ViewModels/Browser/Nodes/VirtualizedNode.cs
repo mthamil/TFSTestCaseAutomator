@@ -6,7 +6,7 @@ using System.Windows.Input;
 using SharpEssentials.Controls.Mvvm.Commands;
 using SharpEssentials.Observable;
 
-namespace TestCaseAutomator.ViewModels.Browser
+namespace TestCaseAutomator.ViewModels.Browser.Nodes
 {
 	/// <summary>
 	/// Base class for a node that has virtualized children. That is, child nodes

@@ -1,6 +1,6 @@
 ﻿using TestCaseAutomator.AutomationProviders.Interfaces;
 
-namespace TestCaseAutomator.ViewModels.Browser
+namespace TestCaseAutomator.ViewModels.Browser.Nodes
 {
 	/// <summary>
 	/// Represents a tree node viewmodel that can be associated with test case automation.

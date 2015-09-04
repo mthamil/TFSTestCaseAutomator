@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 
-namespace TestCaseAutomator.ViewModels.Browser
+namespace TestCaseAutomator.ViewModels.Browser.Nodes
 {
 	/// <summary>
 	/// Interface for tree nodes.

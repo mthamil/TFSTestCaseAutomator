@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TestCaseAutomator.AutomationProviders.Interfaces;
-using TestCaseAutomator.TeamFoundation;
 using SharpEssentials.Collections;
 using SharpEssentials.InputOutput;
+using TestCaseAutomator.AutomationProviders.Interfaces;
+using TestCaseAutomator.TeamFoundation;
 
-namespace TestCaseAutomator.ViewModels.Browser
+namespace TestCaseAutomator.ViewModels.Browser.Nodes
 {
 	/// <summary>
 	/// Represents a file that is a potential source of automated tests.

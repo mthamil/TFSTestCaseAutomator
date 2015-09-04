@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TestCaseAutomator.TeamFoundation;
 using SharpEssentials.Collections;
+using TestCaseAutomator.TeamFoundation;
 
-namespace TestCaseAutomator.ViewModels.Browser
+namespace TestCaseAutomator.ViewModels.Browser.Nodes
 {
 	/// <summary>
 	/// Represents a project belonging to a solution.

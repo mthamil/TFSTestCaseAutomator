@@ -5,7 +5,7 @@ using System.Windows.Input;
 using SharpEssentials.Controls.Mvvm;
 using SharpEssentials.Observable;
 
-namespace TestCaseAutomator.ViewModels.Browser
+namespace TestCaseAutomator.ViewModels.Browser.Nodes
 {
 	/// <summary>
 	/// Base view-model that provides common node functionality.

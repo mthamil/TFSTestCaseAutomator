@@ -4,7 +4,7 @@ using SharpEssentials.Controls.Mvvm;
 using TestCaseAutomator.AutomationProviders.Interfaces;
 using TestCaseAutomator.Configuration;
 using TestCaseAutomator.ViewModels;
-using TestCaseAutomator.ViewModels.Browser;
+using TestCaseAutomator.ViewModels.Browser.Nodes;
 
 namespace TestCaseAutomator.Container
 {

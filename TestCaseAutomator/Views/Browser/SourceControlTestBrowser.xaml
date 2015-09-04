@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:vm="clr-namespace:TestCaseAutomator.ViewModels.Browser"
-             xmlns:vw="clr-namespace:TestCaseAutomator.Views.Browser"
+             xmlns:nodes="clr-namespace:TestCaseAutomator.ViewModels.Browser.Nodes"
              xmlns:behaviors="clr-namespace:SharpEssentials.Controls.Behaviors;assembly=SharpEssentials.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -31,7 +31,7 @@
             </i:Interaction.Behaviors>
 
             <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate DataType="{x:Type vm:INodeViewModel}" ItemsSource="{Binding Path=Children}">
+                <HierarchicalDataTemplate DataType="{x:Type nodes:INodeViewModel}" ItemsSource="{Binding Path=Children}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Name}">
                             <!--<TextBlock.InputBindings>

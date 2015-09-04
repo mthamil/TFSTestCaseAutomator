@@ -9,6 +9,7 @@ using TestCaseAutomator.AutomationProviders.Interfaces;
 using SharpEssentials.Collections;
 using SharpEssentials.Controls.Mvvm;
 using SharpEssentials.Observable;
+using TestCaseAutomator.ViewModels.Browser.Nodes;
 
 namespace TestCaseAutomator.ViewModels.Browser
 {

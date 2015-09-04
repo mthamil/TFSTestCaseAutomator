@@ -4,7 +4,6 @@
              xmlns:clickable="clr-namespace:SharpEssentials.Controls.Behaviors.Clickable;assembly=SharpEssentials.Controls"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:convert="clr-namespace:TestCaseAutomator.Controls.Converters"
-             xmlns:vw="clr-namespace:TestCaseAutomator.Views.Browser"
              xmlns:ctrls="clr-namespace:SharpEssentials.Controls;assembly=SharpEssentials.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d"
