@@ -54,12 +54,11 @@ namespace xUnit.AutomationProvider
         {
             var tcs = new TaskCompletionSource<IEnumerable<ITestAutomation>>();
             var tests = new List<ITestAutomation>();
+
             discoverer.Find(false, new DiscoveryMessageSink(message =>
-            {
-                tests.AddRange(
-                    message.TestCases.Select(testCase =>
-                        new XunitTestAutomation(testCase, message.TestAssembly)));
-            }, () => tcs.SetResult(tests)), TestFrameworkOptions.ForDiscovery(new TestAssemblyConfiguration { UseAppDomain = false }));
+                message.TestCases.Select(testCase => new XunitTestAutomation(testCase, message.TestAssembly))
+                                 .ToSink(tests),
+                () => tcs.SetResult(tests)), TestFrameworkOptions.ForDiscovery(new TestAssemblyConfiguration { UseAppDomain = false }));
 
             return tcs.Task;
         }

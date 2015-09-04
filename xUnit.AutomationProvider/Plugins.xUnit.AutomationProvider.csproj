@@ -64,15 +64,13 @@
       <HintPath>..\packages\xunit.extensibility.execution.2.1.0-beta4-build3109\lib\net45\xunit.execution.desktop.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="xunit.runner.utility">
-      <HintPath>..\packages\xunit.1.9.2\lib\net20\xunit.runner.utility.dll</HintPath>
-    </Reference>
     <Reference Include="xunit.runner.utility.desktop, Version=2.1.0.3109, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\packages\xunit.runner.utility.2.1.0-beta4-build3109\lib\net35\xunit.runner.utility.desktop.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XunitTestAutomationDiscoverer.cs" />
     <Compile Include="XunitTestAutomation.cs" />
