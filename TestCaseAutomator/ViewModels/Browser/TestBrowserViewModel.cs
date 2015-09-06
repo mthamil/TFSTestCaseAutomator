@@ -1,9 +1,11 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows.Input;
 using SharpEssentials.Controls.Mvvm;
 using SharpEssentials.Controls.Mvvm.Commands;
 using SharpEssentials.Observable;
 using TestCaseAutomator.AutomationProviders.Interfaces;
+using TestCaseAutomator.ViewModels.Browser.Nodes;
 
 namespace TestCaseAutomator.ViewModels.Browser
 {
@@ -16,8 +18,13 @@ namespace TestCaseAutomator.ViewModels.Browser
             : this()
         {
             _identifierFactory = identifierFactory;
+
             FileSystemBrowser = fileSystemBrowser;
+            FileSystemBrowser.PropertyChanged += Browser_PropertyChanged;
+
             SourceControlBrowser = sourceControlBrowser;
+            SourceControlBrowser.PropertyChanged += Browser_PropertyChanged;
+
             TestCase = testCase;
             TestAutomation = TestCase.GetAutomation();
         }
@@ -91,6 +98,21 @@ namespace TestCaseAutomator.ViewModels.Browser
         private void OnAutomatedTestSelected(ITestAutomation testAutomation)
         {
             AutomatedTestSelected?.Invoke(this, new AutomatedTestSelectedEventArgs(TestCase, testAutomation));
+            FileSystemBrowser.PropertyChanged -= Browser_PropertyChanged;
+            SourceControlBrowser.PropertyChanged -= Browser_PropertyChanged;
+        }
+
+        private void Browser_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(FileSystemTestBrowserViewModel.SelectedTest))
+            {
+                TestAutomation = FileSystemBrowser.SelectedTest.TestAutomation;
+            }
+            else if (e.PropertyName == nameof(SourceControlTestBrowserViewModel.SelectedTest) && 
+                     SourceControlBrowser.SelectedTest is TestAutomationNodeViewModel)
+            {
+                TestAutomation = ((TestAutomationNodeViewModel)SourceControlBrowser.SelectedTest).TestAutomation;
+            }
         }
 
         private readonly Property<bool?> _hasBeenSaved;
