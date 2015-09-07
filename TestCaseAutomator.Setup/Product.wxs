@@ -96,8 +96,10 @@
     <ComponentGroup Id="Plugins" Directory="PluginDir">
       <Component Id="xUnitPlugin" Guid="4F0314BD-D727-48CF-855D-6E91E0771044">
         <File Id="xUnitPluginMainDll" Name="$(var.Plugins.xUnit.AutomationProvider.TargetFileName)" Source="$(var.Plugins.xUnit.AutomationProvider.TargetPath)" KeyPath="yes"/>
-        <File Id="xUnitDll" Name="xunit.dll" Source="$(var.Plugins.xUnit.AutomationProvider.TargetDir)\xunit.dll"/>
-        <File Id="xUnitRunnerDll" Name="xunit.runner.utility.dll" Source="$(var.Plugins.xUnit.AutomationProvider.TargetDir)\xunit.runner.utility.dll"/>
+        <File Id="xUnitCoreDll" Name="xunit.core.dll" Source="$(var.Plugins.xUnit.AutomationProvider.TargetDir)\xunit.core.dll"/>
+        <File Id="xUnitAbstractionsDll" Name="xunit.abstractions.dll" Source="$(var.Plugins.xUnit.AutomationProvider.TargetDir)\xunit.abstractions.dll"/>
+        <File Id="xUnitExecutionDesktopDll" Name="xunit.execution.desktop.dll" Source="$(var.Plugins.xUnit.AutomationProvider.TargetDir)\xunit.execution.desktop.dll"/>
+        <File Id="xUnitRunnerDesktopDll" Name="xunit.runner.utility.desktop.dll" Source="$(var.Plugins.xUnit.AutomationProvider.TargetDir)\xunit.runner.utility.desktop.dll"/>
       </Component>
     
       <!--<Component Id="MSTestPlugin" Guid="916F08F3-BA80-4962-AE10-04B5DCBD15FF">
