@@ -25,7 +25,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 	    private SourceControlTestBrowserViewModel()
 	    {
             _selectedTest = Property.New(this, p => p.SelectedTest, OnPropertyChanged)
-                                    .AlsoChanges(p => p.CanSaveTestCase);
+                                    .AlsoChanges(p => p.IsValid);
         }
 
 		/// <summary>
@@ -40,7 +40,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// <summary>
 		/// Whether the current test case can be saved.
 		/// </summary>
-		public bool CanSaveTestCase => SelectedTest != null && SelectedTest is TestAutomationNodeViewModel;
+		public bool IsValid => SelectedTest != null && SelectedTest is TestAutomationNodeViewModel;
 
         public IEnumerable<INodeViewModel> SourceTree { get; }
 

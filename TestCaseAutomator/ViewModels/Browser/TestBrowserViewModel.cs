@@ -109,7 +109,7 @@ namespace TestCaseAutomator.ViewModels.Browser
                 TestAutomation = FileSystemBrowser.SelectedTest.TestAutomation;
             }
             else if (e.PropertyName == nameof(SourceControlTestBrowserViewModel.SelectedTest) && 
-                     SourceControlBrowser.SelectedTest is TestAutomationNodeViewModel)
+                     SourceControlBrowser.IsValid)
             {
                 TestAutomation = ((TestAutomationNodeViewModel)SourceControlBrowser.SelectedTest).TestAutomation;
             }
