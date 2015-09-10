@@ -2,7 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TestCaseAutomator.Configuration" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="TFSServerUrl" Type="System.Uri" Scope="User">
+    <Setting Name="TFSServerUrls" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="TestDiscoveryPluginLocation" Type="System.String" Scope="Application">

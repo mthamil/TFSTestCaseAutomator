@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
 using SharpEssentials.Observable;
 
 namespace TestCaseAutomator.Configuration
@@ -18,23 +21,18 @@ namespace TestCaseAutomator.Configuration
 		{
 			_settings = settings;
 
-			TfsServerLocation = settings.TFSServerUrl;
+            TfsServers = settings.TFSServerUrls?.Cast<string>().Select(url => new Uri(url)).ToList() ?? new List<Uri>();
 			TfsProjectName = settings.TFSProjectName;
 			TestDiscoveryPluginLocation = new DirectoryInfo(settings.TestDiscoveryPluginLocation);
 		}
 
 		private DotNetSettings()
 		{
-			_tfsServerLocation = Property.New(this, p => p.TfsServerLocation, OnPropertyChanged);
 			_tfsProjectName = Property.New(this, p => p.TfsProjectName, OnPropertyChanged);
 		}
 
-		/// <see cref="ISettings.TfsServerLocation"/>
-		public Uri TfsServerLocation 
-		{
-			get { return _tfsServerLocation.Value; }
-			set { _tfsServerLocation.Value = value; }
-		}
+		/// <see cref="ISettings.TfsServers"/>
+		public ICollection<Uri> TfsServers { get; }
 
 		/// <see cref="ISettings.TfsProjectName"/>
 		public string TfsProjectName
@@ -49,13 +47,16 @@ namespace TestCaseAutomator.Configuration
 		/// <see cref="ISettings.Save"/>
 		public void Save()
 		{
-			_settings.TFSServerUrl = TfsServerLocation;
+            var newUrls = new StringCollection();
+		    foreach (var uri in TfsServers)
+		        newUrls.Add(uri.ToString());
+
+			_settings.TFSServerUrls = newUrls;
 			_settings.TFSProjectName = TfsProjectName;
 
 			_settings.Save();
 		}
 
-		private readonly Property<Uri> _tfsServerLocation;
 		private readonly Property<string> _tfsProjectName; 
 
 		private readonly Settings _settings;

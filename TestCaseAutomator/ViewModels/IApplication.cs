@@ -18,6 +18,11 @@ namespace TestCaseAutomator.ViewModels
 		/// </summary>
 		string ProjectName { get; }
 
+        /// <summary>
+        /// Event raised when a connection has been successfully established.
+        /// </summary>
+        event EventHandler<ConnectionSucceededEventArgs> ConnectionSucceeded;
+
 		/// <summary>
 		/// Event raised when the application is closing.
 		/// This occurs before any final cleanup/save operations.

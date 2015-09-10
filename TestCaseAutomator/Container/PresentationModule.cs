@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Autofac;
+using SharpEssentials.Collections;
 using SharpEssentials.Controls.Mvvm;
 using TestCaseAutomator.AutomationProviders.Interfaces;
 using TestCaseAutomator.Configuration;
@@ -24,8 +25,9 @@ namespace TestCaseAutomator.Container
 			builder.RegisterType<MainViewModel>()
 			       .OnActivating(c =>
 			       {
-				       c.Instance.ServerUri = c.Context.Resolve<ISettings>().TfsServerLocation;
-				       c.Instance.ProjectName = c.Context.Resolve<ISettings>().TfsProjectName;
+				       c.Context.Resolve<ISettings>().TfsServers.AddTo(c.Instance.ServerUris);
+                       c.Instance.ServerUri = c.Context.Resolve<ISettings>().TfsServers.FirstOrDefault();
+                       c.Instance.ProjectName = c.Context.Resolve<ISettings>().TfsProjectName;
 			       })
 			       .As<MainViewModel, IApplication>()
 				   .SingleInstance();

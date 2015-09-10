@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace TestCaseAutomator.Configuration
@@ -9,9 +10,9 @@ namespace TestCaseAutomator.Configuration
 	public interface ISettings
 	{
 		/// <summary>
-		/// The current TFS server URL.
+		/// Available TFS server URLs.
 		/// </summary>
-		Uri TfsServerLocation { get; set; }
+		ICollection<Uri> TfsServers { get; }
 
 		/// <summary>
 		/// The name of the current TFS project.

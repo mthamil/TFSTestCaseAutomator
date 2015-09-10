@@ -35,12 +35,16 @@ namespace TestCaseAutomator.ViewModels
             _isConnected = Property.New(this, p => p.IsConnected, OnPropertyChanged)
                                    .AlsoChanges(p => p.CanRefresh);
             _serverUri = Property.New(this, p => p.ServerUri, OnPropertyChanged)
-	                             .AlsoChanges(p => p.CanRefresh);
+	                             .AlsoChanges(p => p.CanRefresh)
+                                 .AlsoChanges(p => p.CanConnect);
 	        _projectName = Property.New(this, p => p.ProjectName, OnPropertyChanged)
 	                               .AlsoChanges(p => p.CanRefresh);
             _status = Property.New(this, p => p.Status, OnPropertyChanged);
 
-            ConnectCommand = new AsyncRelayCommand(ConnectAsync);
+	        ConnectCommand = Command.For(this)
+	                                .DependsOn(p => p.CanConnect)
+	                                .Asynchronously()
+	                                .Executes(ConnectAsync);
             CloseCommand = new RelayCommand(OnClosing);
 
             PropertyChanged += OnPropertyChanged;
@@ -62,17 +66,22 @@ namespace TestCaseAutomator.ViewModels
 			set { _serverUri.Value = value; }
 		}
 
-		/// <see cref="IApplication.ProjectName"/>
-		public string ProjectName
+	    /// <summary>
+	    /// Available server URIs.
+	    /// </summary>
+	    public ICollection<Uri> ServerUris => _serverUris;
+
+	    /// <see cref="IApplication.ProjectName"/>
+	    public string ProjectName
 		{
 			get { return _projectName.Value; }
 			set { _projectName.Value = value; }
 		}
 
-		/// <summary>
+	    /// <summary>
 		/// Available project names.
 		/// </summary>
-		public ICollection<string> ProjectNames => _projectNames;
+		public ICollection<string> ProjectNames { get; } = new ObservableCollection<string>();
 
 	    /// <summary>
 		/// Contains work items from the current server and project.
@@ -85,6 +94,8 @@ namespace TestCaseAutomator.ViewModels
         /// Whether connecting would refresh an existing connection or not.
         /// </summary>
         public bool CanRefresh => IsConnected && UriEqualityComparer.Instance.Equals(ServerUri, _explorer.Server.Uri);
+
+	    public bool CanConnect => !String.IsNullOrWhiteSpace(ServerUri?.OriginalString);
 
         /// <summary>
         /// Command that forces a server refresh.
@@ -108,11 +119,11 @@ namespace TestCaseAutomator.ViewModels
                 _explorer.Server.ConnectionStatusChanged += Server_ConnectionStatusChanged;
 
                 var currentProjectName = ProjectName;
-                _projectNames.Clear();
-                _projectNames.AddRange(_explorer.TeamProjects().Select(n => n.Name));
+                ProjectNames.Clear();
+                ProjectNames.AddRange(_explorer.TeamProjects().Select(n => n.Name));
 
                 // Restore project name on reconnect.
-                if (_projectNames.Contains(currentProjectName) && !serverChanged)
+                if (ProjectNames.Contains(currentProjectName) && !serverChanged)
                     ProjectName = currentProjectName;
 
                 if (serverChanged)
@@ -120,14 +131,27 @@ namespace TestCaseAutomator.ViewModels
 
                 IsConnected = true;
 
+                OnConnectionSucceeded(serverUrl);
+
                 await Task.CompletedTask;
 			});
 		}
 
-		/// <summary>
-		/// Command invoked when the application is closing.
-		/// </summary>
-		public ICommand CloseCommand { get; }
+        /// <see cref="IApplication.ConnectionSucceeded"/>
+        public event EventHandler<ConnectionSucceededEventArgs> ConnectionSucceeded;
+
+	    private void OnConnectionSucceeded(Uri server)
+	    {
+            if (!_serverUris.Contains(server))
+                _serverUris.Insert(0, server);
+
+	        ConnectionSucceeded?.Invoke(this, new ConnectionSucceededEventArgs(server));
+	    }
+
+        /// <summary>
+        /// Command invoked when the application is closing.
+        /// </summary>
+        public ICommand CloseCommand { get; }
 
 		/// <see cref="IApplication.Closing"/>
 		public event EventHandler<EventArgs> Closing;
@@ -146,7 +170,7 @@ namespace TestCaseAutomator.ViewModels
 			private set { _status.Value = value; }
 		}
 
-		private async void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+	    private async void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
 		{
 			if (propertyChangedEventArgs.PropertyName == nameof(ProjectName))
 			{
@@ -201,7 +225,7 @@ namespace TestCaseAutomator.ViewModels
                 {
                     Status = errorMessage;
                     IsConnected = false;
-                    _projectNames.Clear();
+                    ProjectNames.Clear();
                 }
             }
 		}
@@ -211,8 +235,8 @@ namespace TestCaseAutomator.ViewModels
 		private readonly Property<string> _status;
 	    private readonly Property<bool> _isConnected;
 
-		private readonly ICollection<string> _projectNames = new ObservableCollection<string>(); 
+        private readonly ObservableCollection<Uri> _serverUris = new ObservableCollection<Uri>();
 
-		private readonly ITfsExplorer _explorer;
+        private readonly ITfsExplorer _explorer;
 	}
 }

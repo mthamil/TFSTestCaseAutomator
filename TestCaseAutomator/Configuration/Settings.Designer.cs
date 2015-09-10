@@ -25,12 +25,12 @@ namespace TestCaseAutomator.Configuration {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.Uri TFSServerUrl {
+        public global::System.Collections.Specialized.StringCollection TFSServerUrls {
             get {
-                return ((global::System.Uri)(this["TFSServerUrl"]));
+                return ((global::System.Collections.Specialized.StringCollection)(this["TFSServerUrls"]));
             }
             set {
-                this["TFSServerUrl"] = value;
+                this["TFSServerUrls"] = value;
             }
         }
         

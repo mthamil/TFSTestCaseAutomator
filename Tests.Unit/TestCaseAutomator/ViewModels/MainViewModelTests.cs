@@ -7,7 +7,6 @@ using SharpEssentials.Testing;
 using TestCaseAutomator.TeamFoundation;
 using TestCaseAutomator.ViewModels;
 using Xunit;
-using Xunit.Extensions;
 
 namespace Tests.Unit.TestCaseAutomator.ViewModels
 {
@@ -88,6 +87,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 			// Assert.
             Assert.True(_underTest.IsConnected);
             _workItems.Verify(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()), Times.Never);  // ProjectName will be null.
+            Assert.Contains(new Uri("http://test/"), _underTest.ServerUris);
         }
 
         [Fact]
@@ -105,6 +105,25 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
             // Assert.
             Assert.True(_underTest.IsConnected);
             _workItems.Verify(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()), Times.Once);
+        }
+
+        [Theory]
+        [InlineData(true, "http://test/")]
+        [InlineData(false, null)]
+        [InlineData(false, "")]
+        [InlineData(false, " ")]
+        public void Test_CanConnect(bool expected, string serverUri)
+        {
+            // Arrange.
+            _underTest.ServerUri = serverUri == null 
+                ? null 
+                : new Uri(serverUri, UriKind.RelativeOrAbsolute);
+
+            // Act.
+            bool actual = _underTest.CanConnect;
+
+            // Assert.
+            Assert.Equal(expected, actual);
         }
 
         [Theory]

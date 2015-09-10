@@ -21,15 +21,19 @@ namespace TestCaseAutomator.Configuration
 
 			_application.Closing += application_Closing;
 			_application.PropertyChanged += application_PropertyChanged;
+            _application.ConnectionSucceeded += application_ConnectionSucceeded;
 		}
 
-		void application_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void application_ConnectionSucceeded(object sender, ConnectionSucceededEventArgs e)
+        {
+            if (!_settings.TfsServers.Contains(e.Server))
+                _settings.TfsServers.Add(e.Server);
+        }
+
+        private void application_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 		    switch (e.PropertyName)
 		    {
-		        case nameof(IApplication.ServerUri):
-		            _settings.TfsServerLocation = _application.ServerUri;
-		            break;
 		        case nameof(IApplication.ProjectName):
 		            _settings.TfsProjectName = _application.ProjectName;
 		            break;

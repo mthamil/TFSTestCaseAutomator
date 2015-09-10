@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Specialized;
+using System.Linq;
 using SharpEssentials.Testing;
 using TestCaseAutomator.Configuration;
 using Xunit;
@@ -11,15 +13,15 @@ namespace Tests.Unit.TestCaseAutomator.Configuration
 		public void Test_Initialization()
 		{
 			// Arrange.
-			settings.TFSServerUrl = new Uri("http://testserver/");
-			settings.TFSProjectName = "project1";
-			settings["TestDiscoveryPluginLocation"] = @"C:\Plugins";
+		    _settings.TFSServerUrls = new StringCollection { "http://testserver/" };
+			_settings.TFSProjectName = "project1";
+			_settings["TestDiscoveryPluginLocation"] = @"C:\Plugins";
 
 			// Act.
-			var appSettings = new DotNetSettings(settings);
+			var appSettings = new DotNetSettings(_settings);
 
 			// Assert.
-			Assert.Equal("http://testserver/", appSettings.TfsServerLocation.ToString());
+			AssertThat.SequenceEqual(new [] { new Uri("http://testserver/") }, appSettings.TfsServers);
 			Assert.Equal("project1", appSettings.TfsProjectName);
 			Assert.Equal(@"C:\Plugins", appSettings.TestDiscoveryPluginLocation.FullName);
 		}
@@ -27,47 +29,31 @@ namespace Tests.Unit.TestCaseAutomator.Configuration
 		[Fact]
 		public void Test_Save()
 		{
-			// Arrange.
-			var appSettings = new DotNetSettings(settings)
+            // Arrange.
+            _settings.TFSServerUrls = new StringCollection { "http://testserver/" };
+            var appSettings = new DotNetSettings(_settings)
 			{
-				TfsServerLocation = new Uri("http://testserver/"),
 				TfsProjectName = "project1"
 			};
 
-			appSettings.TfsServerLocation = new Uri("http://testserver2/");
+			appSettings.TfsServers.Add(new Uri("http://testserver2/"));
 			appSettings.TfsProjectName = "project2";
 
 			// Act.
 			appSettings.Save();
 
 			// Assert.
-			Assert.Equal("http://testserver2/", settings.TFSServerUrl.ToString());
-			Assert.Equal("project2", settings.TFSProjectName);
-		}
-
-		[Fact]
-		public void Test_TfsServerLocation_Changes()
-		{
-			// Arrange.
-			settings.TFSServerUrl = new Uri("http://testserver/");
-
-			var appSettings = new DotNetSettings(settings);
-
-			// Act/Assert.
-			AssertThat.PropertyChanged(appSettings,
-				s => s.TfsServerLocation,
-				() => appSettings.TfsServerLocation = new Uri("http://testserver2/"));
-
-			Assert.Equal("http://testserver2/", appSettings.TfsServerLocation.ToString());
+			AssertThat.SequenceEqual(new [] { "http://testserver/", "http://testserver2/" }, _settings.TFSServerUrls.Cast<string>());
+			Assert.Equal("project2", _settings.TFSProjectName);
 		}
 
 		[Fact]
 		public void Test_TfsProjectName_Changes()
 		{
 			// Arrange.
-			settings.TFSProjectName = "project1";
+			_settings.TFSProjectName = "project1";
 
-			var appSettings = new DotNetSettings(settings);
+			var appSettings = new DotNetSettings(_settings);
 
 			// Act/Assert.
 			AssertThat.PropertyChanged(appSettings,
@@ -77,6 +63,6 @@ namespace Tests.Unit.TestCaseAutomator.Configuration
 			Assert.Equal("project2", appSettings.TfsProjectName);
 		}
 
-		private readonly Settings settings = new Settings();
+		private readonly Settings _settings = new Settings();
 	}
 }
