@@ -24,7 +24,7 @@ namespace TestCaseAutomator.TeamFoundation
 
             public Stream DownloadFile()
             {
-                throw new NotSupportedException();
+                throw new NotSupportedException("Cannot download directory.");
             }
         }
     }
