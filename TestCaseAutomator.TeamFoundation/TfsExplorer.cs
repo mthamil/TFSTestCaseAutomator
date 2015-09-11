@@ -48,7 +48,9 @@ namespace TestCaseAutomator.TeamFoundation
         /// <returns>An object providing access to a project's child objects</returns>
         public ITfsProjectWorkItemCollection WorkItems(string projectName)
 		{
-			var project = Server.TestManagement.GetTeamProject(projectName);
+            ServerGuard();
+
+            var project = Server.TestManagement.GetTeamProject(projectName);
 			return _workItemsFactory(project);
 		}
 
@@ -56,22 +58,41 @@ namespace TestCaseAutomator.TeamFoundation
 	    /// Retrieves the Team Projects for the given connection.
 	    /// </summary>
 	    public IEnumerable<ICatalogNode> TeamProjects()
-	        => Server.CatalogRoot.QueryChildren(CatalogResourceTypes.TeamProject.ToEnumerable(),
-	                                             false,
-	                                             CatalogQueryOptions.None);
+	    {
+            ServerGuard();
+
+            return Server.CatalogRoot.QueryChildren(CatalogResourceTypes.TeamProject.ToEnumerable(),
+	                                                false,
+	                                                CatalogQueryOptions.None);
+	    }
 
 	    /// <summary>
 		/// Provides access to Visual Studio solutions in source control.
 		/// </summary>
-		public async Task<IEnumerable<TfsSolution>> SolutionsAsync() 
-            => (await Server.VersionControl.GetItemsAsync("$/*.sln", RecursionType.Full).ConfigureAwait(false))
-                                           .Select(item => new TfsSolution(item, Server.VersionControl));
+		public async Task<IEnumerable<TfsSolution>> SolutionsAsync()
+	    {
+	        ServerGuard();
+
+	        return (await Server.VersionControl
+                                .GetItemsAsync("$/*.sln", RecursionType.Full).ConfigureAwait(false))
+	                            .Select(item => new TfsSolution(item, Server.VersionControl));
+	    }
 
 	    /// <summary>
 	    /// Retrieves the source control tree.
 	    /// </summary>
 	    public Task<IEnumerable<TfsSourceControlledItem>> GetSourceTreeAsync()
-            => new TfsSourceTreeRoot(Server.VersionControl).GetItemsAsync();
+	    {
+            ServerGuard();
+
+            return new TfsSourceTreeRoot(Server.VersionControl).GetItemsAsync();
+	    }
+
+        private void ServerGuard()
+        {
+            if (Server == null)
+                throw new InvalidOperationException("Not connected to a server.");
+        }
 
         /// <see cref="DisposableBase.OnDisposing"/>
         protected override void OnDisposing() => Server?.Dispose();
