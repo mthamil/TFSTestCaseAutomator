@@ -21,7 +21,7 @@ namespace xUnit.AutomationProvider
 		/// </summary>
 		[ImportingConstructor]
 		public XunitTestAutomationDiscoverer()
-            : this(source => new XunitFrontController(false, source, sourceInformationProvider: new NullSourceInformationProvider()))
+            : this(source => new XunitFrontController(AppDomainSupport.IfAvailable, source, sourceInformationProvider: new NullSourceInformationProvider()))
 		{
 		}
 
@@ -50,17 +50,20 @@ namespace xUnit.AutomationProvider
                                      await current.ConfigureAwait(false)));
 		}
 
-        private static Task<IEnumerable<ITestAutomation>> FindAsync(ITestFrameworkDiscoverer discoverer)
+        private static async Task<IEnumerable<ITestAutomation>> FindAsync(ITestFrameworkDiscoverer discoverer)
         {
-            var tcs = new TaskCompletionSource<IEnumerable<ITestAutomation>>();
             var tests = new List<ITestAutomation>();
 
-            discoverer.Find(false, new DiscoveryMessageSink(message =>
-                message.TestCases.Select(testCase => new XunitTestAutomation(testCase, message.TestAssembly))
-                                 .ToSink(tests),
-                () => tcs.SetResult(tests)), TestFrameworkOptions.ForDiscovery(new TestAssemblyConfiguration { UseAppDomain = false }));
-
-            return tcs.Task;
+            using (AssemblyHelper.SubscribeResolve())
+            using (var sink = new DiscoveryMessageSink(message =>
+                                    message.TestCases.Select(testCase => new XunitTestAutomation(testCase, message.TestAssembly))
+                                                     .ToSink(tests)))
+            {
+                discoverer.Find(false, sink, TestFrameworkOptions.ForDiscovery(new TestAssemblyConfiguration { AppDomain = AppDomainOption }));
+                await sink.Finished.AsTask();
+            }
+  
+            return tests;
         }
 
         private static bool IsTestAssembly(string source)
@@ -70,38 +73,23 @@ namespace xUnit.AutomationProvider
 
         private readonly Func<string, ITestFrameworkDiscoverer> _discovererFactory;
 
-        private static readonly ICollection<string> Extensions = new HashSet<string> { ".dll", ".exe" };
+	    private const AppDomainSupport AppDomainOption = AppDomainSupport.Denied;
+	    private static readonly ICollection<string> Extensions = new HashSet<string> { ".dll", ".exe" };
 
-	    private class DiscoveryMessageSink : LongLivedMarshalByRefObject, IMessageSink
+	    private class DiscoveryMessageSink : TestMessageVisitor<IDiscoveryCompleteMessage>
 	    {
-	        public DiscoveryMessageSink(Action<ITestCaseDiscoveryMessage> testHandler, 
-                                        Action completionHandler)
+	        public DiscoveryMessageSink(Action<ITestCaseDiscoveryMessage> testHandler)
 	        {
 	            _testHandler = testHandler;
-	            _completionHandler = completionHandler;
 	        }
 
-	        public bool OnMessage(IMessageSinkMessage message)
+	        protected override bool Visit(ITestCaseDiscoveryMessage testCaseDiscovered)
 	        {
-	            var testMessage = message as ITestCaseDiscoveryMessage;
-	            if (testMessage != null)
-	            {
-	                _testHandler(testMessage);
-	            }
-	            else
-	            {
-	                var completionMessage = message as IDiscoveryCompleteMessage;
-	                if (completionMessage != null)
-	                {
-	                    _completionHandler();
-	                }
-	            }
-
+	            _testHandler(testCaseDiscovered);
 	            return true;
 	        }
 
             private readonly Action<ITestCaseDiscoveryMessage> _testHandler;
-	        private readonly Action _completionHandler;
 	    }
     }
 }
