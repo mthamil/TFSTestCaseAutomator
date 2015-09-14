@@ -212,7 +212,7 @@ namespace TestCaseAutomator.ViewModels
 		    }
             catch (TeamFoundationServiceUnavailableException tfsUnavailableEx)
             {
-                errorMessage = tfsUnavailableEx.Message; ;
+                errorMessage = tfsUnavailableEx.Message;
             }
             catch (Exception e) when (e.InnerException != null &&
 		                              e.InnerException.GetType() == typeof(TeamFoundationServiceUnavailableException))
