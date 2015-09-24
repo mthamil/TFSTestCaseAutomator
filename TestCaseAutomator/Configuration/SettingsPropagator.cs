@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using SharpEssentials.Collections;
 using TestCaseAutomator.ViewModels;
 
 namespace TestCaseAutomator.Configuration
@@ -21,14 +23,9 @@ namespace TestCaseAutomator.Configuration
 
 			_application.Closing += application_Closing;
 			_application.PropertyChanged += application_PropertyChanged;
-            _application.ConnectionSucceeded += application_ConnectionSucceeded;
-		}
 
-        private void application_ConnectionSucceeded(object sender, ConnectionSucceededEventArgs e)
-        {
-            if (!_settings.TfsServers.Contains(e.Server))
-                _settings.TfsServers.Add(e.Server);
-        }
+            _serverUris = new CollectionMirror<Uri>(_application.ServerUris, _settings.TfsServers);
+		}
 
         private void application_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
@@ -40,10 +37,12 @@ namespace TestCaseAutomator.Configuration
 		    }
 		}
 
-	    private void application_Closing(object sender, System.EventArgs e)
+	    private void application_Closing(object sender, EventArgs e)
 		{
 			_settings.Save();	// Save before the app shuts down.
 		}
+
+	    private readonly CollectionMirror<Uri> _serverUris;
 
 		private readonly IApplication _application;
 		private readonly ISettings _settings;

@@ -66,10 +66,10 @@ namespace TestCaseAutomator.ViewModels
 			set { _serverUri.Value = value; }
 		}
 
-	    /// <summary>
-	    /// Available server URIs.
-	    /// </summary>
-	    public ICollection<Uri> ServerUris => _serverUris;
+        /// <summary>
+        /// Known server URIs.
+        /// </summary>
+        public IList<Uri> ServerUris => _serverUris;
 
 	    /// <see cref="IApplication.ProjectName"/>
 	    public string ProjectName

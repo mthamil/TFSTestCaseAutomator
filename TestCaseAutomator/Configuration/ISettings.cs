@@ -12,7 +12,7 @@ namespace TestCaseAutomator.Configuration
 		/// <summary>
 		/// Available TFS server URLs.
 		/// </summary>
-		ICollection<Uri> TfsServers { get; }
+		IList<Uri> TfsServers { get; }
 
 		/// <summary>
 		/// The name of the current TFS project.

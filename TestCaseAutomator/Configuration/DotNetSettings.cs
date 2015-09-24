@@ -32,7 +32,7 @@ namespace TestCaseAutomator.Configuration
 		}
 
 		/// <see cref="ISettings.TfsServers"/>
-		public ICollection<Uri> TfsServers { get; }
+		public IList<Uri> TfsServers { get; }
 
 		/// <see cref="ISettings.TfsProjectName"/>
 		public string TfsProjectName

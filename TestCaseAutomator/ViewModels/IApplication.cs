@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace TestCaseAutomator.ViewModels
@@ -13,10 +14,15 @@ namespace TestCaseAutomator.ViewModels
 		/// </summary>
 		Uri ServerUri { get; }
 
-		/// <summary>
-		/// The name of the current TFS project.
-		/// </summary>
-		string ProjectName { get; }
+        /// <summary>
+        /// Known server URIs.
+        /// </summary>
+        IList<Uri> ServerUris { get; }
+
+        /// <summary>
+        /// The name of the current TFS project.
+        /// </summary>
+        string ProjectName { get; }
 
         /// <summary>
         /// Event raised when a connection has been successfully established.

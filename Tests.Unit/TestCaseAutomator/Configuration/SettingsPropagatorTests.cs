@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Moq;
 using SharpEssentials.Testing;
@@ -14,6 +15,7 @@ namespace Tests.Unit.TestCaseAutomator.Configuration
 		public SettingsPropagatorTests()
 		{
 		    _settings.SetupGet(s => s.TfsServers).Returns(new List<Uri>());
+		    _application.SetupGet(s => s.ServerUris).Returns(new ObservableCollection<Uri>());
 
 			_underTest = new SettingsPropagator(_settings.Object, _application.Object);
 		}
@@ -29,32 +31,26 @@ namespace Tests.Unit.TestCaseAutomator.Configuration
 		}
 
 		[Fact]
-		public void Test_Application_ConnectionSucceeded_Updates_Settings()
+		public void Test_Application_ServerUris_Uri_Added()
 		{
 			// Act.
-			_application.Raise(
-                a => a.ConnectionSucceeded += null, 
-                new ConnectionSucceededEventArgs(new Uri("http://testserver/")));
+			_application.Object.ServerUris.Add(new Uri("http://testserver/"));
 
 			// Assert.
 			AssertThat.SequenceEqual(new[] { new Uri("http://testserver/") }, _settings.Object.TfsServers);
 		}
 
         [Fact]
-        public void Test_Application_ConnectionSucceeded_Does_Not_Add_Same_Url_Twice()
+        public void Test_Application_ServerUris_Uri_Removed()
         {
-            // Arrange.
-            _application.Raise(
-                a => a.ConnectionSucceeded += null,
-                new ConnectionSucceededEventArgs(new Uri("http://testserver/")));
+            _application.Object.ServerUris.Add(new Uri("http://testserver/"));
+            _application.Object.ServerUris.Add(new Uri("http://testserver2/"));
 
             // Act.
-            _application.Raise(
-                a => a.ConnectionSucceeded += null,
-                new ConnectionSucceededEventArgs(new Uri("http://testserver/")));
+            _application.Object.ServerUris.Remove(new Uri("http://testserver/"));
 
             // Assert.
-            AssertThat.SequenceEqual(new[] { new Uri("http://testserver/") }, _settings.Object.TfsServers);
+            AssertThat.SequenceEqual(new[] { new Uri("http://testserver2/") }, _settings.Object.TfsServers);
         }
 
         [Fact]
