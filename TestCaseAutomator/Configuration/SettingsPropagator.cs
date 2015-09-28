@@ -11,20 +11,27 @@ namespace TestCaseAutomator.Configuration
 	/// </summary>
 	public class SettingsPropagator
 	{
-		/// <summary>
-		/// Initializes a new <see cref="SettingsPropagator"/>.
-		/// </summary>
-		/// <param name="settings">The application settings</param>
-		/// <param name="application">The application object</param>
-		public SettingsPropagator(ISettings settings, IApplication application)
+	    /// <summary>
+	    /// Initializes a new <see cref="SettingsPropagator"/>.
+	    /// </summary>
+	    /// <param name="settings">The application settings</param>
+	    /// <param name="application">The application object</param>
+	    /// <param name="servers">Manages TFS servers</param>
+	    public SettingsPropagator(ISettings settings, 
+                                  IApplication application,
+                                  IServerManagement servers)
 		{
 			_settings = settings;
 			_application = application;
+	        _servers = servers;
 
-			_application.Closing += application_Closing;
+	        _application.Closing += application_Closing;
 			_application.PropertyChanged += application_PropertyChanged;
 
-            _serverUris = new CollectionMirror<Uri>(_application.ServerUris, _settings.TfsServers);
+            _serverUris = new CollectionMirror<IServer, Uri>(
+                servers.All, 
+                _settings.TfsServers,
+                s => s.Uri);
 		}
 
         private void application_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -42,9 +49,10 @@ namespace TestCaseAutomator.Configuration
 			_settings.Save();	// Save before the app shuts down.
 		}
 
-	    private readonly CollectionMirror<Uri> _serverUris;
+	    private readonly CollectionMirror<IServer, Uri> _serverUris;
 
 		private readonly IApplication _application;
-		private readonly ISettings _settings;
+	    private readonly IServerManagement _servers;
+	    private readonly ISettings _settings;
 	}
 }

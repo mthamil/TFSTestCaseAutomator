@@ -1,11 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Autofac;
-using SharpEssentials.Collections;
 using SharpEssentials.Controls.Mvvm;
 using TestCaseAutomator.AutomationProviders.Interfaces;
 using TestCaseAutomator.Configuration;
 using TestCaseAutomator.ViewModels;
 using TestCaseAutomator.ViewModels.Browser.Nodes;
+using TestCaseAutomator.Container.Support;
 
 namespace TestCaseAutomator.Container
 {
@@ -23,14 +25,14 @@ namespace TestCaseAutomator.Container
                    .AsImplementedInterfaces();
 
 			builder.RegisterType<MainViewModel>()
-			       .OnActivating(c =>
-			       {
-				       c.Context.Resolve<ISettings>().TfsServers.AddTo(c.Instance.ServerUris);
-                       c.Instance.ServerUri = c.Context.Resolve<ISettings>().TfsServers.FirstOrDefault();
-                       c.Instance.ProjectName = c.Context.Resolve<ISettings>().TfsProjectName;
-			       })
+                   .ApplySettings((s, vm) => vm.ProjectName = s.TfsProjectName)
 			       .As<MainViewModel, IApplication>()
 				   .SingleInstance();
+
+		    builder.RegisterType<ServerManagementViewModel>()
+		           .WithParameter(c => c.Resolve<ISettings>().TfsServers as IEnumerable<Uri>)
+                   .As<IServerManagement>()
+                   .SingleInstance();
 
 			builder.RegisterType<ProjectViewModel>()
 				.OnActivating(c => c.Instance.FileExtensions = 

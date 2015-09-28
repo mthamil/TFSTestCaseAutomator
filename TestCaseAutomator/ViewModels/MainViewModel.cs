@@ -23,25 +23,27 @@ namespace TestCaseAutomator.ViewModels
 	{
 		public MainViewModel(ITfsExplorer explorer, 
 			                 IWorkItems workItems,
+                             IServerManagement servers,
 			                 TestSelectionViewModel testSelection) : this()
 		{
 			_explorer = explorer;
 		    WorkItems = workItems;
-            TestSelection = testSelection;
+		    Servers = servers;
+            Servers.PropertyChanged += Servers_PropertyChanged;
+		    TestSelection = testSelection;
 		}
 
-	    private MainViewModel()
+        private MainViewModel()
 	    {
             _isConnected = Property.New(this, p => p.IsConnected, OnPropertyChanged)
                                    .AlsoChanges(p => p.CanRefresh);
-            _serverUri = Property.New(this, p => p.ServerUri, OnPropertyChanged)
-	                             .AlsoChanges(p => p.CanRefresh)
-                                 .AlsoChanges(p => p.CanConnect);
+
 	        _projectName = Property.New(this, p => p.ProjectName, OnPropertyChanged)
 	                               .AlsoChanges(p => p.CanRefresh);
+
             _status = Property.New(this, p => p.Status, OnPropertyChanged);
 
-	        ConnectCommand = Command.For(this)
+            ConnectCommand = Command.For(this)
 	                                .DependsOn(p => p.CanConnect)
 	                                .Asynchronously()
 	                                .Executes(ConnectAsync);
@@ -59,20 +61,8 @@ namespace TestCaseAutomator.ViewModels
             set { _isConnected.Value = value; }
         }
 
-	    /// <see cref="IApplication.ServerUri"/>
-		public Uri ServerUri
-		{
-			get { return _serverUri.Value; }
-			set { _serverUri.Value = value; }
-		}
-
-        /// <summary>
-        /// Known server URIs.
-        /// </summary>
-        public IList<Uri> ServerUris => _serverUris;
-
-	    /// <see cref="IApplication.ProjectName"/>
-	    public string ProjectName
+        /// <see cref="IApplication.ProjectName"/>
+        public string ProjectName
 		{
 			get { return _projectName.Value; }
 			set { _projectName.Value = value; }
@@ -83,19 +73,24 @@ namespace TestCaseAutomator.ViewModels
 		/// </summary>
 		public ICollection<string> ProjectNames { get; } = new ObservableCollection<string>();
 
-	    /// <summary>
-		/// Contains work items from the current server and project.
-		/// </summary>
-		public IWorkItems WorkItems { get; }
+        /// <summary>
+        /// Manages servers.
+        /// </summary>
+        public IServerManagement Servers { get; }
+
+        /// <summary>
+        /// Contains work items from the current server and project.
+        /// </summary>
+        public IWorkItems WorkItems { get; }
 
         public TestSelectionViewModel TestSelection { get; }
 
         /// <summary>
         /// Whether connecting would refresh an existing connection or not.
         /// </summary>
-        public bool CanRefresh => IsConnected && UriEqualityComparer.Instance.Equals(ServerUri, _explorer.Server.Uri);
+        public bool CanRefresh => IsConnected && UriEqualityComparer.Instance.Equals(Servers.CurrentUri, _explorer.Server.Uri);
 
-	    public bool CanConnect => !String.IsNullOrWhiteSpace(ServerUri?.OriginalString);
+	    public bool CanConnect => !String.IsNullOrWhiteSpace(Servers.CurrentUri?.OriginalString);
 
         /// <summary>
         /// Command that forces a server refresh.
@@ -103,13 +98,13 @@ namespace TestCaseAutomator.ViewModels
         public ICommand ConnectCommand { get; }
 
 		/// <summary>
-		/// Connects to the TFS server specified by <see cref="ServerUri"/>.
+		/// Connects to the TFS server specified by <see cref="IServerManagement.CurrentUri"/>.
 		/// </summary>
 		public async Task ConnectAsync()
 		{
 			await HandleServerError(async () =>
 			{
-			    var serverUrl = ServerUri;
+			    var serverUrl = Servers.CurrentUri;
                 bool serverChanged = !UriEqualityComparer.Instance.Equals(serverUrl, _explorer.Server?.Uri);
 
                 if (_explorer.Server != null)
@@ -131,6 +126,7 @@ namespace TestCaseAutomator.ViewModels
 
                 IsConnected = true;
 
+                Servers.Add(serverUrl);
                 OnConnectionSucceeded(serverUrl);
 
                 await Task.CompletedTask;
@@ -142,10 +138,7 @@ namespace TestCaseAutomator.ViewModels
 
 	    private void OnConnectionSucceeded(Uri server)
 	    {
-            if (!_serverUris.Contains(server))
-                _serverUris.Insert(0, server);
-
-	        ConnectionSucceeded?.Invoke(this, new ConnectionSucceededEventArgs(server));
+            ConnectionSucceeded?.Invoke(this, new ConnectionSucceededEventArgs(server));
 	    }
 
         /// <summary>
@@ -172,15 +165,29 @@ namespace TestCaseAutomator.ViewModels
 
 	    private async void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
 		{
-			if (propertyChangedEventArgs.PropertyName == nameof(ProjectName))
+			switch (propertyChangedEventArgs.PropertyName)
 			{
-				if (IsConnected)
-				{
-					await HandleServerError(async () => 
-                        await LoadWorkItemsAsync());
-				}
+                case nameof(ProjectName):
+                    if (IsConnected)
+				    {
+					    await HandleServerError(async () => 
+                            await LoadWorkItemsAsync());
+				    }
+			        break;
 			}
 		}
+
+        private void Servers_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            // Propagate child changes.
+            switch (e.PropertyName)
+            {
+                case nameof(Servers.CurrentUri):
+                    OnPropertyChanged(nameof(CanRefresh));
+                    OnPropertyChanged(nameof(CanConnect));
+                    break;
+            }
+        }
 
         private void Server_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
         {
@@ -230,12 +237,10 @@ namespace TestCaseAutomator.ViewModels
             }
 		}
 
-		private readonly Property<Uri> _serverUri;
+	    
 		private readonly Property<string> _projectName;
 		private readonly Property<string> _status;
 	    private readonly Property<bool> _isConnected;
-
-        private readonly ObservableCollection<Uri> _serverUris = new ObservableCollection<Uri>();
 
         private readonly ITfsExplorer _explorer;
 	}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 using Moq;
 using SharpEssentials.Testing;
 using TestCaseAutomator.Configuration;
@@ -15,9 +16,9 @@ namespace Tests.Unit.TestCaseAutomator.Configuration
 		public SettingsPropagatorTests()
 		{
 		    _settings.SetupGet(s => s.TfsServers).Returns(new List<Uri>());
-		    _application.SetupGet(s => s.ServerUris).Returns(new ObservableCollection<Uri>());
+		    _servers.SetupGet(s => s.All).Returns(new ObservableCollection<IServer>());
 
-			_underTest = new SettingsPropagator(_settings.Object, _application.Object);
+			_underTest = new SettingsPropagator(_settings.Object, _application.Object, _servers.Object);
 		}
 
 		[Fact]
@@ -33,8 +34,8 @@ namespace Tests.Unit.TestCaseAutomator.Configuration
 		[Fact]
 		public void Test_Application_ServerUris_Uri_Added()
 		{
-			// Act.
-			_application.Object.ServerUris.Add(new Uri("http://testserver/"));
+            // Act.
+            _servers.Object.All.Add(new ServerViewModel(new Uri("http://testserver/"), Mock.Of<ICommand>()));
 
 			// Assert.
 			AssertThat.SequenceEqual(new[] { new Uri("http://testserver/") }, _settings.Object.TfsServers);
@@ -43,11 +44,11 @@ namespace Tests.Unit.TestCaseAutomator.Configuration
         [Fact]
         public void Test_Application_ServerUris_Uri_Removed()
         {
-            _application.Object.ServerUris.Add(new Uri("http://testserver/"));
-            _application.Object.ServerUris.Add(new Uri("http://testserver2/"));
+            _servers.Object.All.Add(new ServerViewModel(new Uri("http://testserver/"), Mock.Of<ICommand>()));
+            _servers.Object.All.Add(new ServerViewModel(new Uri("http://testserver2/"), Mock.Of<ICommand>()));
 
             // Act.
-            _application.Object.ServerUris.Remove(new Uri("http://testserver/"));
+            _servers.Object.All.Remove(new ServerViewModel(new Uri("http://testserver/"), Mock.Of<ICommand>()));
 
             // Assert.
             AssertThat.SequenceEqual(new[] { new Uri("http://testserver2/") }, _settings.Object.TfsServers);
@@ -70,5 +71,6 @@ namespace Tests.Unit.TestCaseAutomator.Configuration
 
  		private readonly Mock<ISettings> _settings = new Mock<ISettings>();
 		private readonly Mock<IApplication> _application = new Mock<IApplication>();
+        private readonly Mock<IServerManagement> _servers = new Mock<IServerManagement>();
 	}
 }

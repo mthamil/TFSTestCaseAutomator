@@ -305,9 +305,13 @@
     <Compile Include="ViewModels\Browser\Nodes\VirtualizedNode.cs" />
     <Compile Include="ViewModels\ConnectionSucceededEventArgs.cs" />
     <Compile Include="ViewModels\IApplication.cs" />
+    <Compile Include="ViewModels\IServer.cs" />
+    <Compile Include="ViewModels\IServerManagement.cs" />
     <Compile Include="ViewModels\ITestCaseViewModel.cs" />
     <Compile Include="ViewModels\IWorkItems.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ServerManagementViewModel.cs" />
+    <Compile Include="ViewModels\ServerViewModel.cs" />
     <Compile Include="ViewModels\TestSelectionViewModel.cs" />
     <Compile Include="ViewModels\WorkItemsViewModel.cs" />
     <Compile Include="ViewModels\TestCaseViewModel.cs" />

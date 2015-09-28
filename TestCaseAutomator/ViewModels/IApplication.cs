@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace TestCaseAutomator.ViewModels
@@ -9,16 +8,6 @@ namespace TestCaseAutomator.ViewModels
 	/// </summary>
 	public interface IApplication : INotifyPropertyChanged
 	{
-		/// <summary>
-		/// The current TFS server URL.
-		/// </summary>
-		Uri ServerUri { get; }
-
-        /// <summary>
-        /// Known server URIs.
-        /// </summary>
-        IList<Uri> ServerUris { get; }
-
         /// <summary>
         /// The name of the current TFS project.
         /// </summary>

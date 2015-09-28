@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.TeamFoundation;
 using Moq;
@@ -25,6 +26,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 
 		    _underTest = new MainViewModel(_explorer.Object,
 		                                   _workItems.Object,
+                                           new ServerManagementViewModel(Enumerable.Empty<Uri>()), 
 		                                   new TestSelectionViewModel(null));
 		}
 
@@ -32,7 +34,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 		public async Task Test_ProjectName_Updates_WorkItems()
 		{
 			// Arrange.
-			_underTest.ServerUri = new Uri("http://test/");
+			_underTest.Servers.CurrentUri = new Uri("http://test/");
             await _underTest.ConnectAsync();
 
             // Act.
@@ -64,8 +66,8 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 		    _explorer.Setup(e => e.WorkItems(It.IsAny<string>()))
 		             .Throws(new TeamFoundationServiceUnavailableException(""));
 
-            _underTest.ServerUri = new Uri("http://test/");
-		    await _underTest.ConnectAsync();
+            _underTest.Servers.CurrentUri = new Uri("http://test/");
+            await _underTest.ConnectAsync();
 
             // Act.
             _underTest.ProjectName = "TestProject";
@@ -78,7 +80,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 		public async Task Test_Connect()
 		{
 			// Arrange.
-			_underTest.ServerUri = new Uri("http://test/");
+			_underTest.Servers.CurrentUri = new Uri("http://test/");
             _underTest.ProjectName = "TestProject";
 
             // Act.
@@ -87,14 +89,14 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 			// Assert.
             Assert.True(_underTest.IsConnected);
             _workItems.Verify(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()), Times.Never);  // ProjectName will be null.
-            Assert.Contains(new Uri("http://test/"), _underTest.ServerUris);
+            Assert.Contains(new Uri("http://test/"), _underTest.Servers.All.Select(s => s.Uri));
         }
 
         [Fact]
         public async Task Test_Reconnect()
         {
             // Arrange.
-            _underTest.ServerUri = new Uri("http://test/");
+            _underTest.Servers.CurrentUri = new Uri("http://test/");
             await _underTest.ConnectAsync();
 
             _underTest.ProjectName = "TestProject";
@@ -115,8 +117,8 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
         public void Test_CanConnect(bool expected, string serverUri)
         {
             // Arrange.
-            _underTest.ServerUri = serverUri == null 
-                ? null 
+            _underTest.Servers.CurrentUri = serverUri == null
+                ? null
                 : new Uri(serverUri, UriKind.RelativeOrAbsolute);
 
             // Act.
@@ -133,7 +135,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
         public async Task Test_CanRefresh(bool expected, string serverUri)
         {
             // Arrange.
-            _underTest.ServerUri = new Uri(serverUri);
+            _underTest.Servers.CurrentUri = new Uri(serverUri);
             _server.SetupGet(s => s.Uri).Returns(new Uri("http://test/"));
             await _underTest.ConnectAsync();
 
