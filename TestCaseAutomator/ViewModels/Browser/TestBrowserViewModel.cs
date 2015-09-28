@@ -14,8 +14,7 @@ namespace TestCaseAutomator.ViewModels.Browser
         public TestBrowserViewModel(ITestCaseViewModel testCase, 
                                     ITestIdentifierFactory identifierFactory,
                                     FileSystemTestBrowserViewModel fileSystemBrowser,
-                                    SourceControlTestBrowserViewModel sourceControlBrowser)
-            : this()
+                                    SourceControlTestBrowserViewModel sourceControlBrowser) : this()
         {
             _identifierFactory = identifierFactory;
 
