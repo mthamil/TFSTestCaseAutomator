@@ -8,16 +8,16 @@ namespace TestCaseAutomator.ViewModels
     [DebuggerDisplay("{" + nameof(Uri) + "}")]
     public class ServerViewModel : ViewModelBase, IServer
     {
-        public ServerViewModel(Uri uri, ICommand forget)
+        public ServerViewModel(Uri uri, ICommand forgetCommand)
         {
             if (uri == null)
                 throw new ArgumentNullException(nameof(uri));
 
-            if (forget == null)
-                throw new ArgumentNullException(nameof(forget));
+            if (forgetCommand == null)
+                throw new ArgumentNullException(nameof(forgetCommand));
 
             Uri = uri;
-            Forget = forget;
+            ForgetCommand = forgetCommand;
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace TestCaseAutomator.ViewModels
         /// <summary>
         /// Command that removes a server URI from the server list.
         /// </summary>
-        public ICommand Forget { get; }
+        public ICommand ForgetCommand { get; }
 
         public override bool Equals(object obj)
         {

@@ -55,7 +55,7 @@
                                     <ContextMenu>
                                         <MenuItem Header="Forget" ToolTip="Remove server from saved list."
                                                   Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}, 
-                                                                    Path=PlacementTarget.DataContext.Forget}"/>
+                                                                    Path=PlacementTarget.DataContext.ForgetCommand}"/>
                                     </ContextMenu>
                                 </Setter.Value>
                             </Setter>

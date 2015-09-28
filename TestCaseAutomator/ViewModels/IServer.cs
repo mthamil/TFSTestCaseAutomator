@@ -16,6 +16,6 @@ namespace TestCaseAutomator.ViewModels
         /// <summary>
         /// Command that removes a server URI from the server list.
         /// </summary>
-        ICommand Forget { get; }
+        ICommand ForgetCommand { get; }
     }
 }
