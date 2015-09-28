@@ -104,11 +104,13 @@ namespace TestCaseAutomator.ViewModels.Browser
 
         private void Browser_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(FileSystemTestBrowserViewModel.SelectedTest))
+            if (e.PropertyName == nameof(FileSystemTestBrowserViewModel.SelectedTest) &&
+                sender == FileSystemBrowser)
             {
                 TestAutomation = FileSystemBrowser.SelectedTest.TestAutomation;
             }
-            else if (e.PropertyName == nameof(SourceControlTestBrowserViewModel.SelectedTest) && 
+            else if (e.PropertyName == nameof(SourceControlTestBrowserViewModel.SelectedTest) &&
+                     sender == SourceControlBrowser &&
                      SourceControlBrowser.IsValid)
             {
                 TestAutomation = ((TestAutomationNodeViewModel)SourceControlBrowser.SelectedTest).TestAutomation;
