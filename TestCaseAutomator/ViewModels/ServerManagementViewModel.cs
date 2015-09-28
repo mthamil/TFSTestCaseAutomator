@@ -26,8 +26,17 @@ namespace TestCaseAutomator.ViewModels
 
         public void Add(Uri server)
         {
-            if (!All.Any(s => UriEqualityComparer.Instance.Equals(s.Uri, server)))
+            var existing = All.FirstOrDefault(s => UriEqualityComparer.Instance.Equals(s.Uri, server));
+            if (existing != null)
+            {
+                All.Remove(existing);
+                All.Insert(0, existing);
+                CurrentUri = existing.Uri;
+            }
+            else
+            {
                 All.Insert(0, Create(server));
+            }
         }
 
         public Uri CurrentUri
