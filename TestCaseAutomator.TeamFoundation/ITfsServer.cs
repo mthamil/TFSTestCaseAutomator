@@ -20,11 +20,6 @@ namespace TestCaseAutomator.TeamFoundation
 		IVersionControl VersionControl { get; }
 
 		/// <summary>
-		/// Provides access to project collection services.
-		/// </summary>
-		ITeamProjectCollectionService ProjectCollectionService { get; }
-
-		/// <summary>
 		/// Enables queries against a TFS connection's catalog.
 		/// </summary>
 		ICatalogNode CatalogRoot { get; }
