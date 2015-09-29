@@ -54,5 +54,17 @@ namespace TestCaseAutomator.Configuration {
                 this["TFSProjectName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AutoConnectOnStartup {
+            get {
+                return ((bool)(this["AutoConnectOnStartup"]));
+            }
+            set {
+                this["AutoConnectOnStartup"] = value;
+            }
+        }
     }
 }

@@ -19,10 +19,16 @@ namespace TestCaseAutomator.Configuration
 		/// </summary>
 		string TfsProjectName { get; set; }
 
-		/// <summary>
-		/// The directory where automated test discovery plugins are located.
-		/// </summary>
-		DirectoryInfo TestDiscoveryPluginLocation { get; }
+        /// <summary>
+        /// Whether on start-up the application should automatically attempt to connect to the last server
+        /// that was successfully connected to.
+        /// </summary>
+        bool AutoConnectOnStartup { get; set; }
+
+        /// <summary>
+        /// The directory where automated test discovery plugins are located.
+        /// </summary>
+        DirectoryInfo TestDiscoveryPluginLocation { get; }
 
 		/// <summary>
 		/// Stores the current settings. 

@@ -15,7 +15,8 @@ namespace Tests.Unit.TestCaseAutomator.Configuration
 			// Arrange.
 		    _settings.TFSServerUrls = new StringCollection { "http://testserver/" };
 			_settings.TFSProjectName = "project1";
-			_settings["TestDiscoveryPluginLocation"] = @"C:\Plugins";
+		    _settings.AutoConnectOnStartup = false;
+            _settings["TestDiscoveryPluginLocation"] = @"C:\Plugins";
 
 			// Act.
 			var appSettings = new DotNetSettings(_settings);
@@ -23,6 +24,7 @@ namespace Tests.Unit.TestCaseAutomator.Configuration
 			// Assert.
 			AssertThat.SequenceEqual(new [] { new Uri("http://testserver/") }, appSettings.TfsServers);
 			Assert.Equal("project1", appSettings.TfsProjectName);
+            Assert.False(appSettings.AutoConnectOnStartup);
 			Assert.Equal(@"C:\Plugins", appSettings.TestDiscoveryPluginLocation.FullName);
 		}
 

@@ -23,7 +23,8 @@ namespace TestCaseAutomator.Configuration
 
             TfsServers = settings.TFSServerUrls?.Cast<string>().Select(url => new Uri(url)).ToList() ?? new List<Uri>();
 			TfsProjectName = settings.TFSProjectName;
-			TestDiscoveryPluginLocation = new DirectoryInfo(settings.TestDiscoveryPluginLocation);
+		    AutoConnectOnStartup = settings.AutoConnectOnStartup;
+            TestDiscoveryPluginLocation = new DirectoryInfo(settings.TestDiscoveryPluginLocation);
 		}
 
 		private DotNetSettings()
@@ -41,7 +42,10 @@ namespace TestCaseAutomator.Configuration
 			set { _tfsProjectName.Value = value; }
 		}
 
-		/// <see cref="ISettings.TestDiscoveryPluginLocation"/>
+        /// <see cref="ISettings.AutoConnectOnStartup"/>
+	    public bool AutoConnectOnStartup { get; set; }
+
+	    /// <see cref="ISettings.TestDiscoveryPluginLocation"/>
 		public DirectoryInfo TestDiscoveryPluginLocation { get; }
 
 		/// <see cref="ISettings.Save"/>
@@ -53,8 +57,9 @@ namespace TestCaseAutomator.Configuration
 
 			_settings.TFSServerUrls = newUrls;
 			_settings.TFSProjectName = TfsProjectName;
+		    _settings.AutoConnectOnStartup = AutoConnectOnStartup;
 
-			_settings.Save();
+            _settings.Save();
 		}
 
 		private readonly Property<string> _tfsProjectName; 
