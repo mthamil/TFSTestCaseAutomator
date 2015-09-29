@@ -14,8 +14,11 @@
     <BitmapImage x:Key="RefreshIcon" UriSource="../Icons/arrow-circle-double-135-24x24.png"/>
     <BitmapImage x:Key="ConnectedIcon" UriSource="../Icons/plug-connect-16x16.png"/>
     <BitmapImage x:Key="DisconnectedIcon" UriSource="../Icons/plug-disconnect-16x16.png"/>
-    
-    <BitmapImage x:Key="RemoveIcon" UriSource="../Icons/minus-16x16.png"/>
+
+    <BitmapImage x:Key="RemoveServerIcon" UriSource="../Icons/cross-16x16.png"/>
+
+    <BitmapImage x:Key="EditAutomationIcon" UriSource="../Icons/gear-pencil-16x16.png"/>
+    <BitmapImage x:Key="RemoveAutomationIcon" UriSource="../Icons/cross-16x16.png"/>
     <BitmapImage x:Key="BrowseFileSystemIcon" UriSource="../Icons/folder-horizontal-open-16x16.png"/>
     <BitmapImage x:Key="BrowseSourceControlIcon" UriSource="../Icons/server-cloud-16x16.png"/>
     <BitmapImage x:Key="ManualEntryIcon" UriSource="../Icons/keyboard--pencil-16x16.png"/>

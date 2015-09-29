@@ -55,7 +55,12 @@
                                     <ContextMenu>
                                         <MenuItem Header="Forget" ToolTip="Remove server from saved list."
                                                   Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}, 
-                                                                    Path=PlacementTarget.DataContext.ForgetCommand}"/>
+                                                                    Path=PlacementTarget.DataContext.ForgetCommand}">
+                                            <MenuItem.Icon>
+                                                <Image Source="{StaticResource RemoveServerIcon}" Style="{StaticResource DisableableIcon}" 
+                                                       RenderOptions.BitmapScalingMode="NearestNeighbor" RenderOptions.EdgeMode="Aliased"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
                                     </ContextMenu>
                                 </Setter.Value>
                             </Setter>
@@ -141,22 +146,24 @@
                                                       Caption="Remove Automation?" Type="OKCancel"/>
 
                                     <Button Name="RemoveAutomationButton" ToolTip="Remove associated automation." IsEnabled="{Binding CanRemoveAutomation}"
-                                            HorizontalAlignment="Right" VerticalContentAlignment="Center" Width="25" Height="25">
+                                            HorizontalAlignment="Right" VerticalContentAlignment="Center" Width="25" Height="25" Padding="2, 2">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="Click">
                                                 <clickable:BindableClickAction/>
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
-                                        <Image Source="{StaticResource RemoveIcon}" Style="{StaticResource DisableableIcon}" 
+                                        <Image Source="{StaticResource RemoveAutomationIcon}" Style="{StaticResource DisableableIcon}"
                                                RenderOptions.BitmapScalingMode="NearestNeighbor" RenderOptions.EdgeMode="Aliased"/>
                                     </Button>
 
-                                    <Button ToolTip="Edit a test case..." HorizontalAlignment="Right" Width="25" Height="25"
+                                    <Button ToolTip="Edit a test case..." HorizontalAlignment="Right" Width="25" Height="25" Padding="2, 2"
                                             CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestSelection.TestBrowser, Mode=OneWay}">
                                         <Button.Command>
                                             <cmds:OpenDialogCommand Type="{x:Type vw:TestBrowser}" 
                                                                     Owner="{Binding Source={x:Static Application.Current}, Path=MainWindow}"/>
                                         </Button.Command>
+                                        <Image Source="{StaticResource EditAutomationIcon}" Style="{StaticResource DisableableIcon}" 
+                                               RenderOptions.BitmapScalingMode="NearestNeighbor" RenderOptions.EdgeMode="Aliased"/>
                                     </Button>
 
                                 </DockPanel>
