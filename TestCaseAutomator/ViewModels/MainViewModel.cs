@@ -35,13 +35,16 @@ namespace TestCaseAutomator.ViewModels
 
         private MainViewModel()
 	    {
-            _isConnected = Property.New(this, p => p.IsConnected, OnPropertyChanged)
+            _isConnected = Property.New(this, p => p.IsConnected)
                                    .AlsoChanges(p => p.CanRefresh);
 
-	        _projectName = Property.New(this, p => p.ProjectName, OnPropertyChanged)
+            _isConnecting = Property.New(this, p => p.IsConnecting)
+                                    .AlsoChanges(p => p.CanConnect);
+
+	        _projectName = Property.New(this, p => p.ProjectName)
 	                               .AlsoChanges(p => p.CanRefresh);
 
-            _status = Property.New(this, p => p.Status, OnPropertyChanged);
+            _status = Property.New(this, p => p.Status);
 
             ConnectCommand = Command.For(this)
 	                                .DependsOn(p => p.CanConnect)
@@ -90,7 +93,19 @@ namespace TestCaseAutomator.ViewModels
         /// </summary>
         public bool CanRefresh => IsConnected && UriEqualityComparer.Instance.Equals(Servers.CurrentUri, _explorer.Server.Uri);
 
-	    public bool CanConnect => !String.IsNullOrWhiteSpace(Servers.CurrentUri?.OriginalString);
+        /// <summary>
+        /// Whether a connection can currently be attempted.
+        /// </summary>
+	    public bool CanConnect => !IsConnecting && !String.IsNullOrWhiteSpace(Servers.CurrentUri?.OriginalString);
+
+        /// <summary>
+        /// Whether a connection is currently being attempted.
+        /// </summary>
+	    public bool IsConnecting
+	    {
+	        get { return _isConnecting.Value; }
+            set { _isConnecting.Value = value; }
+	    }
 
         /// <summary>
         /// Command that forces a server refresh.
@@ -102,34 +117,42 @@ namespace TestCaseAutomator.ViewModels
 		/// </summary>
 		public async Task ConnectAsync()
 		{
-			await HandleServerError(async () =>
+		    await HandleServerError(async () =>
 			{
-			    var serverUrl = Servers.CurrentUri;
-                bool serverChanged = !UriEqualityComparer.Instance.Equals(serverUrl, _explorer.Server?.Uri);
+                IsConnecting = true;
+                try
+			    {
+                    var serverUrl = Servers.CurrentUri;
+                    bool serverChanged = !UriEqualityComparer.Instance.Equals(serverUrl, _explorer.Server?.Uri);
 
-                if (_explorer.Server != null)
-                    _explorer.Server.ConnectionStatusChanged -= Server_ConnectionStatusChanged;
+                    if (_explorer.Server != null)
+                        _explorer.Server.ConnectionStatusChanged -= Server_ConnectionStatusChanged;
 
-                _explorer.Connect(serverUrl);
-                _explorer.Server.ConnectionStatusChanged += Server_ConnectionStatusChanged;
+                    await _explorer.ConnectAsync(serverUrl);
+                    _explorer.Server.ConnectionStatusChanged += Server_ConnectionStatusChanged;
 
-                var currentProjectName = ProjectName;
-                ProjectNames.Clear();
-                ProjectNames.AddRange(_explorer.TeamProjects().Select(n => n.Name));
+                    var currentProjectName = ProjectName;
+                    ProjectNames.Clear();
+                    ProjectNames.AddRange(_explorer.TeamProjects().Select(n => n.Name));
 
-                // Restore project name on reconnect.
-                if (ProjectNames.Contains(currentProjectName) && !serverChanged)
-                    ProjectName = currentProjectName;
+                    // Restore project name on reconnect.
+                    if (ProjectNames.Contains(currentProjectName) && !serverChanged)
+                        ProjectName = currentProjectName;
 
-                if (serverChanged)
-                    ProjectName = null;
+                    if (serverChanged)
+                        ProjectName = null;
 
-                IsConnected = true;
+                    IsConnected = true;
 
-                Servers.Add(serverUrl);
-                OnConnectionSucceeded(serverUrl);
+                    Servers.Add(serverUrl);
+                    OnConnectionSucceeded(serverUrl);
 
-                await Task.CompletedTask;
+                    await Task.CompletedTask;
+                }
+			    finally
+                {
+                    IsConnecting = false;
+                }
 			});
 		}
 
@@ -241,6 +264,7 @@ namespace TestCaseAutomator.ViewModels
 		private readonly Property<string> _projectName;
 		private readonly Property<string> _status;
 	    private readonly Property<bool> _isConnected;
+	    private readonly Property<bool> _isConnecting;
 
         private readonly ITfsExplorer _explorer;
 	}

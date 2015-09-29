@@ -12,7 +12,7 @@ namespace TestCaseAutomator.TeamFoundation
 	    /// <summary>
 	    /// Connects to a TFS server..
 	    /// </summary>
-	    void Connect(Uri serverUri);
+	    Task ConnectAsync(Uri serverUri);
 
         /// <summary>
         /// The Team Foundation Server.

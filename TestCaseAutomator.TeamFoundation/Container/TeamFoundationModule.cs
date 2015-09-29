@@ -16,9 +16,9 @@ namespace TestCaseAutomator.TeamFoundation.Container
 		protected override void Load(ContainerBuilder builder)
 		{
 			builder.Register((c, p) => TfsTeamProjectCollectionFactory.GetTeamProjectCollection(p.TypedAs<Uri>()))
-			       .As<TfsConnection, TfsTeamProjectCollection>();
+			       .As<TfsConnection>();
 
-			builder.Register((c, p) => new TfsServer(c.Resolve<Func<Uri, TfsTeamProjectCollection>>()(p.TypedAs<Uri>()), 
+			builder.Register((c, p) => new TfsServer(c.Resolve<Func<Uri, TfsConnection>>()(p.TypedAs<Uri>()), 
                                                      c.Resolve<TaskScheduler>()))
 			       .As<ITfsServer>();
 

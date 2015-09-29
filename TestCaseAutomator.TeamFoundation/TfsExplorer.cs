@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.TeamFoundation.Framework.Common;
 using Microsoft.TeamFoundation.TestManagement.Client;
@@ -15,25 +16,33 @@ namespace TestCaseAutomator.TeamFoundation
 	/// </summary>
 	public class TfsExplorer : DisposableBase, ITfsExplorer
 	{
-		/// <summary>
-		/// Initializes a new <see cref="TfsExplorer"/>.
-		/// </summary>
-		/// <param name="serverFactory">Enables access to a TFS server</param>
-		/// <param name="workItemsFactory">Factory that creates <see cref="ITfsProjectWorkItemCollection"/></param>
-		public TfsExplorer(Func<Uri, ITfsServer> serverFactory,
-		                   Func<ITestManagementTeamProject, ITfsProjectWorkItemCollection> workItemsFactory)
+        /// <summary>
+        /// Initializes a new <see cref="TfsExplorer"/>.
+        /// </summary>
+        /// <param name="serverFactory">Enables access to a TFS server</param>
+        /// <param name="workItemsFactory">Factory that creates <see cref="ITfsProjectWorkItemCollection"/></param>
+        /// <param name="scheduler">Used to schedule background tasks</param>
+        public TfsExplorer(Func<Uri, ITfsServer> serverFactory,
+		                   Func<ITestManagementTeamProject, ITfsProjectWorkItemCollection> workItemsFactory,
+                           TaskScheduler scheduler)
 		{
 		    _serverFactory = serverFactory;
 		    _workItemsFactory = workItemsFactory;
+            _scheduler = scheduler;
 		}
 
 	    /// <summary>
 	    /// Connects to a TFS server..
 	    /// </summary>
-	    public void Connect(Uri serverUri)
+	    public async Task ConnectAsync(Uri serverUri)
         {
             Server?.Dispose();
-            Server = _serverFactory(serverUri);
+
+	        var server = await Task.Factory.StartNew(() => 
+                _serverFactory(serverUri), 
+                    CancellationToken.None, TaskCreationOptions.None, _scheduler).ConfigureAwait(false);
+
+	        Server = server;
         }
 
         /// <summary>
@@ -99,5 +108,6 @@ namespace TestCaseAutomator.TeamFoundation
 
 	    private readonly Func<Uri, ITfsServer> _serverFactory;
 	    private readonly Func<ITestManagementTeamProject, ITfsProjectWorkItemCollection> _workItemsFactory;
+	    private readonly TaskScheduler _scheduler;
 	}
 }
