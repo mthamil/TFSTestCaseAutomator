@@ -27,7 +27,12 @@ namespace TestCaseAutomator.Container
 			builder.RegisterType<MainViewModel>()
                    .ApplySettings((s, vm) => vm.ProjectName = s.TfsProjectName)
 			       .As<MainViewModel, IApplication>()
-				   .SingleInstance();
+				   .SingleInstance()
+                   .OnActivated(c =>
+                   {
+                       if (c.Context.Resolve<ISettings>().AutoConnectOnStartup && c.Instance.CanConnect)
+                           c.Instance.ConnectAsync();
+                   });
 
 		    builder.RegisterType<ServerManagementViewModel>()
 		           .WithParameter(c => c.Resolve<ISettings>().TfsServers as IEnumerable<Uri>)
