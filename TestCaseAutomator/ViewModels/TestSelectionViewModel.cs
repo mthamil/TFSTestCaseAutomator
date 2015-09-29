@@ -7,7 +7,7 @@ namespace TestCaseAutomator.ViewModels
 {
     public class TestSelectionViewModel : ViewModelBase
     {
-        public TestSelectionViewModel(Func<ITestCaseViewModel, TestBrowserViewModel> browserFactory)
+        public TestSelectionViewModel(Func<ITestCaseViewModel, IAutomationSelector> browserFactory)
             : this()
         {
             _browserFactory = browserFactory;
@@ -34,21 +34,18 @@ namespace TestCaseAutomator.ViewModels
             }
         }
 
-        /// <summary>
-        /// Allows selection of an automated test from source control.
-        /// </summary>
-        public Lazy<TestBrowserViewModel> TestBrowser
+        public Lazy<IAutomationSelector> TestBrowser
         {
             get { return _testBrowser.Value; }
             private set { _testBrowser.Value = value; }
         }
 
-        private Lazy<TestBrowserViewModel> CreateTestBrowser()
+        private Lazy<IAutomationSelector> CreateTestBrowser()
         {
             if (TestBrowser != null && TestBrowser.IsValueCreated)
                 TestBrowser.Value.AutomatedTestSelected -= Browser_AutomatedTestSelected;
 
-            return new Lazy<TestBrowserViewModel>(() =>
+            return new Lazy<IAutomationSelector>(() =>
             {
                 var testBrowser = _browserFactory(SelectedTestCase);
                 testBrowser.AutomatedTestSelected += Browser_AutomatedTestSelected;
@@ -64,7 +61,7 @@ namespace TestCaseAutomator.ViewModels
 
         private readonly Property<ITestCaseViewModel> _selectedTestCase; 
 
-        private readonly Property<Lazy<TestBrowserViewModel>> _testBrowser;
-        private readonly Func<ITestCaseViewModel, TestBrowserViewModel> _browserFactory;
+        private readonly Property<Lazy<IAutomationSelector>> _testBrowser;
+        private readonly Func<ITestCaseViewModel, IAutomationSelector> _browserFactory;
     }
 }
