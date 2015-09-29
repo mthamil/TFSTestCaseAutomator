@@ -11,10 +11,5 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// Event raised when an automated test is selected.
 		/// </summary>
 		event EventHandler<AutomatedTestSelectedEventArgs> AutomatedTestSelected;
-
-		/// <summary>
-		/// The test case to associate with automation.
-		/// </summary>
-		ITestCaseViewModel TestCase { get; }
 	}
 }
