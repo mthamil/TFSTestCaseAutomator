@@ -53,10 +53,10 @@ namespace TestCaseAutomator.ViewModels
             });
         }
 
-        private void Browser_AutomatedTestSelected(object sender, AutomatedTestSelectedEventArgs e)
+        private void Browser_AutomatedTestSelected(IAutomationSelector sender, AutomatedTestSelectedEventArgs e)
         {
             e.TestCase.UpdateAutomation(e.TestAutomation);
-            ((IAutomationSelector)sender).AutomatedTestSelected -= Browser_AutomatedTestSelected;
+            sender.AutomatedTestSelected -= Browser_AutomatedTestSelected;
         }
 
         private readonly Property<ITestCaseViewModel> _selectedTestCase; 

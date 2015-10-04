@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows.Input;
+using SharpEssentials;
 using SharpEssentials.Controls.Mvvm;
 using SharpEssentials.Controls.Mvvm.Commands;
 using SharpEssentials.Observable;
@@ -92,7 +93,7 @@ namespace TestCaseAutomator.ViewModels.Browser
         public FileSystemTestBrowserViewModel FileSystemBrowser { get; }
         public SourceControlTestBrowserViewModel SourceControlBrowser { get; }
 
-        public event EventHandler<AutomatedTestSelectedEventArgs> AutomatedTestSelected;
+        public event EventHandler<IAutomationSelector, AutomatedTestSelectedEventArgs> AutomatedTestSelected;
 
         private void OnAutomatedTestSelected(ITestAutomation testAutomation)
         {

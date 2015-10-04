@@ -1,4 +1,4 @@
-﻿using System;
+﻿using SharpEssentials;
 
 namespace TestCaseAutomator.ViewModels.Browser
 {
@@ -10,6 +10,6 @@ namespace TestCaseAutomator.ViewModels.Browser
 		/// <summary>
 		/// Event raised when an automated test is selected.
 		/// </summary>
-		event EventHandler<AutomatedTestSelectedEventArgs> AutomatedTestSelected;
+		event EventHandler<IAutomationSelector, AutomatedTestSelectedEventArgs> AutomatedTestSelected;
 	}
 }
