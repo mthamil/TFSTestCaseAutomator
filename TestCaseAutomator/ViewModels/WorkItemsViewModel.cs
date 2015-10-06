@@ -16,36 +16,40 @@ namespace TestCaseAutomator.ViewModels
 	/// </summary>
 	public class WorkItemsViewModel : ViewModelBase, IWorkItems
 	{
-		/// <summary>
-		/// Initializes a new <see cref="WorkItemsViewModel"/>.
-		/// </summary>
-		/// <param name="testCaseFactory">Creates test case view-models</param>
-		/// <param name="scheduler">Used for scheduling background tasks</param>
-		public WorkItemsViewModel(Func<ITestCase, ITestCaseViewModel> testCaseFactory,
+	    /// <summary>
+	    /// Initializes a new <see cref="WorkItemsViewModel"/>.
+	    /// </summary>
+	    /// <param name="explorer">Provides team foundtion services</param>
+	    /// <param name="testCaseFactory">Creates test case view-models</param>
+	    /// <param name="scheduler">Used for scheduling background tasks</param>
+	    public WorkItemsViewModel(ITfsExplorer explorer,
+                                  Func<ITestCase, ITestCaseViewModel> testCaseFactory,
 		                          TaskScheduler scheduler)
 		{
-			_testCaseFactory = testCaseFactory;
+	        _explorer = explorer;
+	        _testCaseFactory = testCaseFactory;
 			_scheduler = scheduler;
 
 			_testCases = Property.New(this, p => p.TestCases, OnPropertyChanged);
 			TestCases = new ObservableCollection<ITestCaseViewModel>();
 		}
 
-		/// <summary>
-		/// Loads test cases.
-		/// </summary>
-        public async Task LoadAsync(ITfsProjectWorkItemCollection projectworkItemCollection)
+	    /// <summary>
+	    /// Loads work items for a given project.
+	    /// </summary>
+	    /// <param name="projectName">The project for which to load work items.</param>
+	    public async Task LoadAsync(string projectName)
 		{
 			TestCases.Clear();
 			var progress = new Progress<ITestCaseViewModel>(testCase => TestCases.Add(testCase));
-            await QueryTestCases(projectworkItemCollection, progress);
+            await QueryTestCases(projectName, progress);
 		}
 
-		private Task QueryTestCases(ITfsProjectWorkItemCollection workItems, IProgress<ITestCaseViewModel> progress)
+		private Task QueryTestCases(string projectName, IProgress<ITestCaseViewModel> progress)
 		{
 			return Task.Factory.StartNew(() =>
 			{
-                var testCases = workItems.TestCases().AsTestCases().Select(tc => _testCaseFactory(tc));
+                var testCases = _explorer.WorkItems(projectName).TestCases().AsTestCases().Select(tc => _testCaseFactory(tc));
 				foreach (var testCase in testCases)
 					progress.Report(testCase);
 			}, CancellationToken.None, TaskCreationOptions.None, _scheduler);
@@ -61,7 +65,8 @@ namespace TestCaseAutomator.ViewModels
 		}
 
 		private readonly Property<ICollection<ITestCaseViewModel>> _testCases;
-		private readonly Func<ITestCase, ITestCaseViewModel> _testCaseFactory;
+	    private readonly ITfsExplorer _explorer;
+	    private readonly Func<ITestCase, ITestCaseViewModel> _testCaseFactory;
 		private readonly TaskScheduler _scheduler;
 	}
 }

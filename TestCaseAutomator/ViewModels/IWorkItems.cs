@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using TestCaseAutomator.TeamFoundation;
 
 namespace TestCaseAutomator.ViewModels
 {
@@ -10,9 +9,10 @@ namespace TestCaseAutomator.ViewModels
 	public interface IWorkItems
 	{
 		/// <summary>
-		/// Loads work items.
+		/// Loads work items for a given project.
 		/// </summary>
-		Task LoadAsync(ITfsProjectWorkItemCollection projectworkItemCollection);
+		/// <param name="projectName">The project for which to load work items.</param>
+		Task LoadAsync(string projectName);
 
 		/// <summary>
 		/// The current collection of test cases.

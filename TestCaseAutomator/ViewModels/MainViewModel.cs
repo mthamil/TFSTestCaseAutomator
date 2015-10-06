@@ -225,7 +225,7 @@ namespace TestCaseAutomator.ViewModels
                 return;
             }
 
-            await WorkItems.LoadAsync(_explorer.WorkItems(ProjectName));
+            await WorkItems.LoadAsync(ProjectName);
 	    }
 
 		private async Task HandleServerError(Func<Task> action)

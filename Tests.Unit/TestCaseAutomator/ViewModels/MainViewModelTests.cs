@@ -15,7 +15,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 	{
 		public MainViewModelTests()
 		{
-		    _workItems.Setup(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()))
+		    _workItems.Setup(wi => wi.LoadAsync(It.IsAny<string>()))
 		              .Returns(Task.FromResult<object>(null));
 
 		    _workItems.SetupGet(wi => wi.TestCases).Returns(new List<ITestCaseViewModel>());
@@ -42,7 +42,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 
 			// Assert.
 			Assert.NotNull(_workItems);
-            _workItems.Verify(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()), Times.Once());
+            _workItems.Verify(wi => wi.LoadAsync("TestProject"), Times.Once());
 		}
 
 		[Fact]
@@ -56,15 +56,15 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 			_underTest.ProjectName = "TestProject";
 
 			// Assert.
-            _workItems.Verify(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()), Times.Never);
+            _workItems.Verify(wi => wi.LoadAsync("TestProject"), Times.Never);
 		}
 
 		[Fact]
 		public async Task Test_ProjectName_Status_When_TFS_Unavailable()
 		{
 			// Arrange.
-		    _explorer.Setup(e => e.WorkItems(It.IsAny<string>()))
-		             .Throws(new TeamFoundationServiceUnavailableException(""));
+		    _workItems.Setup(wi => wi.LoadAsync(It.IsAny<string>()))
+		              .Throws(new TeamFoundationServiceUnavailableException(""));
 
             _underTest.Servers.CurrentUri = new Uri("http://test/");
             await _underTest.ConnectAsync();
@@ -88,7 +88,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 
 			// Assert.
             Assert.True(_underTest.IsConnected);
-            _workItems.Verify(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()), Times.Never);  // ProjectName will be null.
+            _workItems.Verify(wi => wi.LoadAsync(It.IsAny<string>()), Times.Never);  // ProjectName will be null.
             Assert.Contains(new Uri("http://test/"), _underTest.Servers.All.Select(s => s.Uri));
         }
 
@@ -106,7 +106,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 
             // Assert.
             Assert.True(_underTest.IsConnected);
-            _workItems.Verify(wi => wi.LoadAsync(It.IsAny<ITfsProjectWorkItemCollection>()), Times.Once);
+            _workItems.Verify(wi => wi.LoadAsync("TestProject"), Times.Once);
         }
 
         [Theory]
