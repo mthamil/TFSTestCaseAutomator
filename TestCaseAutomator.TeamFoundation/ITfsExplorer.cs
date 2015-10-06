@@ -29,7 +29,7 @@ namespace TestCaseAutomator.TeamFoundation
 		/// <summary>
 		/// Retrieves the Team Projects for the given connection.
 		/// </summary>
-		IEnumerable<ICatalogNode> TeamProjects();
+		Task<IEnumerable<ICatalogNode>> GetTeamProjectsAsync();
 
 		/// <summary>
 		/// Provides access to Visual Studio solutions in source control.

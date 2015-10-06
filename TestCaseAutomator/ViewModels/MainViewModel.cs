@@ -133,7 +133,7 @@ namespace TestCaseAutomator.ViewModels
 
                     var currentProjectName = ProjectName;
                     ProjectNames.Clear();
-                    ProjectNames.AddRange(_explorer.TeamProjects().Select(n => n.Name));
+                    ProjectNames.AddRange((await _explorer.GetTeamProjectsAsync()).Select(n => n.Name));
 
                     // Restore project name on reconnect.
                     if (ProjectNames.Contains(currentProjectName) && !serverChanged)

@@ -66,13 +66,15 @@ namespace TestCaseAutomator.TeamFoundation
 	    /// <summary>
 	    /// Retrieves the Team Projects for the given connection.
 	    /// </summary>
-	    public IEnumerable<ICatalogNode> TeamProjects()
+	    public async Task<IEnumerable<ICatalogNode>> GetTeamProjectsAsync()
 	    {
             ServerGuard();
 
-            return Server.CatalogRoot.QueryChildren(CatalogResourceTypes.TeamProject.ToEnumerable(),
+            return (await Server.CatalogRoot
+                                .QueryChildrenAsync(CatalogResourceTypes.TeamProject.ToEnumerable(),
 	                                                false,
-	                                                CatalogQueryOptions.None);
+	                                                CatalogQueryOptions.None)
+                                .ConfigureAwait(false));
 	    }
 
 	    /// <summary>
@@ -83,7 +85,8 @@ namespace TestCaseAutomator.TeamFoundation
 	        ServerGuard();
 
 	        return (await Server.VersionControl
-                                .GetItemsAsync("$/*.sln", RecursionType.Full).ConfigureAwait(false))
+                                .GetItemsAsync("$/*.sln", RecursionType.Full)
+                                .ConfigureAwait(false))
 	                            .Select(item => new TfsSolution(item, Server.VersionControl));
 	    }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.TeamFoundation.Framework.Common;
 
 namespace TestCaseAutomator.TeamFoundation
@@ -9,10 +10,10 @@ namespace TestCaseAutomator.TeamFoundation
 	/// </summary>
 	public interface ICatalogNode
 	{
-		/// <summary>
-		/// Queries a node's children.
-		/// </summary>
-		IEnumerable<ICatalogNode> QueryChildren(IEnumerable<Guid> resourceTypeFilters, bool recurse, CatalogQueryOptions queryOptions);
+        /// <summary>
+        /// Queries a node's children.
+        /// </summary>
+        Task<IEnumerable<ICatalogNode>> QueryChildrenAsync(IEnumerable<Guid> resourceTypeFilters, bool recurse, CatalogQueryOptions queryOptions);
 
 		/// <summary>
 		/// A node's resource display name.

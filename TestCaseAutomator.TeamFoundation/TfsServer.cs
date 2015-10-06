@@ -27,7 +27,7 @@ namespace TestCaseAutomator.TeamFoundation
 
 			_testManagement = new Lazy<ITestManagementService>(() => _connection.GetService<ITestManagementService>());
 			_versionControl = new Lazy<IVersionControl>(() => new VersionControlServerAdapter(_connection.GetService<VersionControlServer>(), _scheduler));
-			_catalogRoot = new Lazy<ICatalogNode>(() => new CatalogNodeAdapter(_connection.CatalogNode));
+			_catalogRoot = new Lazy<ICatalogNode>(() => new CatalogNodeAdapter(_connection.CatalogNode, scheduler));
 		}
 
 		/// <see cref="ITfsServer.TestManagement"/>
