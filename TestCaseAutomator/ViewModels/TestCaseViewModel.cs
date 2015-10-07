@@ -42,7 +42,7 @@ namespace TestCaseAutomator.ViewModels
 		public string AssociatedAutomation 
             => _testCase.IsAutomated 
                     ? _testCase.Implementation.DisplayText 
-                    : string.Empty;
+                    : null;
 
 	    /// <see cref="ITestCaseViewModel.UpdateAutomation"/>
 		public void UpdateAutomation(ITestAutomation testAutomation)

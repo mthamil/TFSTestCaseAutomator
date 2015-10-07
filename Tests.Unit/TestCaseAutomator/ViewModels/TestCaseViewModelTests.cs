@@ -69,7 +69,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 			var implementation = vm.AssociatedAutomation;
 
 			// Assert.
-			Assert.Equal(string.Empty, implementation);
+			Assert.Equal(null, implementation);
 		}
 
 		[Fact]
