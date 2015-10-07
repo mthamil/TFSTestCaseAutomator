@@ -39,6 +39,8 @@ namespace TestCaseAutomator.ViewModels.Browser
             SaveCommand = Command.For(this)
                                  .DependsOn(p => p.CanSave)
                                  .Executes(Save);
+
+            CancelCommand = new RelayCommand(Cancel);
         }
 
         public ITestCaseViewModel TestCase { get; }
@@ -56,6 +58,13 @@ namespace TestCaseAutomator.ViewModels.Browser
                     Storage = value?.Storage
                 };
             }
+        }
+
+        public ICommand CancelCommand { get; }
+
+        public void Cancel()
+        {
+            HasBeenSaved = false;
         }
 
         public ICommand SaveCommand { get; }
