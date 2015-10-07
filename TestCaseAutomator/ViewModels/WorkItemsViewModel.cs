@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.TeamFoundation.TestManagement.Client;
 using TestCaseAutomator.TeamFoundation;
@@ -21,14 +20,11 @@ namespace TestCaseAutomator.ViewModels
 	    /// </summary>
 	    /// <param name="explorer">Provides team foundtion services</param>
 	    /// <param name="testCaseFactory">Creates test case view-models</param>
-	    /// <param name="scheduler">Used for scheduling background tasks</param>
 	    public WorkItemsViewModel(ITfsExplorer explorer,
-                                  Func<ITestCase, ITestCaseViewModel> testCaseFactory,
-		                          TaskScheduler scheduler)
+                                  Func<ITestCase, ITestCaseViewModel> testCaseFactory)
 		{
 	        _explorer = explorer;
 	        _testCaseFactory = testCaseFactory;
-			_scheduler = scheduler;
 
 			_testCases = Property.New(this, p => p.TestCases, OnPropertyChanged);
 			TestCases = new ObservableCollection<ITestCaseViewModel>();
@@ -41,18 +37,14 @@ namespace TestCaseAutomator.ViewModels
 	    public async Task LoadAsync(string projectName)
 		{
 			TestCases.Clear();
-			var progress = new Progress<ITestCaseViewModel>(testCase => TestCases.Add(testCase));
-            await QueryTestCases(projectName, progress);
+            await QueryTestCases(projectName);
 		}
 
-		private Task QueryTestCases(string projectName, IProgress<ITestCaseViewModel> progress)
+		private async Task QueryTestCases(string projectName)
 		{
-			return Task.Factory.StartNew(() =>
-			{
-                var testCases = _explorer.WorkItems(projectName).TestCases().AsTestCases().Select(tc => _testCaseFactory(tc));
-				foreach (var testCase in testCases)
-					progress.Report(testCase);
-			}, CancellationToken.None, TaskCreationOptions.None, _scheduler);
+            (await _explorer.GetTestCasesAsync(
+                        projectName, 
+                        new Progress<ITestCase>(testCase => TestCases.Add(_testCaseFactory(testCase))))).ToList();
 		}
 
 		/// <summary>
@@ -67,6 +59,5 @@ namespace TestCaseAutomator.ViewModels
 		private readonly Property<ICollection<ITestCaseViewModel>> _testCases;
 	    private readonly ITfsExplorer _explorer;
 	    private readonly Func<ITestCase, ITestCaseViewModel> _testCaseFactory;
-		private readonly TaskScheduler _scheduler;
 	}
 }

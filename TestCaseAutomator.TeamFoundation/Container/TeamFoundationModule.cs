@@ -26,9 +26,6 @@ namespace TestCaseAutomator.TeamFoundation.Container
 			       .As<ITfsExplorer>()
                    .SingleInstance();
 
-			builder.RegisterType<TfsProjectWorkItemCollection>()
-			       .AsImplementedInterfaces();
-
 		    builder.RegisterType<TestCaseAutomationService>()
 		           .AsImplementedInterfaces();
 

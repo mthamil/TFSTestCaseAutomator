@@ -21,8 +21,6 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
 		    _workItems.SetupGet(wi => wi.TestCases).Returns(new List<ITestCaseViewModel>());
 
             _explorer.SetupGet(e => e.Server).Returns(_server.Object);
-		    _explorer.Setup(e => e.WorkItems(It.IsAny<string>()))
-		             .Returns((string name) => Mock.Of<ITfsProjectWorkItemCollection>(wi => wi.ProjectName == name));
 
 		    _underTest = new MainViewModel(_explorer.Object,
 		                                   _workItems.Object,

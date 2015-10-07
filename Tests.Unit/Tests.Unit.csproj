@@ -292,7 +292,6 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestCaseAutomator.AutomationProviders\CompositeAutomatedTestDiscovererTests.cs" />
-    <Compile Include="TestCaseAutomator.TeamFoundation\TfsProjectWorkItemCollectionTests.cs" />
     <Compile Include="TestCaseAutomator\Configuration\DotNetSettingsTests.cs" />
     <Compile Include="TestCaseAutomator\Configuration\SettingsPropagatorTests.cs" />
     <Compile Include="TestCaseAutomator\Controls\Converters\FileInfoConverterTests.cs" />
@@ -335,7 +334,9 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="TestCaseAutomator.TeamFoundation\" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

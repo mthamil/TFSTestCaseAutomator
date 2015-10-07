@@ -1,5 +1,4 @@
 using System;
-using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.TeamFoundation.TestManagement.Client;
 
 namespace TestCaseAutomator.TeamFoundation

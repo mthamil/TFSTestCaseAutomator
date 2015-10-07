@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.TeamFoundation.TestManagement.Client;
 
 namespace TestCaseAutomator.TeamFoundation
 {
@@ -10,7 +11,7 @@ namespace TestCaseAutomator.TeamFoundation
 	public interface ITfsExplorer
 	{
 	    /// <summary>
-	    /// Connects to a TFS server..
+	    /// Connects to a TFS server.
 	    /// </summary>
 	    Task ConnectAsync(Uri serverUri);
 
@@ -20,11 +21,12 @@ namespace TestCaseAutomator.TeamFoundation
         ITfsServer Server { get; }
 
         /// <summary>
-        /// Provides access to the work items of a given project.
+        /// Retrieves the test cases of a given project.
         /// </summary>
         /// <param name="projectName">The TFS project to access</param>
-        /// <returns>An object providing access to a project's child objects</returns>
-        ITfsProjectWorkItemCollection WorkItems(string projectName);
+        /// <param name="testCaseSink">An optional progress sink handler for each test case</param>
+        /// <returns>The test cases in the given project</returns>
+        Task<IEnumerable<ITestCase>> GetTestCasesAsync(string projectName, IProgress<ITestCase> testCaseSink = null);
 
 		/// <summary>
 		/// Retrieves the Team Projects for the given connection.

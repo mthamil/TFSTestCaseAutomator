@@ -20,14 +20,11 @@ namespace TestCaseAutomator.TeamFoundation
         /// Initializes a new <see cref="TfsExplorer"/>.
         /// </summary>
         /// <param name="serverFactory">Enables access to a TFS server</param>
-        /// <param name="workItemsFactory">Factory that creates <see cref="ITfsProjectWorkItemCollection"/></param>
         /// <param name="scheduler">Used to schedule background tasks</param>
         public TfsExplorer(Func<Uri, ITfsServer> serverFactory,
-		                   Func<ITestManagementTeamProject, ITfsProjectWorkItemCollection> workItemsFactory,
                            TaskScheduler scheduler)
 		{
 		    _serverFactory = serverFactory;
-		    _workItemsFactory = workItemsFactory;
             _scheduler = scheduler;
 		}
 
@@ -51,16 +48,25 @@ namespace TestCaseAutomator.TeamFoundation
         public ITfsServer Server { get; private set; }
 
         /// <summary>
-        /// Provides access to the work items of a given project.
+        /// Retrieves the test cases of a given project.
         /// </summary>
         /// <param name="projectName">The TFS project to access</param>
-        /// <returns>An object providing access to a project's child objects</returns>
-        public ITfsProjectWorkItemCollection WorkItems(string projectName)
+        /// <param name="testCaseSink">An optional progress sink handler for each test case</param>
+        /// <returns>The test cases in the given project</returns>
+        public Task<IEnumerable<ITestCase>> GetTestCasesAsync(string projectName, IProgress<ITestCase> testCaseSink)
 		{
             ServerGuard();
 
-            var project = Server.TestManagement.GetTeamProject(projectName);
-			return _workItemsFactory(project);
+            return Task.Factory.StartNew(() => 
+                        Server.TestManagement
+                              .GetTeamProject(projectName)
+                              .TestCases.Query(@"SELECT * 
+                                                 FROM WorkItems 
+                                                 WHERE [System.TeamProject] = @project
+                                                   AND [System.WorkItemType] = 'Test Case' 
+                                                 ORDER BY [System.Id]")
+                              .Tee(tc => testCaseSink?.Report(tc)),
+                    CancellationToken.None, TaskCreationOptions.None, _scheduler);
 		}
 
 	    /// <summary>
@@ -110,7 +116,6 @@ namespace TestCaseAutomator.TeamFoundation
         protected override void OnDisposing() => Server?.Dispose();
 
 	    private readonly Func<Uri, ITfsServer> _serverFactory;
-	    private readonly Func<ITestManagementTeamProject, ITfsProjectWorkItemCollection> _workItemsFactory;
 	    private readonly TaskScheduler _scheduler;
 	}
 }
