@@ -72,15 +72,14 @@ namespace TestCaseAutomator.TeamFoundation
 	    /// <summary>
 	    /// Retrieves the Team Projects for the given connection.
 	    /// </summary>
-	    public async Task<IEnumerable<ICatalogNode>> GetTeamProjectsAsync()
+	    public Task<IEnumerable<ICatalogNode>> GetTeamProjectsAsync()
 	    {
             ServerGuard();
 
-            return (await Server.CatalogRoot
-                                .QueryChildrenAsync(CatalogResourceTypes.TeamProject.ToEnumerable(),
-	                                                false,
-	                                                CatalogQueryOptions.None)
-                                .ConfigureAwait(false));
+            return Server.CatalogRoot
+                         .QueryChildrenAsync(CatalogResourceTypes.TeamProject.ToEnumerable(),
+	                                         false,
+	                                         CatalogQueryOptions.None);
 	    }
 
 	    /// <summary>
