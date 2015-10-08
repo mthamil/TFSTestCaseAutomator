@@ -264,7 +264,6 @@
     <Compile Include="VersionedItem.cs" />
     <Compile Include="SolutionFileParser.cs" />
     <Compile Include="TestCaseAssociation\TestCaseAutomationService.cs" />
-    <Compile Include="TestCaseQueryable.cs" />
     <Compile Include="TfsExplorer.cs" />
     <Compile Include="TfsFile.cs" />
     <Compile Include="TfsSolution.cs" />
@@ -272,7 +271,6 @@
     <Compile Include="TfsSourceControlledItem.cs" />
     <Compile Include="VersionControlServerAdapter.cs" />
     <Compile Include="WellKnownProjectTypes.cs" />
-    <Compile Include="WorkItemExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
