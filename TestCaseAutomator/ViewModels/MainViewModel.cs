@@ -200,6 +200,17 @@ namespace TestCaseAutomator.ViewModels
 			}
 		}
 
+        private async Task LoadWorkItemsAsync()
+        {
+            if (String.IsNullOrWhiteSpace(ProjectName))
+            {
+                WorkItems.TestCases.Clear();
+                return;
+            }
+
+            await WorkItems.LoadAsync(ProjectName);
+        }
+
         private void Servers_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             // Propagate child changes.
@@ -216,17 +227,6 @@ namespace TestCaseAutomator.ViewModels
         {
             IsConnected = !e.ConnectionFailed;
         }
-
-        private async Task LoadWorkItemsAsync()
-        {
-            if (String.IsNullOrWhiteSpace(ProjectName))
-            {
-                WorkItems.TestCases.Clear();
-                return;
-            }
-
-            await WorkItems.LoadAsync(ProjectName);
-	    }
 
 		private async Task HandleServerError(Func<Task> action)
 		{
