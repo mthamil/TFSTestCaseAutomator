@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows.Input;
-using SharpEssentials;
 using SharpEssentials.Controls.Mvvm;
 using SharpEssentials.Controls.Mvvm.Commands;
 using SharpEssentials.Observable;
@@ -10,7 +9,7 @@ using TestCaseAutomator.ViewModels.Browser.Nodes;
 
 namespace TestCaseAutomator.ViewModels.Browser
 {
-    public class TestBrowserViewModel : ViewModelBase, IAutomationSelector
+    public class TestBrowserViewModel : ViewModelBase
     {
         public TestBrowserViewModel(ITestCaseViewModel testCase, 
                                     ITestIdentifierFactory identifierFactory,
@@ -78,15 +77,16 @@ namespace TestCaseAutomator.ViewModels.Browser
         /// </summary>
         public void Save()
         {
-            OnAutomatedTestSelected(new TestAutomationUpdate
+            TestCase.UpdateAutomation(new TestAutomationUpdate
             {
-                Identifier = TestAutomation.Identifier == default(Guid) 
-                                ? _identifierFactory.CreateIdentifier(TestAutomation.Name) 
+                Identifier = TestAutomation.Identifier == default(Guid)
+                                ? _identifierFactory.CreateIdentifier(TestAutomation.Name)
                                 : TestAutomation.Identifier,
                 Name = TestAutomation.Name,
                 TestType = TestAutomation.TestType,
                 Storage = TestAutomation.Storage
             });
+
             HasBeenSaved = true;
         }
 
@@ -96,20 +96,18 @@ namespace TestCaseAutomator.ViewModels.Browser
         public bool? HasBeenSaved
         {
             get { return _hasBeenSaved.Value; }
-            set { _hasBeenSaved.Value = value; }
+            set
+            {
+                if (_hasBeenSaved.TrySetValue(value))
+                {
+                    FileSystemBrowser.PropertyChanged -= Browser_PropertyChanged;
+                    SourceControlBrowser.PropertyChanged -= Browser_PropertyChanged;
+                }
+            }
         }
 
         public FileSystemTestBrowserViewModel FileSystemBrowser { get; }
         public SourceControlTestBrowserViewModel SourceControlBrowser { get; }
-
-        public event EventHandler<IAutomationSelector, AutomatedTestSelectedEventArgs> AutomatedTestSelected;
-
-        private void OnAutomatedTestSelected(ITestAutomation testAutomation)
-        {
-            AutomatedTestSelected?.Invoke(this, new AutomatedTestSelectedEventArgs(TestCase, testAutomation));
-            FileSystemBrowser.PropertyChanged -= Browser_PropertyChanged;
-            SourceControlBrowser.PropertyChanged -= Browser_PropertyChanged;
-        }
 
         private void Browser_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {

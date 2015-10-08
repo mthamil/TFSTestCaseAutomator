@@ -7,7 +7,7 @@ namespace TestCaseAutomator.ViewModels
 {
     public class TestSelectionViewModel : ViewModelBase
     {
-        public TestSelectionViewModel(Func<ITestCaseViewModel, IAutomationSelector> browserFactory)
+        public TestSelectionViewModel(Func<ITestCaseViewModel, TestBrowserViewModel> browserFactory)
             : this()
         {
             _browserFactory = browserFactory;
@@ -29,39 +29,20 @@ namespace TestCaseAutomator.ViewModels
             {
                 if (_selectedTestCase.TrySetValue(value) && value != null)
                 {
-                    TestBrowser = CreateTestBrowser();
+                    TestBrowser = new Lazy<TestBrowserViewModel>(() => _browserFactory(SelectedTestCase));
                 }
             }
         }
 
-        public Lazy<IAutomationSelector> TestBrowser
+        public Lazy<TestBrowserViewModel> TestBrowser
         {
             get { return _testBrowser.Value; }
             private set { _testBrowser.Value = value; }
         }
 
-        private Lazy<IAutomationSelector> CreateTestBrowser()
-        {
-            if (TestBrowser != null && TestBrowser.IsValueCreated)
-                TestBrowser.Value.AutomatedTestSelected -= Browser_AutomatedTestSelected;
-
-            return new Lazy<IAutomationSelector>(() =>
-            {
-                var testBrowser = _browserFactory(SelectedTestCase);
-                testBrowser.AutomatedTestSelected += Browser_AutomatedTestSelected;
-                return testBrowser;
-            });
-        }
-
-        private void Browser_AutomatedTestSelected(IAutomationSelector sender, AutomatedTestSelectedEventArgs e)
-        {
-            e.TestCase.UpdateAutomation(e.TestAutomation);
-            sender.AutomatedTestSelected -= Browser_AutomatedTestSelected;
-        }
-
         private readonly Property<ITestCaseViewModel> _selectedTestCase; 
 
-        private readonly Property<Lazy<IAutomationSelector>> _testBrowser;
-        private readonly Func<ITestCaseViewModel, IAutomationSelector> _browserFactory;
+        private readonly Property<Lazy<TestBrowserViewModel>> _testBrowser;
+        private readonly Func<ITestCaseViewModel, TestBrowserViewModel> _browserFactory;
     }
 }

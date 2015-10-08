@@ -295,7 +295,6 @@
     <Compile Include="ViewModels\Browser\Nodes\AutomationSourceViewModel.cs" />
     <Compile Include="ViewModels\Browser\FileSystemTestBrowserViewModel.cs" />
     <Compile Include="ViewModels\Browser\Nodes\INodeViewModel.cs" />
-    <Compile Include="ViewModels\Browser\IAutomationSelector.cs" />
     <Compile Include="ViewModels\Browser\Nodes\IVirtualizedNode.cs" />
     <Compile Include="ViewModels\Browser\Nodes\NodeViewModel.cs" />
     <Compile Include="ViewModels\Browser\Nodes\ProjectViewModel.cs" />
