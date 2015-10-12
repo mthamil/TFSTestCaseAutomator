@@ -72,15 +72,6 @@
       <Component Id="SharpEssentialsControlsLib" Guid="3FE6E2E0-1ADA-4C59-8731-9F9FAEA2F774">
         <File Id="SharpEssentialsControlsDll" Name="$(var.SharpEssentials.Controls.TargetFileName)" Source="$(var.SharpEssentials.Controls.TargetPath)" KeyPath="yes"/>
       </Component>
-      
-      <Component Id="WiLinqLib" Guid="8E9C279D-97A8-4D69-A009-6D1342CE943C">
-        <File Id="WiLinqProviderDll" Name="WiLinq.LinqProvider.dll" Source="$(var.TestCaseAutomator.TeamFoundation.TargetDir)WiLinq.LinqProvider.dll" KeyPath="yes"/>
-        <File Id="WiLinqWiqlDll" Name="WiLinq.Wiql.dll" Source="$(var.TestCaseAutomator.TeamFoundation.TargetDir)WiLinq.Wiql.dll"/>
-        <File Id="FSharpPowerPackDll" Name="FSharp.PowerPack.dll" Source="$(var.TestCaseAutomator.TeamFoundation.TargetDir)FSharp.PowerPack.dll"/>
-        <File Id="FSharpPowerPackLinqDll" Name="FSharp.PowerPack.Linq.dll" Source="$(var.TestCaseAutomator.TeamFoundation.TargetDir)FSharp.PowerPack.Linq.dll"/>
-        <File Id="FSharpPowerPackMetadataDll" Name="FSharp.PowerPack.Metadata.dll" Source="$(var.TestCaseAutomator.TeamFoundation.TargetDir)FSharp.PowerPack.Metadata.dll"/>
-        <File Id="FSharpPowerPackParallelDll" Name="FSharp.PowerPack.Parallel.Seq.dll" Source="$(var.TestCaseAutomator.TeamFoundation.TargetDir)FSharp.PowerPack.Parallel.Seq.dll"/>
-      </Component>
     
       <Component Id="AutofacLib" Guid="3D104838-DD89-4A85-8160-9A122EA7AEFE">
         <File Id="AutofacDll" Name="Autofac.dll" Source="$(var.TestCaseAutomator.TargetDir)Autofac.dll" KeyPath="yes"/>
