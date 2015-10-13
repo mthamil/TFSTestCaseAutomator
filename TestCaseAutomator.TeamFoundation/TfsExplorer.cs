@@ -53,20 +53,22 @@ namespace TestCaseAutomator.TeamFoundation
         /// <param name="projectName">The TFS project to access</param>
         /// <param name="testCaseSink">An optional progress sink handler for each test case</param>
         /// <returns>The test cases in the given project</returns>
-        public Task<IEnumerable<ITestCase>> GetTestCasesAsync(string projectName, IProgress<ITestCase> testCaseSink)
+        public async Task<IEnumerable<ITestCase>> GetTestCasesAsync(string projectName, IProgress<ITestCase> testCaseSink)
 		{
             ServerGuard();
 
-            return Task.Factory.StartNew(() => 
-                        Server.TestManagement
-                              .GetTeamProject(projectName)
-                              .TestCases.Query(@"SELECT * 
-                                                 FROM WorkItems 
-                                                 WHERE [System.TeamProject] = @project
-                                                   AND [System.WorkItemType] = 'Test Case' 
-                                                 ORDER BY [System.Id]")
-                              .Tee(tc => testCaseSink?.Report(tc)),
-                    CancellationToken.None, TaskCreationOptions.None, _scheduler);
+            var testProject = Server.TestManagement.GetTeamProject(projectName);
+            return (await Server.WorkItemStore
+                                .QueryAsync(@"SELECT * 
+                                              FROM WorkItems 
+                                              WHERE [System.TeamProject] = @project
+                                              AND [System.WorkItemType] = 'Test Case' 
+                                              ORDER BY [System.Id]",
+                                              new Dictionary<string, string> { { "project", projectName }})
+                                .ConfigureAwait(false))
+                                .Select(wi => testProject.CreateFromWorkItem(wi))
+                                .OfType<ITestCase>()
+                                .Tee(tc => testCaseSink?.Report(tc));
 		}
 
 	    /// <summary>
