@@ -255,6 +255,7 @@
     <Compile Include="IVersionedItem.cs" />
     <Compile Include="ITfsExplorer.cs" />
     <Compile Include="IVersionControl.cs" />
+    <Compile Include="IWorkItemStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestCaseAssociation\ITestCaseAutomationService.cs" />
     <Compile Include="TestCaseAssociation\WorkItemValidationException.cs" />
@@ -271,6 +272,7 @@
     <Compile Include="TfsSourceControlledItem.cs" />
     <Compile Include="VersionControlServerAdapter.cs" />
     <Compile Include="WellKnownProjectTypes.cs" />
+    <Compile Include="WorkItemStoreAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

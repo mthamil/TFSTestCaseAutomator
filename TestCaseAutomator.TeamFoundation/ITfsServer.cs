@@ -24,6 +24,11 @@ namespace TestCaseAutomator.TeamFoundation
 		ICatalogNode CatalogRoot { get; }
 
         /// <summary>
+        /// Provides access to work items.
+        /// </summary>
+        IWorkItemStore WorkItemStore { get; }
+
+        /// <summary>
         /// Event raised when a connection's status changes.
         /// </summary>
         event EventHandler<ConnectionStatusChangedEventArgs> ConnectionStatusChanged;

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.TestManagement.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
+using Microsoft.TeamFoundation.WorkItemTracking.Client;
 using SharpEssentials;
 
 namespace TestCaseAutomator.TeamFoundation
@@ -28,6 +29,7 @@ namespace TestCaseAutomator.TeamFoundation
 			_testManagement = new Lazy<ITestManagementService>(() => _connection.GetService<ITestManagementService>());
 			_versionControl = new Lazy<IVersionControl>(() => new VersionControlServerAdapter(_connection.GetService<VersionControlServer>(), _scheduler));
 			_catalogRoot = new Lazy<ICatalogNode>(() => new CatalogNodeAdapter(_connection.CatalogNode, scheduler));
+            _workItemStore = new Lazy<IWorkItemStore>(() => new WorkItemStoreAdapter(_connection.GetService<WorkItemStore>()));
 		}
 
 		/// <see cref="ITfsServer.TestManagement"/>
@@ -38,6 +40,9 @@ namespace TestCaseAutomator.TeamFoundation
 
 	    /// <see cref="ITfsServer.CatalogRoot"/>
 		public ICatalogNode CatalogRoot => _catalogRoot.Value;
+
+	    /// <see cref="ITfsServer.WorkItemStore"/>
+	    public IWorkItemStore WorkItemStore => _workItemStore.Value;
 
 	    /// <see cref="ITfsServer.ConnectionStatusChanged"/>
         public event EventHandler<ConnectionStatusChangedEventArgs> ConnectionStatusChanged;
@@ -69,5 +74,6 @@ namespace TestCaseAutomator.TeamFoundation
 	    private readonly Lazy<ITestManagementService> _testManagement;
 	    private readonly Lazy<IVersionControl> _versionControl;
 	    private readonly Lazy<ICatalogNode> _catalogRoot;
+	    private readonly Lazy<IWorkItemStore> _workItemStore;
 	}
 }
