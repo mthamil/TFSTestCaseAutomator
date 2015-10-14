@@ -23,9 +23,8 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels
             _explorer.SetupGet(e => e.Server).Returns(_server.Object);
 
 		    _underTest = new MainViewModel(_explorer.Object,
-		                                   _workItems.Object,
                                            new ServerManagementViewModel(Enumerable.Empty<Uri>()), 
-		                                   new TestSelectionViewModel(null));
+		                                   new TestCasesViewModel(_workItems.Object, null));
 		}
 
 		[Fact]

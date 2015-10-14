@@ -106,10 +106,10 @@
             </Button>
         </Grid>
         
-        <DataGrid Grid.Row="1" DataContext="{Binding WorkItems}" ItemsSource="{Binding TestCases}" 
+        <DataGrid Grid.Row="1" DataContext="{Binding TestCases.WorkItems}" ItemsSource="{Binding TestCases}" 
                   AutoGenerateColumns="False" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"
                   IsReadOnly="True" CanUserReorderColumns="False" CanUserAddRows="False" SelectionMode="Single"
-                  SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestSelection.SelectedTestCase}" 
+                  SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestCases.SelectedTestCase}" 
                   MinRowHeight="25">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width=".05*"/>
@@ -157,7 +157,7 @@
                                     </Button>
 
                                     <Button ToolTip="Edit a test case..." HorizontalAlignment="Right" Width="25" Height="25" Padding="2, 2"
-                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestSelection.TestBrowser, Mode=OneWay}">
+                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestCases.TestBrowser, Mode=OneWay}">
                                         <Button.Command>
                                             <cmds:OpenDialogCommand Type="{x:Type vw:TestBrowser}" 
                                                                     Owner="{Binding Source={x:Static Application.Current}, Path=MainWindow}"/>

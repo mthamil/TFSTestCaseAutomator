@@ -22,15 +22,13 @@ namespace TestCaseAutomator.ViewModels
 	public class MainViewModel : ViewModelBase, IApplication
 	{
 		public MainViewModel(ITfsExplorer explorer, 
-			                 IWorkItems workItems,
                              IServerManagement servers,
-			                 TestSelectionViewModel testSelection) : this()
+			                 ITestCases testCases) : this()
 		{
 			_explorer = explorer;
-		    WorkItems = workItems;
 		    Servers = servers;
             Servers.PropertyChanged += Servers_PropertyChanged;
-		    TestSelection = testSelection;
+		    TestCases = testCases;
 		}
 
         private MainViewModel()
@@ -82,11 +80,9 @@ namespace TestCaseAutomator.ViewModels
         public IServerManagement Servers { get; }
 
         /// <summary>
-        /// Contains work items from the current server and project.
+        /// Manages test cases.
         /// </summary>
-        public IWorkItems WorkItems { get; }
-
-        public TestSelectionViewModel TestSelection { get; }
+        public ITestCases TestCases { get; }
 
         /// <summary>
         /// Whether connecting would refresh an existing connection or not.
@@ -204,11 +200,11 @@ namespace TestCaseAutomator.ViewModels
         {
             if (String.IsNullOrWhiteSpace(ProjectName))
             {
-                WorkItems.TestCases.Clear();
+                TestCases.WorkItems.TestCases.Clear();
                 return;
             }
 
-            await WorkItems.LoadAsync(ProjectName);
+            await TestCases.WorkItems.LoadAsync(ProjectName);
         }
 
         private void Servers_PropertyChanged(object sender, PropertyChangedEventArgs e)

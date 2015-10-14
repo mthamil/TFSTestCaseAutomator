@@ -5,23 +5,26 @@ using TestCaseAutomator.ViewModels.Browser;
 
 namespace TestCaseAutomator.ViewModels
 {
-    public class TestSelectionViewModel : ViewModelBase
+    public class TestCasesViewModel : ViewModelBase, ITestCases
     {
-        public TestSelectionViewModel(Func<ITestCaseViewModel, TestBrowserViewModel> browserFactory)
+        public TestCasesViewModel(
+            IWorkItems workItems,
+            Func<ITestCaseViewModel, TestBrowserViewModel> browserFactory)
             : this()
         {
+            WorkItems = workItems;
             _browserFactory = browserFactory;
         }
 
-        private TestSelectionViewModel()
+        private TestCasesViewModel()
         {
             _testBrowser = Property.New(this, p => p.TestBrowser, OnPropertyChanged);
             _selectedTestCase = Property.New(this, p => p.SelectedTestCase, OnPropertyChanged);
         }
 
-        /// <summary>
-        /// The currently selected test case.
-        /// </summary>
+        public IWorkItems WorkItems { get; }
+
+        /// <see cref="ITestCases.SelectedTestCase"/>
         public ITestCaseViewModel SelectedTestCase
         {
             get { return _selectedTestCase.Value; }
