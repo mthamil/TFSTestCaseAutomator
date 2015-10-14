@@ -106,7 +106,7 @@
             </Button>
         </Grid>
         
-        <DataGrid Grid.Row="1" DataContext="{Binding TestCases.WorkItems}" ItemsSource="{Binding TestCases}" 
+        <DataGrid Grid.Row="1" DataContext="{Binding TestCases}" ItemsSource="{Binding Items}" 
                   AutoGenerateColumns="False" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"
                   IsReadOnly="True" CanUserReorderColumns="False" CanUserAddRows="False" SelectionMode="Single"
                   SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.TestCases.SelectedTestCase}" 

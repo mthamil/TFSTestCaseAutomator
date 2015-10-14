@@ -189,23 +189,12 @@ namespace TestCaseAutomator.ViewModels
                 case nameof(ProjectName):
                     if (IsConnected)
 				    {
-					    await HandleServerError(async () => 
-                            await LoadWorkItemsAsync());
+					    await HandleServerError(async () =>
+                            await TestCases.LoadAsync(ProjectName));
 				    }
 			        break;
 			}
 		}
-
-        private async Task LoadWorkItemsAsync()
-        {
-            if (String.IsNullOrWhiteSpace(ProjectName))
-            {
-                TestCases.WorkItems.TestCases.Clear();
-                return;
-            }
-
-            await TestCases.WorkItems.LoadAsync(ProjectName);
-        }
 
         private void Servers_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
