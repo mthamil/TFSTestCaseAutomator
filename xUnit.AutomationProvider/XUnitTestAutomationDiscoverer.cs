@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -53,16 +54,21 @@ namespace xUnit.AutomationProvider
         private static async Task<IEnumerable<ITestAutomation>> FindAsync(ITestFrameworkDiscoverer discoverer)
         {
             var tests = new List<ITestAutomation>();
-
-            using (AssemblyHelper.SubscribeResolve())
-            using (var sink = new DiscoveryMessageSink(message =>
-                                    message.TestCases.Select(testCase => new XunitTestAutomation(testCase, message.TestAssembly))
-                                                     .ToSink(tests)))
+            try
             {
-                discoverer.Find(false, sink, TestFrameworkOptions.ForDiscovery(new TestAssemblyConfiguration { AppDomain = AppDomainOption }));
-                await sink.Finished.AsTask();
+                using (AssemblyHelper.SubscribeResolve())
+                using (var sink = new DiscoveryMessageSink(message =>
+                                        message.TestCases.Select(testCase => new XunitTestAutomation(testCase, message.TestAssembly))
+                                                         .ToSink(tests)))
+                {
+                    discoverer.Find(false, sink, TestFrameworkOptions.ForDiscovery(new TestAssemblyConfiguration { AppDomain = AppDomainOption }));
+                    await sink.Finished.AsTask();
+                }
             }
-  
+            catch (InvalidOperationException e)
+            {
+                Debug.Write(e);
+            }
             return tests;
         }
 

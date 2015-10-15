@@ -23,8 +23,8 @@ namespace TestCaseAutomator.AutomationProviders.Container
 		protected override void Load(ContainerBuilder builder)
 		{
 			builder.Register(c => new AggregateCatalog(
-				                      new AssemblyCatalog(Assembly.GetAssembly(GetType())),
-				                      new DirectoryCatalog(PluginLocation(c).FullName)))
+			                        new AssemblyCatalog(Assembly.GetAssembly(GetType())),
+			                        new RecursiveDirectoryCatalog(PluginLocation(c).FullName)))
 			       .As<ComposablePartCatalog>()
 			       .SingleInstance();
 
