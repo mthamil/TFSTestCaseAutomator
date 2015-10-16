@@ -4,7 +4,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml;
+using System.Xml.Linq;
 using NUnit.Common;
 using NUnit.Engine;
 using NUnit.Engine.Internal;
@@ -51,11 +51,13 @@ namespace NUnit.AutomationProvider
             using (var runner = engine.GetRunner(package))
             {
                 var result = runner.Explore(TestFilter.Empty);
+                var xml = XElement.Load(result.CreateNavigator().ReadSubtree());
 
                 var tests = (
-                    from assemblyNode in result.SelectNodes("//test-suite[@type='Assembly']").Cast<XmlNode>()
-                    from testNode in assemblyNode.SelectNodes("//test-case").Cast<XmlNode>()
-                    select new NUnitTestAutomation(testNode, assemblyNode.Attributes["fullname"].Value)).ToList<ITestAutomation>();
+                    from assembly in xml.DescendantsAndSelf("test-suite")
+                    where assembly.Attribute("type").Value == "Assembly"
+                    from test in assembly.Descendants("test-case")
+                    select new NUnitTestAutomation(test, assembly)).ToList();
 
                 return Task.FromResult<IEnumerable<ITestAutomation>>(tests);
             }
