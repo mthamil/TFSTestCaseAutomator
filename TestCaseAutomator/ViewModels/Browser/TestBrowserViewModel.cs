@@ -114,13 +114,13 @@ namespace TestCaseAutomator.ViewModels.Browser
             if (e.PropertyName == nameof(FileSystemTestBrowserViewModel.SelectedTest) &&
                 sender == FileSystemBrowser)
             {
-                TestAutomation = FileSystemBrowser.SelectedTest.TestAutomation;
+                TestAutomation = FileSystemBrowser.SelectedTest?.TestAutomation;
             }
             else if (e.PropertyName == nameof(SourceControlTestBrowserViewModel.SelectedTest) &&
                      sender == SourceControlBrowser &&
                      SourceControlBrowser.IsValid)
             {
-                TestAutomation = ((TestAutomationNodeViewModel)SourceControlBrowser.SelectedTest).TestAutomation;
+                TestAutomation = ((TestAutomationNodeViewModel)SourceControlBrowser.SelectedTest)?.TestAutomation;
             }
         }
 
