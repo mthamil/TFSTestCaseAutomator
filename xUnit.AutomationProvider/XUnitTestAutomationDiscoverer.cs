@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using TestCaseAutomator.AutomationProviders.Interfaces;
+using TestCaseAutomator.AutomationProviders.Abstractions;
 using Xunit;
 using Xunit.Abstractions;
 

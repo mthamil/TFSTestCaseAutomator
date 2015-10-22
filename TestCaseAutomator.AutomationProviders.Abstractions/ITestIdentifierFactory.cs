@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TestCaseAutomator.AutomationProviders.Interfaces
+namespace TestCaseAutomator.AutomationProviders.Abstractions
 {
 	/// <summary>
 	/// Interface for an object thaat creates automated test identifiers.

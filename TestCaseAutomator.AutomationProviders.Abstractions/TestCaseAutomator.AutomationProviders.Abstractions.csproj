@@ -7,8 +7,8 @@
     <ProjectGuid>{AD71ADB9-E579-4A13-B3A0-9051FF5B075D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TestCaseAutomator.AutomationProviders.Interfaces</RootNamespace>
-    <AssemblyName>TestCaseAutomator.AutomationProviders.Interfaces</AssemblyName>
+    <RootNamespace>TestCaseAutomator.AutomationProviders.Abstractions</RootNamespace>
+    <AssemblyName>TestCaseAutomator.AutomationProviders.Abstractions</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -20,7 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\TestCaseAutomator.AutomationProviders.Interfaces.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\TestCaseAutomator.AutomationProviders.Abstractions.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,7 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\TestCaseAutomator.AutomationProviders.Interfaces.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\TestCaseAutomator.AutomationProviders.Abstractions.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Package|AnyCPU'">
     <OutputPath>bin\Package\</OutputPath>
@@ -58,7 +58,7 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="TestCaseAutomator.AutomationProviders.Interfaces.nuspec" />
+    <None Include="TestCaseAutomator.AutomationProviders.Abstractions.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

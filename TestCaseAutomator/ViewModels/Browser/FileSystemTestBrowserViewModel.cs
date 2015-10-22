@@ -5,10 +5,10 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using TestCaseAutomator.AutomationProviders.Interfaces;
 using SharpEssentials.Collections;
 using SharpEssentials.Controls.Mvvm;
 using SharpEssentials.Observable;
+using TestCaseAutomator.AutomationProviders.Abstractions;
 using TestCaseAutomator.ViewModels.Browser.Nodes;
 
 namespace TestCaseAutomator.ViewModels.Browser

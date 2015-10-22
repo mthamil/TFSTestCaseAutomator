@@ -4,7 +4,7 @@ using System.Windows.Input;
 using SharpEssentials.Controls.Mvvm;
 using SharpEssentials.Controls.Mvvm.Commands;
 using SharpEssentials.Observable;
-using TestCaseAutomator.AutomationProviders.Interfaces;
+using TestCaseAutomator.AutomationProviders.Abstractions;
 using TestCaseAutomator.ViewModels.Browser.Nodes;
 
 namespace TestCaseAutomator.ViewModels.Browser

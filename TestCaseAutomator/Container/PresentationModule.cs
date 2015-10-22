@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Autofac;
 using SharpEssentials.Controls.Mvvm;
-using TestCaseAutomator.AutomationProviders.Interfaces;
+using TestCaseAutomator.AutomationProviders.Abstractions;
 using TestCaseAutomator.Configuration;
 using TestCaseAutomator.ViewModels;
 using TestCaseAutomator.ViewModels.Browser.Nodes;

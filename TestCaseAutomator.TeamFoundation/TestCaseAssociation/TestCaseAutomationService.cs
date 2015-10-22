@@ -2,7 +2,7 @@
 using System.Linq;
 using Microsoft.TeamFoundation.TestManagement.Client;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
-using TestCaseAutomator.AutomationProviders.Interfaces;
+using TestCaseAutomator.AutomationProviders.Abstractions;
 
 namespace TestCaseAutomator.TeamFoundation.TestCaseAssociation
 {

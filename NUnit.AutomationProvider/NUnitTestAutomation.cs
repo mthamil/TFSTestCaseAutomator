@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Xml.Linq;
-using TestCaseAutomator.AutomationProviders.Interfaces;
+using TestCaseAutomator.AutomationProviders.Abstractions;
 
 namespace NUnit.AutomationProvider
 {

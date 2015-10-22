@@ -1,4 +1,4 @@
-﻿using TestCaseAutomator.AutomationProviders.Interfaces;
+﻿using TestCaseAutomator.AutomationProviders.Abstractions;
 
 namespace TestCaseAutomator.ViewModels
 {

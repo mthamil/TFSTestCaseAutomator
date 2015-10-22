@@ -1,7 +1,7 @@
 ﻿using System;
 using SharpEssentials.Controls.Mvvm;
 using SharpEssentials.Observable;
-using TestCaseAutomator.AutomationProviders.Interfaces;
+using TestCaseAutomator.AutomationProviders.Abstractions;
 
 namespace TestCaseAutomator.ViewModels.Browser
 {

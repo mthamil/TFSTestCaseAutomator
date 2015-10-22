@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using TestCaseAutomator.AutomationProviders.Interfaces;
+using TestCaseAutomator.AutomationProviders.Abstractions;
 using Xunit.Abstractions;
 
 namespace xUnit.AutomationProvider

@@ -68,8 +68,8 @@
         <File Id="AutomationProviderDll" Name="$(var.TestCaseAutomator.AutomationProviders.TargetFileName)" Source="$(var.TestCaseAutomator.AutomationProviders.TargetPath)" KeyPath="yes"/>
       </Component>
       
-      <Component Id="AutomationProviderInterfacesLib" Guid="E03C57AE-F94B-48E1-A4CD-2B673EA6B32B">
-        <File Id="AutomationProviderInterfacesDll" Name="$(var.TestCaseAutomator.AutomationProviders.Interfaces.TargetFileName)" Source="$(var.TestCaseAutomator.AutomationProviders.Interfaces.TargetPath)" KeyPath="yes"/>
+      <Component Id="AutomationProviderAbstractionsLib" Guid="E03C57AE-F94B-48E1-A4CD-2B673EA6B32B">
+        <File Id="AutomationProviderAbstractionsDll" Name="$(var.TestCaseAutomator.AutomationProviders.Abstractions.TargetFileName)" Source="$(var.TestCaseAutomator.AutomationProviders.Abstractions.TargetPath)" KeyPath="yes"/>
       </Component>
       
       <Component Id="SharpEssentialsLib" Guid="E33A482C-18CB-42B9-9B84-E6E68FB24066">

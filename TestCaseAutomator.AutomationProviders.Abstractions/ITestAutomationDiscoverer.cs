@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace TestCaseAutomator.AutomationProviders.Interfaces
+namespace TestCaseAutomator.AutomationProviders.Abstractions
 {
 	/// <summary>
 	/// Interface for classes that provide automated tests suitable for test case automation.

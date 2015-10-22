@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace TestCaseAutomator.AutomationProviders.Interfaces
+namespace TestCaseAutomator.AutomationProviders.Abstractions
 {
 	/// <summary>
 	/// A default <see cref="ITestIdentifierFactory"/> that creates a deterministic and reproducable identifier from

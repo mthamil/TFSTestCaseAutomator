@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Autofac;
 using Microsoft.TeamFoundation.Client;
-using TestCaseAutomator.AutomationProviders.Interfaces;
+using TestCaseAutomator.AutomationProviders.Abstractions;
 using TestCaseAutomator.TeamFoundation.TestCaseAssociation;
 
 namespace TestCaseAutomator.TeamFoundation.Container

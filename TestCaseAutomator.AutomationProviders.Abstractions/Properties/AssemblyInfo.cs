@@ -4,10 +4,10 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TestCaseAutomator.AutomationProviders.Interfaces")]
+[assembly: AssemblyTitle("TestCaseAutomator.AutomationProviders.Abstractions")]
 [assembly: AssemblyDescription("Provides the basic types required to create a test case automation provider plugin.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyProduct("TestCaseAutomator.AutomationProviders.Interfaces")]
+[assembly: AssemblyProduct("TestCaseAutomator.AutomationProviders.Abstractions")]
 [assembly: AssemblyCopyright("Copyright © Matt Hamilton 2013")]
 [assembly: AssemblyCulture("")]
 

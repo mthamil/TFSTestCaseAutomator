@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using Moq;
 using SharpEssentials.Testing;
 using TestCaseAutomator.AutomationProviders;
-using TestCaseAutomator.AutomationProviders.Interfaces;
 using SharpEssentials.Collections;
+using TestCaseAutomator.AutomationProviders.Abstractions;
 using Xunit;
 
 namespace Tests.Unit.TestCaseAutomator.AutomationProviders

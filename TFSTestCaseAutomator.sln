@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCaseAutomator.TeamFound
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCaseAutomator.AutomationProviders", "TestCaseAutomator.AutomationProviders\TestCaseAutomator.AutomationProviders.csproj", "{9742CC89-1825-4119-9C4F-DF074070563C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCaseAutomator.AutomationProviders.Interfaces", "TestCaseAutomator.AutomationProviders.Interfaces\TestCaseAutomator.AutomationProviders.Interfaces.csproj", "{AD71ADB9-E579-4A13-B3A0-9051FF5B075D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCaseAutomator.AutomationProviders.Abstractions", "TestCaseAutomator.AutomationProviders.Abstractions\TestCaseAutomator.AutomationProviders.Abstractions.csproj", "{AD71ADB9-E579-4A13-B3A0-9051FF5B075D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugins.xUnit.AutomationProvider", "xUnit.AutomationProvider\Plugins.xUnit.AutomationProvider.csproj", "{F7F2F7FA-0538-4E4E-A621-1AFF1AECC71D}"
 EndProject

@@ -1,5 +1,5 @@
 ﻿using Microsoft.TeamFoundation.TestManagement.Client;
-using TestCaseAutomator.AutomationProviders.Interfaces;
+using TestCaseAutomator.AutomationProviders.Abstractions;
 
 namespace TestCaseAutomator.TeamFoundation.TestCaseAssociation
 {

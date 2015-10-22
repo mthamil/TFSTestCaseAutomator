@@ -1,6 +1,6 @@
 using System;
 
-namespace TestCaseAutomator.AutomationProviders.Interfaces
+namespace TestCaseAutomator.AutomationProviders.Abstractions
 {
 	/// <summary>
 	/// Represents the components of an automated test case.

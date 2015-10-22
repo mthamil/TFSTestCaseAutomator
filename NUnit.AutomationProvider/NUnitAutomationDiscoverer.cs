@@ -8,7 +8,7 @@ using System.Xml.Linq;
 using NUnit.Common;
 using NUnit.Engine;
 using NUnit.Engine.Internal;
-using TestCaseAutomator.AutomationProviders.Interfaces;
+using TestCaseAutomator.AutomationProviders.Abstractions;
 
 namespace NUnit.AutomationProvider
 {

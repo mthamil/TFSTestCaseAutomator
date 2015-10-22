@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using SharpEssentials.Collections;
 using SharpEssentials.InputOutput;
-using TestCaseAutomator.AutomationProviders.Interfaces;
+using TestCaseAutomator.AutomationProviders.Abstractions;
 using TestCaseAutomator.TeamFoundation;
 
 namespace TestCaseAutomator.ViewModels.Browser.Nodes

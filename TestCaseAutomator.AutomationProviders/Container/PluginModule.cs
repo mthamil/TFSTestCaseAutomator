@@ -4,7 +4,7 @@ using System.ComponentModel.Composition.Primitives;
 using System.IO;
 using System.Reflection;
 using Autofac;
-using TestCaseAutomator.AutomationProviders.Interfaces;
+using TestCaseAutomator.AutomationProviders.Abstractions;
 using Module = Autofac.Module;
 
 namespace TestCaseAutomator.AutomationProviders.Container

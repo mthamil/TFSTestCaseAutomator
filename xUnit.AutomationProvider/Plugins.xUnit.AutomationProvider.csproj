@@ -75,9 +75,9 @@
     <Compile Include="XunitTestAutomation.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TestCaseAutomator.AutomationProviders.Interfaces\TestCaseAutomator.AutomationProviders.Interfaces.csproj">
+    <ProjectReference Include="..\TestCaseAutomator.AutomationProviders.Abstractions\TestCaseAutomator.AutomationProviders.Abstractions.csproj">
       <Project>{ad71adb9-e579-4a13-b3a0-9051ff5b075d}</Project>
-      <Name>TestCaseAutomator.AutomationProviders.Interfaces</Name>
+      <Name>TestCaseAutomator.AutomationProviders.Abstractions</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
 using Microsoft.TeamFoundation.TestManagement.Client;
-using TestCaseAutomator.AutomationProviders.Interfaces;
-using TestCaseAutomator.TeamFoundation.TestCaseAssociation;
 using SharpEssentials.Controls.Mvvm;
 using SharpEssentials.Controls.Mvvm.Commands;
+using TestCaseAutomator.AutomationProviders.Abstractions;
+using TestCaseAutomator.TeamFoundation.TestCaseAssociation;
 
 namespace TestCaseAutomator.ViewModels
 {
