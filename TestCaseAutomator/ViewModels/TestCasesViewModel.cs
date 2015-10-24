@@ -21,7 +21,7 @@ namespace TestCaseAutomator.ViewModels
         /// <param name="testCaseFactory">Creates test case view-models.</param>
         public TestCasesViewModel(
             ITfsExplorer explorer,
-            Func<ITestCaseViewModel, TestBrowserViewModel> browserFactory,
+            Func<ITestCaseViewModel, Lazy<TestBrowserViewModel>> browserFactory,
             Func<ITestCase, ITestCaseViewModel> testCaseFactory)
             : this()
         {
@@ -53,7 +53,7 @@ namespace TestCaseAutomator.ViewModels
             {
                 if (_selectedTestCase.TrySetValue(value) && value != null)
                 {
-                    TestBrowser = new Lazy<TestBrowserViewModel>(() => _browserFactory(SelectedTestCase));
+                    TestBrowser = _browserFactory(SelectedTestCase);
                 }
             }
         }
@@ -85,7 +85,7 @@ namespace TestCaseAutomator.ViewModels
         private readonly Property<ITestCaseViewModel> _selectedTestCase;
         private readonly Property<ICollection<ITestCaseViewModel>> _items;
 
-        private readonly Func<ITestCaseViewModel, TestBrowserViewModel> _browserFactory;
+        private readonly Func<ITestCaseViewModel, Lazy<TestBrowserViewModel>> _browserFactory;
         private readonly Func<ITestCase, ITestCaseViewModel> _testCaseFactory;
         private readonly ITfsExplorer _explorer;
     }
