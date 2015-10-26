@@ -97,14 +97,15 @@ namespace TestCaseAutomator.TeamFoundation
 	                            .Select(item => new TfsSolution(item, Server.VersionControl));
 	    }
 
+
 	    /// <summary>
-	    /// Retrieves the source control tree.
+	    /// Retrieves the root of the source control tree.
 	    /// </summary>
-	    public Task<IEnumerable<TfsSourceControlledItem>> GetSourceTreeAsync()
+	    public TfsDirectory GetSourceTreeRoot()
 	    {
             ServerGuard();
 
-            return new TfsSourceTreeRoot(Server.VersionControl).GetItemsAsync();
+            return new TfsSourceTreeRoot(Server.VersionControl);
 	    }
 
         private void ServerGuard()

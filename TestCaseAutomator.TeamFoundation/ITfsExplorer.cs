@@ -39,8 +39,8 @@ namespace TestCaseAutomator.TeamFoundation
 		Task<IEnumerable<TfsSolution>> SolutionsAsync();
 
         /// <summary>
-        /// Retrieves the source control tree.
+        /// Retrieves the root of the source control tree.
         /// </summary>
-        Task<IEnumerable<TfsSourceControlledItem>> GetSourceTreeAsync();
+        TfsDirectory GetSourceTreeRoot();
 	}
 }
