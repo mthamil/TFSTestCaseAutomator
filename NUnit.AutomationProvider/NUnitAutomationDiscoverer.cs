@@ -41,7 +41,11 @@ namespace NUnit.AutomationProvider
         /// <see cref="ITestAutomationDiscoverer.DiscoverAutomatedTestsAsync"/>
         public Task<IEnumerable<ITestAutomation>> DiscoverAutomatedTestsAsync(IEnumerable<string> sources)
         {
-            var package = new TestPackage(sources.Where(IsTestAssembly).ToList());
+            var validSources = sources.Where(IsTestAssembly).ToList();
+            if (validSources.Count == 0)
+                return Task.FromResult(Enumerable.Empty<ITestAutomation>());
+
+            var package = new TestPackage(validSources);
             package.AddSetting(PackageSettings.DisposeRunners, true);
             package.AddSetting(PackageSettings.ShadowCopyFiles, true);
             package.AddSetting(PackageSettings.ProcessModel, ProcessModel.Single.ToString());
