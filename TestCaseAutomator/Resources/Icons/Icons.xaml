@@ -10,21 +10,21 @@
         </Style.Triggers>
     </Style>
 
-    <BitmapImage x:Key="ConnectIcon" UriSource="../Icons/arrow-24x24.png"/>
-    <BitmapImage x:Key="RefreshIcon" UriSource="../Icons/arrow-circle-double-135-24x24.png"/>
-    <BitmapImage x:Key="ConnectedIcon" UriSource="../Icons/plug-connect-16x16.png"/>
-    <BitmapImage x:Key="DisconnectedIcon" UriSource="../Icons/plug-disconnect-16x16.png"/>
+    <BitmapImage x:Key="ConnectIcon" UriSource="../Icons/24x24/arrow.png"/>
+    <BitmapImage x:Key="RefreshIcon" UriSource="../Icons/24x24/arrow-circle-double-135.png"/>
+    <BitmapImage x:Key="ConnectedIcon" UriSource="../Icons/16x16/plug-connect.png"/>
+    <BitmapImage x:Key="DisconnectedIcon" UriSource="../Icons/16x16/plug-disconnect.png"/>
 
-    <BitmapImage x:Key="RemoveServerIcon" UriSource="../Icons/cross-16x16.png"/>
+    <BitmapImage x:Key="RemoveServerIcon" UriSource="../Icons/16x16/cross.png"/>
 
-    <BitmapImage x:Key="EditAutomationIcon" UriSource="../Icons/gear-pencil-16x16.png"/>
-    <BitmapImage x:Key="RemoveAutomationIcon" UriSource="../Icons/cross-16x16.png"/>
-    <BitmapImage x:Key="BrowseFileSystemIcon" UriSource="../Icons/folder-horizontal-open-16x16.png"/>
-    <BitmapImage x:Key="BrowseSourceControlIcon" UriSource="../Icons/server-cloud-16x16.png"/>
-    <BitmapImage x:Key="ManualEntryIcon" UriSource="../Icons/keyboard--pencil-16x16.png"/>
-    
-    <BitmapImage x:Key="DirectoryIcon" UriSource="../Icons/folder-horizontal-16x16.png"/>
-    <BitmapImage x:Key="DirectoryOpenIcon" UriSource="../Icons/folder-horizontal-open-16x16.png"/>
-    <BitmapImage x:Key="FileIcon" UriSource="../Icons/document-text-16x16.png"/>
+    <BitmapImage x:Key="EditAutomationIcon" UriSource="../Icons/16x16/gear-pencil.png"/>
+    <BitmapImage x:Key="RemoveAutomationIcon" UriSource="../Icons/16x16/cross.png"/>
+    <BitmapImage x:Key="BrowseFileSystemIcon" UriSource="../Icons/16x16/folder-horizontal-open.png"/>
+    <BitmapImage x:Key="BrowseSourceControlIcon" UriSource="../Icons/16x16/server-cloud.png"/>
+    <BitmapImage x:Key="ManualEntryIcon" UriSource="../Icons/16x16/keyboard--pencil.png"/>
+
+    <BitmapImage x:Key="DirectoryIcon" UriSource="../Icons/16x16/folder-horizontal.png"/>
+    <BitmapImage x:Key="DirectoryOpenIcon" UriSource="../Icons/16x16/folder-horizontal-open.png"/>
+    <BitmapImage x:Key="FileIcon" UriSource="../Icons/16x16/document-text.png"/>
     
 </ResourceDictionary>
