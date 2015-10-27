@@ -23,4 +23,8 @@
     <BitmapImage x:Key="BrowseSourceControlIcon" UriSource="../Icons/server-cloud-16x16.png"/>
     <BitmapImage x:Key="ManualEntryIcon" UriSource="../Icons/keyboard--pencil-16x16.png"/>
     
+    <BitmapImage x:Key="DirectoryIcon" UriSource="../Icons/folder-horizontal-16x16.png"/>
+    <BitmapImage x:Key="DirectoryOpenIcon" UriSource="../Icons/folder-horizontal-open-16x16.png"/>
+    <BitmapImage x:Key="FileIcon" UriSource="../Icons/document-text-16x16.png"/>
+    
 </ResourceDictionary>

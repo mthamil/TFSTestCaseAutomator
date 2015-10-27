@@ -8,11 +8,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xt="clr-namespace:TestCaseAutomator.Views.MarkupExtensions"
+             xmlns:convert="clr-namespace:SharpEssentials.Controls.Converters;assembly=SharpEssentials.Controls"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="600"
              d:DataContext="{d:DesignInstance Type=vm:SourceControlTestBrowserViewModel, IsDesignTimeCreatable=False}"
              DataContext="{Binding Source={xt:ViewModelLocator {x:Type vm:SourceControlTestBrowserViewModel}}, Path=ViewModel}">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Resources/Icons/Icons.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <convert:ObjectGetTypeConverter x:Key="GetTypeConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -33,12 +43,40 @@
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type nodes:INodeViewModel}" ItemsSource="{Binding Path=Children}">
                     <StackPanel Orientation="Horizontal">
+                        
+                        <Image SnapsToDevicePixels="True" Stretch="None" Margin="0,0,3,0" >
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}" BasedOn="{StaticResource DisableableIcon}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Converter={StaticResource GetTypeConverter}}" Value="{x:Type nodes:AutomationSourceViewModel}">
+                                            <Setter Property="Source" Value="{StaticResource FileIcon}"/>
+                                        </DataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Converter={StaticResource GetTypeConverter}}" Value="{x:Type nodes:SourceDirectoryViewModel}"/>
+                                                <Condition Binding="{Binding IsExpanded}" Value="True"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Source" Value="{StaticResource DirectoryOpenIcon}"/>
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Converter={StaticResource GetTypeConverter}}" Value="{x:Type nodes:SourceDirectoryViewModel}"/>
+                                                <Condition Binding="{Binding IsExpanded}" Value="False"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Source" Value="{StaticResource DirectoryIcon}"/>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        
                         <TextBlock Text="{Binding Name}">
                             <!--<TextBlock.InputBindings>
                                 <MouseBinding Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=vw:SourceControlTestBrowser}, 
                                                                 Path=DataContext.SaveTestCaseCommand}" MouseAction="LeftDoubleClick" />
                             </TextBlock.InputBindings>-->
                         </TextBlock>
+                        
                         <TextBlock>
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}">
@@ -66,6 +104,7 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
+                        
                     </StackPanel>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
