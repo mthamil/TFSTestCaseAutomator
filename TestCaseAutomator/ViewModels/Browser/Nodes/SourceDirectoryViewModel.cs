@@ -33,7 +33,7 @@ namespace TestCaseAutomator.ViewModels.Browser.Nodes
             return (await _directory.GetItemsAsync())
                                     .Select(item => item is TfsDirectory
                                                         ? _directoryFactory((TfsDirectory)item)
-                                                        : (IVirtualizedNode)_fileFactory(item as TfsFile))
+                                                        : _fileFactory(item as TfsFile))
                                     .Tee(progress.Report)
                                     .ToList();
         }
@@ -47,7 +47,7 @@ namespace TestCaseAutomator.ViewModels.Browser.Nodes
         }
 
         private readonly TfsDirectory _directory;
-        private readonly Func<TfsFile, AutomationSourceViewModel> _fileFactory;
-        private readonly Func<TfsDirectory, SourceDirectoryViewModel> _directoryFactory;
+        private readonly Func<TfsFile, IVirtualizedNode> _fileFactory;
+        private readonly Func<TfsDirectory, IVirtualizedNode> _directoryFactory;
     }
 }
