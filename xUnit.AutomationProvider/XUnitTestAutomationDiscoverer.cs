@@ -44,18 +44,19 @@ namespace xUnit.AutomationProvider
 				throw new ArgumentNullException(nameof(sources));
 
 	        return sources.Where(IsTestAssembly)
-                          .Select(src => FindAsync(_discovererFactory(src)))
+                          .Select(src => FindAsync(() => _discovererFactory(src)))
                           .Aggregate(Task.FromResult(Enumerable.Empty<ITestAutomation>()), 
                                 async (tests, current) => 
                                     (await tests.ConfigureAwait(false)).Concat(
                                      await current.ConfigureAwait(false)));
 		}
 
-        private static async Task<IEnumerable<ITestAutomation>> FindAsync(ITestFrameworkDiscoverer discoverer)
+        private static async Task<IEnumerable<ITestAutomation>> FindAsync(Func<ITestFrameworkDiscoverer> discovererProvider)
         {
             var tests = new List<ITestAutomation>();
             try
             {
+                using (var discoverer = discovererProvider())
                 using (AssemblyHelper.SubscribeResolve())
                 using (var sink = new DiscoveryMessageSink(message =>
                                         message.TestCases.Select(testCase => new XunitTestAutomation(testCase, message.TestAssembly))

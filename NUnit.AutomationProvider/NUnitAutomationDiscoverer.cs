@@ -51,7 +51,7 @@ namespace NUnit.AutomationProvider
             package.AddSetting(PackageSettings.ProcessModel, ProcessModel.Single.ToString());
             package.AddSetting(PackageSettings.DomainUsage, DomainUsage.None.ToString());
 
-            var engine = _engineFactory();
+            using (var engine = _engineFactory())
             using (var runner = engine.GetRunner(package))
             {
                 var result = runner.Explore(TestFilter.Empty);
