@@ -38,16 +38,15 @@ namespace TestCaseAutomator.ViewModels.Browser.Nodes
                                     .ToList();
         }
 
+        private readonly TfsDirectory _directory;
+        private readonly Func<TfsFile, IVirtualizedNode> _fileFactory;
+        private readonly Func<TfsDirectory, IVirtualizedNode> _directoryFactory;
+
         private class Dummy : SourceDirectoryViewModel
         {
             private Dummy() : base(null, null, null) { }
             public override string Name => "Loading...";
-
             public static readonly Dummy Instance = new Dummy();
         }
-
-        private readonly TfsDirectory _directory;
-        private readonly Func<TfsFile, IVirtualizedNode> _fileFactory;
-        private readonly Func<TfsDirectory, IVirtualizedNode> _directoryFactory;
     }
 }
