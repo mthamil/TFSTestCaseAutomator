@@ -26,6 +26,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -33,11 +34,32 @@
             Select automation from source control:
         </TextBlock>
 
-        <TreeView Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+        <ItemsControl ItemsSource="{Binding ElementName=TreeItemPath, Path=ItemPath, Mode=OneWay}" 
+                      Grid.Row="1" Padding="5,2,0,2" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.Resources>
+                <DataTemplate DataType="{x:Type nodes:SourceRootNodeViewModel}">
+                    <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type nodes:AutomationSourceViewModel}">
+                    <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type nodes:SourceDirectoryViewModel}">
+                    <TextBlock Text="{Binding Name, StringFormat={}{0}/}"/>
+                </DataTemplate>
+            </ItemsControl.Resources>
+        </ItemsControl>
+
+        <TreeView Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   ItemsSource="{Binding SourceTree}" Margin="2,0,2,0">
 
             <i:Interaction.Behaviors>
                 <behaviors:TreeViewBindableSelectedItem SelectedItem="{Binding SelectedTest, Mode=TwoWay}"/>
+                <behaviors:SelectedItemPath x:Name="TreeItemPath"/>
             </i:Interaction.Behaviors>
 
             <TreeView.ItemTemplate>

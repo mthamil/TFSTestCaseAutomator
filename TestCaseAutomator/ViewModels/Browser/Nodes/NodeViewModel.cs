@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows.Input;
 using SharpEssentials.Controls.Mvvm;
 using SharpEssentials.Observable;
 
 namespace TestCaseAutomator.ViewModels.Browser.Nodes
 {
-	/// <summary>
-	/// Base view-model that provides common node functionality.
-	/// </summary>
-	public abstract class NodeViewModel<TChild> : ViewModelBase, INodeViewModel<TChild> where TChild : class
+    /// <summary>
+    /// Base view-model that provides common node functionality.
+    /// </summary>
+    [DebuggerDisplay("{Name}")]
+    public abstract class NodeViewModel<TChild> : ViewModelBase, INodeViewModel<TChild> where TChild : class
 	{
 		/// <summary>
 		/// Initializes a new NodeViewModel.
