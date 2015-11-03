@@ -41,6 +41,7 @@ namespace TestCaseAutomator.ViewModels.Browser.Nodes
 
 		private async Task<IReadOnlyCollection<TestAutomationNodeViewModel>> DiscoverTests(IProgress<TestAutomationNodeViewModel> progress)
 		{
+            Invalidate();
 			var localPath = _file.ServerPath.Replace("$/", string.Empty).Replace('/', '\\');
 			using (var tempFile = new TemporaryFile(localPath))
 			{

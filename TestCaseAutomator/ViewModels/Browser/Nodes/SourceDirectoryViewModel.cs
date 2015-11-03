@@ -30,6 +30,7 @@ namespace TestCaseAutomator.ViewModels.Browser.Nodes
 
         protected async override Task<IReadOnlyCollection<IVirtualizedNode>> LoadChildrenAsync(IProgress<IVirtualizedNode> progress)
         {
+            Invalidate();
             return (await _directory.GetItemsAsync())
                                     .Select(item => item is TfsDirectory
                                                         ? _directoryFactory((TfsDirectory)item)

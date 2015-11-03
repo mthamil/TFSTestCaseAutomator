@@ -296,6 +296,7 @@
     <Compile Include="TestCaseAutomator\Configuration\SettingsPropagatorTests.cs" />
     <Compile Include="TestCaseAutomator\Controls\Converters\FileInfoConverterTests.cs" />
     <Compile Include="TestCaseAutomator\Controls\Converters\StringIsNullOrEmptyConverterTests.cs" />
+    <Compile Include="TestCaseAutomator\ViewModels\Browser\Nodes\VirtualizedNodeTests.cs" />
     <Compile Include="TestCaseAutomator\ViewModels\MainViewModelTests.cs" />
     <Compile Include="TestCaseAutomator\ViewModels\TestCaseViewModelTests.cs" />
   </ItemGroup>

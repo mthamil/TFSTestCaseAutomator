@@ -62,14 +62,23 @@ namespace TestCaseAutomator.ViewModels.Browser.Nodes
 		{
 			if (!_isValid)
 			{
-				try
-				{
-					IsLoading = true;
-					IsEnabled = false;
-					Children.Clear();
-					var progress = new Progress<TChild>(c => Children.Add(c));
-					await LoadChildrenAsync(progress);
-				}
+			    try
+			    {
+			        IsLoading = true;
+			        IsEnabled = false;
+			        Children.Clear();
+			        _isValid = true;
+
+			        var progress = new Progress<TChild>(c => Children.Add(c));
+			        await LoadChildrenAsync(progress);
+
+			        IsExpanded = true;
+			    }
+			    catch (Exception)
+			    {
+			        _isValid = false;   // Don't consider realized in the event of an error.
+			        throw;
+			    }
 				finally
 				{
 					IsLoading = false;
