@@ -44,3 +44,4 @@ UpgradeLog*.htm
 
 *.bak
 .vs/
+/TestResults
