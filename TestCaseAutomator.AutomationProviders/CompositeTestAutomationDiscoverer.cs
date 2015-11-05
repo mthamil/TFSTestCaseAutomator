@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SharpEssentials.Collections;
+using SharpEssentials.Concurrency;
 using TestCaseAutomator.AutomationProviders.Abstractions;
 
 namespace TestCaseAutomator.AutomationProviders
@@ -27,10 +29,8 @@ namespace TestCaseAutomator.AutomationProviders
 	    public Task<IEnumerable<ITestAutomation>> DiscoverAutomatedTestsAsync(IEnumerable<string> sources)
             => _childDiscoverers
                     .Select(d => d.DiscoverAutomatedTestsAsync(sources))
-                    .Aggregate(Task.FromResult(Enumerable.Empty<ITestAutomation>()), 
-                            async (tests, current) => 
-                                (await tests.ConfigureAwait(false)).Concat(
-                                 await current.ConfigureAwait(false)));
+                    .Aggregate(Tasks.Empty<ITestAutomation>(), 
+                              (tests, current) => tests.Concat(current));
              
 	    private readonly IEnumerable<ITestAutomationDiscoverer> _childDiscoverers;
 	}

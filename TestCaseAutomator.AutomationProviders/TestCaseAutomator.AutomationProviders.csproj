@@ -60,6 +60,10 @@
     <Compile Include="RecursiveDirectoryCatalog.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SharpEssentials\SharpEssentials\SharpEssentials.csproj">
+      <Project>{573d5f8c-4c19-42c3-b84b-bc585008b505}</Project>
+      <Name>SharpEssentials</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TestCaseAutomator.AutomationProviders.Abstractions\TestCaseAutomator.AutomationProviders.Abstractions.csproj">
       <Project>{ad71adb9-e579-4a13-b3a0-9051ff5b075d}</Project>
       <Name>TestCaseAutomator.AutomationProviders.Abstractions</Name>
