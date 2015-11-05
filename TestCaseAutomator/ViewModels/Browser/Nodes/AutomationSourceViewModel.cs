@@ -41,16 +41,16 @@ namespace TestCaseAutomator.ViewModels.Browser.Nodes
 
 		private async Task<IReadOnlyCollection<TestAutomationNodeViewModel>> DiscoverTests(IProgress<TestAutomationNodeViewModel> progress)
 		{
-            Invalidate();
 			var localPath = _file.ServerPath.Replace("$/", string.Empty).Replace('/', '\\');
-			using (var tempFile = new TemporaryFile(localPath))
-			{
-				await _file.DownloadToAsync(tempFile.File.FullName).ConfigureAwait(false);
-				return (await _testDiscoverer.DiscoverAutomatedTestsAsync(tempFile.File.FullName.ToEnumerable()))
-				                             .Select(t => new TestAutomationNodeViewModel(t))
-				                             .Tee(progress.Report)
-				                             .ToList();
-			}
+		    using (var temp = new TemporaryFile(localPath))
+		    {
+		        await _file.DownloadToAsync(temp.File.FullName).ConfigureAwait(false);
+                return (await _testDiscoverer.DiscoverAutomatedTestsAsync(temp.File.FullName.ToEnumerable())
+                                             .ConfigureAwait(false))
+                                             .Select(t => new TestAutomationNodeViewModel(t))
+                                             .Tee(progress.Report)
+                                             .ToList();
+            }
 		}
 
 		private readonly TfsFile _file;
