@@ -24,12 +24,11 @@ namespace TestCaseAutomator.TeamFoundation
 		/// <param name="path">The local path to download to</param>
 		public async Task DownloadToAsync(string path)
 		{
-			var downloadStream = Download();
-
 			var directoryPath = Path.GetDirectoryName(path);
 			if (!Directory.Exists(directoryPath))
 				Directory.CreateDirectory(directoryPath);
 
+            using (var downloadStream = Download())
 			using (var fileStream = File.OpenWrite(path))
 				await downloadStream.CopyToAsync(fileStream).ConfigureAwait(false);
 		}
