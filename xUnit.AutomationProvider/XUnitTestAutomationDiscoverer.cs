@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using SharpEssentials.Collections;
+using SharpEssentials.Concurrency;
 using TestCaseAutomator.AutomationProviders.Abstractions;
 using Xunit;
 using Xunit.Abstractions;
@@ -45,31 +47,31 @@ namespace xUnit.AutomationProvider
 
 	        return sources.Where(IsTestAssembly)
                           .Select(src => FindAsync(() => _discovererFactory(src)))
-                          .Aggregate(Task.FromResult(Enumerable.Empty<ITestAutomation>()), 
-                                async (tests, current) => 
-                                    (await tests.ConfigureAwait(false)).Concat(
-                                     await current.ConfigureAwait(false)));
+                          .Aggregate(Tasks.Empty<ITestAutomation>(), 
+                                    (tests, current) => tests.Concat(current));
 		}
 
         private static async Task<IEnumerable<ITestAutomation>> FindAsync(Func<ITestFrameworkDiscoverer> discovererProvider)
         {
             var tests = new List<ITestAutomation>();
-            try
+
+            using (var discoverer = discovererProvider())
+            using (AssemblyHelper.SubscribeResolve())
+            using (var sink = new DiscoveryMessageSink(message =>
+                                    message.TestCases.Select(testCase => new XunitTestAutomation(testCase, message.TestAssembly))
+                                                     .AddTo(tests)))
             {
-                using (var discoverer = discovererProvider())
-                using (AssemblyHelper.SubscribeResolve())
-                using (var sink = new DiscoveryMessageSink(message =>
-                                        message.TestCases.Select(testCase => new XunitTestAutomation(testCase, message.TestAssembly))
-                                                         .ToSink(tests)))
+                try
                 {
                     discoverer.Find(false, sink, TestFrameworkOptions.ForDiscovery(new TestAssemblyConfiguration { AppDomain = AppDomainOption }));
                     await sink.Finished.AsTask();
                 }
+                catch (InvalidOperationException e)
+                {
+                    Debug.Write(e);
+                }
             }
-            catch (InvalidOperationException e)
-            {
-                Debug.Write(e);
-            }
+
             return tests;
         }
 
