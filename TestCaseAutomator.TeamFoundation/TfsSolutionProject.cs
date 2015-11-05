@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using static SharpEssentials.Collections.EnumerableExtensions;
+using static SharpEssentials.Collections.AsyncEnumerableExtensions;
 
 namespace TestCaseAutomator.TeamFoundation
 {
