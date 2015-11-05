@@ -81,7 +81,7 @@
         </TabControl>
 
         <DockPanel Grid.Row="2" Dock="Left" HorizontalAlignment="Right">
-            <Button Content="OK" Command="{Binding SaveCommand}" Width="100" Margin="5,3,5,3" HorizontalAlignment="Right"/>
+            <Button Content="Save" Command="{Binding SaveCommand}" Width="100" Margin="5,3,5,3" HorizontalAlignment="Right"/>
             <Button Content="Cancel" Command="{Binding CancelCommand}" Width="100" Margin="5,3,5,3" HorizontalAlignment="Right" 
                     IsDefault="True" IsCancel="True"/>
         </DockPanel>
