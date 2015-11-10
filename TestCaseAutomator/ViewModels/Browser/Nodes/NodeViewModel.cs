@@ -19,10 +19,10 @@ namespace TestCaseAutomator.ViewModels.Browser.Nodes
 		/// </summary>
 		protected NodeViewModel()
 		{
-			_isExpanded = Property.New(this, p => p.IsExpanded, OnPropertyChanged);
-			_isSelected = Property.New(this, p => p.IsSelected, OnPropertyChanged);
-			_isEnabled = Property.New(this, p => p.IsEnabled, OnPropertyChanged);
-			_children = Property.New(this, p => p.Children, OnPropertyChanged);
+			_isExpanded = Property.New(this, p => p.IsExpanded);
+			_isSelected = Property.New(this, p => p.IsSelected);
+			_isEnabled = Property.New(this, p => p.IsEnabled);
+			_children = Property.New(this, p => p.Children);
 			_children.Value = new ObservableCollection<TChild>();
 
 			_isEnabled.Value = true;	// true by default

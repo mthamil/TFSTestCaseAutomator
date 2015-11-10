@@ -30,14 +30,14 @@ namespace TestCaseAutomator.ViewModels.Browser
 
 	    private FileSystemTestBrowserViewModel()
 	    {
-	        _selectedFile = Property.New(this, p => p.SelectedFile, OnPropertyChanged)
+	        _selectedFile = Property.New(this, p => p.SelectedFile)
 	                                .UsingPathEquality();
 
-            _tests = Property.New(this, p => p.Tests, OnPropertyChanged);
+            _tests = Property.New(this, p => p.Tests);
 
-            _selectedTest = Property.New(this, p => p.SelectedTest, OnPropertyChanged);
+            _selectedTest = Property.New(this, p => p.SelectedTest);
 
-            _canBrowse = Property.New(this, p => p.CanBrowse, OnPropertyChanged);
+            _canBrowse = Property.New(this, p => p.CanBrowse);
             CanBrowse = true;
 
             Tests = new ObservableCollection<TestAutomationNodeViewModel>();

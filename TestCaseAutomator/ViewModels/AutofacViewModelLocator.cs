@@ -17,11 +17,11 @@ namespace TestCaseAutomator.ViewModels
 			_name = name;
 			_container = container;
 
-			_runTimeViewModel = Property.New(this, p => p.RuntimeViewModel, OnPropertyChanged)
-				.AlsoChanges(p => p.ViewModel);
+		    _runTimeViewModel = Property.New(this, p => p.RuntimeViewModel)
+		                                .AlsoChanges(p => p.ViewModel);
 
-			_designTimeViewModel = Property.New(this, p => p.DesigntimeViewModel, OnPropertyChanged)
-				.AlsoChanges(p => p.ViewModel);
+		    _designTimeViewModel = Property.New(this, p => p.DesigntimeViewModel)
+		                                   .AlsoChanges(p => p.ViewModel);
 		}
 
 		/// <summary>

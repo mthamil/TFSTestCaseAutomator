@@ -24,7 +24,7 @@ namespace TestCaseAutomator.ViewModels.Browser
 
 	    private SourceControlTestBrowserViewModel()
 	    {
-            _selectedTest = Property.New(this, p => p.SelectedTest, OnPropertyChanged)
+            _selectedTest = Property.New(this, p => p.SelectedTest)
                                     .AlsoChanges(p => p.IsValid);
         }
 

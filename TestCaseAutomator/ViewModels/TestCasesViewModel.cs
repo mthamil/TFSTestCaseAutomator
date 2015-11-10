@@ -32,9 +32,9 @@ namespace TestCaseAutomator.ViewModels
 
         private TestCasesViewModel()
         {
-            _testBrowser = Property.New(this, p => p.TestBrowser, OnPropertyChanged);
-            _selectedTestCase = Property.New(this, p => p.SelectedTestCase, OnPropertyChanged);
-            _items = Property.New(this, p => p.Items, OnPropertyChanged);
+            _testBrowser = Property.New(this, p => p.TestBrowser);
+            _selectedTestCase = Property.New(this, p => p.SelectedTestCase);
+            _items = Property.New(this, p => p.Items);
 
             Items = new ObservableCollection<ITestCaseViewModel>();
         }

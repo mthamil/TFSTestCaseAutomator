@@ -9,10 +9,10 @@ namespace TestCaseAutomator.ViewModels.Browser
     {
         public TestAutomationViewModel()
         {
-            _identifier = Property.New(this, p => p.Identifier, OnPropertyChanged);
-            _name = Property.New(this, p => p.Name, OnPropertyChanged);
-            _testType = Property.New(this, p => p.TestType, OnPropertyChanged);
-            _storage = Property.New(this, p => p.Storage, OnPropertyChanged);
+            _identifier = Property.New(this, p => p.Identifier);
+            _name = Property.New(this, p => p.Name);
+            _testType = Property.New(this, p => p.TestType);
+            _storage = Property.New(this, p => p.Storage);
         }
 
         /// <summary>

@@ -30,10 +30,10 @@ namespace TestCaseAutomator.ViewModels.Browser
 
         private TestBrowserViewModel()
         {
-            _testAutomation = Property.New(this, p => p.TestAutomation, OnPropertyChanged)
+            _testAutomation = Property.New(this, p => p.TestAutomation)
                                       .AlsoChanges(p => p.CanSave);
 
-            _hasBeenSaved = Property.New(this, p => p.HasBeenSaved, OnPropertyChanged);
+            _hasBeenSaved = Property.New(this, p => p.HasBeenSaved);
 
             SaveCommand = Command.For(this)
                                  .DependsOn(p => p.CanSave)

@@ -20,8 +20,8 @@ namespace TestCaseAutomator.ViewModels
 
         private ServerManagementViewModel()
         {
-            _currentUri = Property.New(this, p => p.CurrentUri, OnPropertyChanged);
-            _selectedServer = Property.New(this, p => p.Selected, OnPropertyChanged);
+            _currentUri = Property.New(this, p => p.CurrentUri);
+            _selectedServer = Property.New(this, p => p.Selected);
         }
 
         public void Add(Uri server)

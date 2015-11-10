@@ -19,7 +19,7 @@ namespace TestCaseAutomator.ViewModels.Browser.Nodes
 		/// </summary>
 		protected VirtualizedNode()
 		{
-			_isLoading = Property.New(this, p => p.IsLoading, OnPropertyChanged);
+			_isLoading = Property.New(this, p => p.IsLoading);
 
 			RefreshCommand = new RelayCommand(Refresh, () => IsRealized);
 			ExpandedCommand = new AsyncRelayCommand(LoadAsync);

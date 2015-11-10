@@ -29,7 +29,7 @@ namespace TestCaseAutomator.Configuration
 
 		private DotNetSettings()
 		{
-			_tfsProjectName = Property.New(this, p => p.TfsProjectName, OnPropertyChanged);
+			_tfsProjectName = Property.New(this, p => p.TfsProjectName);
 		}
 
 		/// <see cref="ISettings.TfsServers"/>
