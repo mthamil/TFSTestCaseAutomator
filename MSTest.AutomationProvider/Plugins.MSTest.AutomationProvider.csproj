@@ -55,11 +55,18 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppDomainExtensions.cs" />
+    <Compile Include="ITestSink.cs" />
     <Compile Include="MSTestAutomationDiscoverer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MSTestAutomation.cs" />
+    <Compile Include="TestSink.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SharpEssentials\SharpEssentials\SharpEssentials.csproj">
+      <Project>{573d5f8c-4c19-42c3-b84b-bc585008b505}</Project>
+      <Name>SharpEssentials</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TestCaseAutomator.AutomationProviders.Abstractions\TestCaseAutomator.AutomationProviders.Abstractions.csproj">
       <Project>{AD71ADB9-E579-4A13-B3A0-9051FF5B075D}</Project>
       <Name>TestCaseAutomator.AutomationProviders.Abstractions</Name>
