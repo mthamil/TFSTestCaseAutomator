@@ -7,12 +7,10 @@
              xmlns:behaviors="clr-namespace:SharpEssentials.Controls.Behaviors;assembly=SharpEssentials.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:xt="clr-namespace:TestCaseAutomator.Views.MarkupExtensions"
              xmlns:convert="clr-namespace:SharpEssentials.Controls.Converters;assembly=SharpEssentials.Controls"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="600"
-             d:DataContext="{d:DesignInstance Type=vm:SourceControlTestBrowserViewModel, IsDesignTimeCreatable=False}"
-             DataContext="{Binding Source={xt:ViewModelLocator {x:Type vm:SourceControlTestBrowserViewModel}}, Path=ViewModel}">
+             d:DataContext="{d:DesignInstance Type=vm:SourceControlTestBrowserViewModel, IsDesignTimeCreatable=False}">
 
     <UserControl.Resources>
         <ResourceDictionary>
