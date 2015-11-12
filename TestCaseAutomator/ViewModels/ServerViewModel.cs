@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Windows.Input;
 using SharpEssentials.Controls.Mvvm;
+using SharpEssentials.Net;
 
 namespace TestCaseAutomator.ViewModels
 {
@@ -38,12 +39,12 @@ namespace TestCaseAutomator.ViewModels
                 return true;
             if (obj.GetType() != GetType())
                 return false;
-            return Uri.Equals(((ServerViewModel)obj).Uri);
+            return UriEqualityComparer.Instance.Equals(Uri, ((ServerViewModel)obj).Uri);
         }
 
         public override int GetHashCode()
         {
-            return Uri.GetHashCode();
+            return UriEqualityComparer.Instance.GetHashCode(Uri);
         }
     }
 }
