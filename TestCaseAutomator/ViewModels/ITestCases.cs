@@ -7,7 +7,7 @@ namespace TestCaseAutomator.ViewModels
 {
     public interface ITestCases
     {
-        Lazy<TestBrowserViewModel> TestBrowser { get; }
+        Func<TestBrowserViewModel> TestBrowser { get; }
 
         /// <summary>
         /// The currently selected test case.

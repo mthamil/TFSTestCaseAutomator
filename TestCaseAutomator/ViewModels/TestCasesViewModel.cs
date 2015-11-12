@@ -21,7 +21,7 @@ namespace TestCaseAutomator.ViewModels
         /// <param name="testCaseFactory">Creates test case view-models.</param>
         public TestCasesViewModel(
             ITfsExplorer explorer,
-            Func<ITestCaseViewModel, Lazy<TestBrowserViewModel>> browserFactory,
+            Func<ITestCaseViewModel, TestBrowserViewModel> browserFactory,
             Func<ITestCase, ITestCaseViewModel> testCaseFactory)
             : this()
         {
@@ -39,7 +39,7 @@ namespace TestCaseAutomator.ViewModels
             Items = new ObservableCollection<ITestCaseViewModel>();
         }
 
-        public Lazy<TestBrowserViewModel> TestBrowser
+        public Func<TestBrowserViewModel> TestBrowser
         {
             get { return _testBrowser.Value; }
             private set { _testBrowser.Value = value; }
@@ -53,7 +53,7 @@ namespace TestCaseAutomator.ViewModels
             {
                 if (_selectedTestCase.TrySetValue(value) && value != null)
                 {
-                    TestBrowser = _browserFactory(SelectedTestCase);
+                    TestBrowser = () => _browserFactory(SelectedTestCase);
                 }
             }
         }
@@ -81,11 +81,11 @@ namespace TestCaseAutomator.ViewModels
                         new Progress<ITestCase>(testCase => Items.Add(_testCaseFactory(testCase))))).ToList();
         }
 
-        private readonly Property<Lazy<TestBrowserViewModel>> _testBrowser;
+        private readonly Property<Func<TestBrowserViewModel>> _testBrowser;
         private readonly Property<ITestCaseViewModel> _selectedTestCase;
         private readonly Property<ICollection<ITestCaseViewModel>> _items;
 
-        private readonly Func<ITestCaseViewModel, Lazy<TestBrowserViewModel>> _browserFactory;
+        private readonly Func<ITestCaseViewModel, TestBrowserViewModel> _browserFactory;
         private readonly Func<ITestCase, ITestCaseViewModel> _testCaseFactory;
         private readonly ITfsExplorer _explorer;
     }
