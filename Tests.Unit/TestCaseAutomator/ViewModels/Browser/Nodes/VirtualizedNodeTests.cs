@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using SharpEssentials.Collections;
 using SharpEssentials.Testing;
 using SharpEssentials.Testing.Controls.WPF;
@@ -99,7 +100,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels.Browser.Nodes
         [InlineData(true,  false, 2)]
         [InlineData(false, true,  2)]
         [InlineData(true,  true,  2)]
-        public async Task Test_Invalidation(bool shouldInvalidate, bool throwError, int expectedLoadCount)
+        public void Test_Invalidation(bool shouldInvalidate, bool throwError, int expectedLoadCount)
         {
             // Arrange.
             int loadCount = 0;
@@ -113,10 +114,17 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels.Browser.Nodes
                 ShouldInvalidate = shouldInvalidate
             };
 
-            await Task.Run(() => underTest.ExpandedCommand.Execute(null));
+            try
+            {
+                Dispatcher.CurrentDispatcher.Invoke(() =>
+                    underTest.ExpandedCommand.Execute(null));
+            }
+            catch (Exception) { }
 
             // Act.
-            underTest.ExpandedCommand.Execute(null);
+            Dispatcher.CurrentDispatcher.Invoke(() =>
+                underTest.ExpandedCommand.Execute(null));
+
 
             // Assert.
             Assert.Equal(expectedLoadCount, loadCount);
