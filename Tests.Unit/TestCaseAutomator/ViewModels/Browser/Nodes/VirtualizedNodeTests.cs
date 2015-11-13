@@ -98,6 +98,7 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels.Browser.Nodes
         [InlineData(true,  false, 2)]
         [InlineData(false, true,  2)]
         [InlineData(true,  true,  2)]
+        [Synchronous]
         public async Task Test_Invalidation(bool shouldInvalidate, bool throwError, int expectedLoadCount)
         {
             // Arrange.
