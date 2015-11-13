@@ -307,6 +307,10 @@
       <Project>{3be8d9dc-ddc3-47d8-848f-68cf43026cca}</Project>
       <Name>SharpEssentials.Controls</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SharpEssentials\SharpEssentials.Testing.Controls\SharpEssentials.Testing.Controls.csproj">
+      <Project>{B667A48F-C77C-4612-82DC-DF701509DA08}</Project>
+      <Name>SharpEssentials.Testing.Controls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SharpEssentials\SharpEssentials.Testing\SharpEssentials.Testing.csproj">
       <Project>{03bbcd92-4b36-4c97-8fa4-f2a26b81c04a}</Project>
       <Name>SharpEssentials.Testing</Name>

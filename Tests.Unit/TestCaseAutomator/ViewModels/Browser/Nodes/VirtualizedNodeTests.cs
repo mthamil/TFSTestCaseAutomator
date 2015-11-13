@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SharpEssentials.Collections;
 using SharpEssentials.Testing;
+using SharpEssentials.Testing.Controls.WPF;
 using TestCaseAutomator.ViewModels.Browser.Nodes;
 using Xunit;
 
@@ -93,12 +94,11 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels.Browser.Nodes
             Assert.False(couldExecuteAfterRefresh);
         }
 
-        [Theory]
+        [WpfTheory]
         [InlineData(false, false, 1)]
         [InlineData(true,  false, 2)]
         [InlineData(false, true,  2)]
         [InlineData(true,  true,  2)]
-        [Synchronous]
         public async Task Test_Invalidation(bool shouldInvalidate, bool throwError, int expectedLoadCount)
         {
             // Arrange.
