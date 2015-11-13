@@ -52,4 +52,4 @@ test_script:
 
 artifacts:
   - path: TestCaseAutomator.Setup\bin\$(CONFIGURATION)\TestCaseAutomator.msi
-  - path: TestCaseAutomator.AutomationProviders.Interfaces\bin\$(CONFIGURATION)\TestCaseAutomator.AutomationProviders.Interfaces.*.nupkg
+  - path: TestCaseAutomator.AutomationProviders.Abstractions\bin\$(CONFIGURATION)\TestCaseAutomator.AutomationProviders.Abstractions.*.nupkg
