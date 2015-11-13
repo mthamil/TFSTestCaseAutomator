@@ -55,10 +55,6 @@
       <Component Id="ApplicationConfig" Guid="0DB2DC7A-1A76-4308-9132-51A5BF99F624">
         <File Id="TestCaseAutomatorConfig" Name="$(var.TestCaseAutomator.TargetFileName).config" Source="$(var.TestCaseAutomator.TargetPath).config" KeyPath="yes"/>
       </Component>
-
-      <Component Id="ApplicationManifest" Guid="7C70C222-5A4C-4598-96FD-8134C4E85F01">
-        <File Id="TestCaseAutomatorManifest" Name="$(var.TestCaseAutomator.TargetFileName).manifest" Source="$(var.TestCaseAutomator.TargetDir)$(var.TestCaseAutomator.TargetName).vshost.exe.manifest" KeyPath="yes"/>
-      </Component>
       
       <Component Id="TeamFoundationLib" Guid="552220F4-33BD-40C4-9C86-5317A4586DCE">
         <File Id="TeamFoundationDll" Name="$(var.TestCaseAutomator.TeamFoundation.TargetFileName)" Source="$(var.TestCaseAutomator.TeamFoundation.TargetPath)" KeyPath="yes"/>
