@@ -57,7 +57,7 @@
       </Component>
 
       <Component Id="ApplicationManifest" Guid="7C70C222-5A4C-4598-96FD-8134C4E85F01">
-        <File Id="TestCaseAutomatorManifest" Name="$(var.TestCaseAutomator.TargetFileName).manifest" Source="$(var.TestCaseAutomator.TargetPath).vshost.exe.manifest" KeyPath="yes"/>
+        <File Id="TestCaseAutomatorManifest" Name="$(var.TestCaseAutomator.TargetFileName).manifest" Source="$(var.TestCaseAutomator.TargetDir)$(var.TestCaseAutomator.TargetName).vshost.exe.manifest" KeyPath="yes"/>
       </Component>
       
       <Component Id="TeamFoundationLib" Guid="552220F4-33BD-40C4-9C86-5317A4586DCE">
@@ -88,10 +88,61 @@
         <File Id="WindowsInteractivityDll" Name="System.Windows.Interactivity.dll" Source="$(var.TestCaseAutomator.TargetDir)System.Windows.Interactivity.dll" KeyPath="yes"/>
         <File Id="ExpressionInteractionsDll" Name="Microsoft.Expression.Interactions.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.Expression.Interactions.dll"/>
       </Component>
+
+      <Component Id="TfsClientLibs" Guid="E45A2E52-DB2B-4482-B136-A619666E0691">
+        <File Name="Microsoft.IdentityModel.Clients.ActiveDirectory.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.IdentityModel.Clients.ActiveDirectory.dll"/>
+        <File Name="Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll"/>
+        <File Name="Microsoft.ServiceBus.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.ServiceBus.dll"/>
+        <File Name="Microsoft.TeamFoundation.Build.Client.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.Build.Client.dll"/>
+        <File Name="Microsoft.TeamFoundation.Build.Common.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.Build.Common.dll"/>
+        <File Name="Microsoft.TeamFoundation.Build2.WebApi.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.Build2.WebApi.dll"/>
+        <File Name="Microsoft.TeamFoundation.Chat.WebApi.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.Chat.WebApi.dll"/>
+        <File Name="Microsoft.TeamFoundation.Client.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.Client.dll"/>
+        <File Name="Microsoft.TeamFoundation.Common.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.Common.dll" KeyPath="yes"/>
+        <File Name="Microsoft.TeamFoundation.Core.WebApi.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.Core.WebApi.dll"/>
+        <File Name="Microsoft.TeamFoundation.DeleteTeamProject.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.DeleteTeamProject.dll"/>
+        <File Name="Microsoft.TeamFoundation.Diff.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.Diff.dll"/>
+        <File Name="Microsoft.TeamFoundation.Discussion.Client.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.Discussion.Client.dll"/>
+        <File Name="Microsoft.TeamFoundation.Discussion.WebApi.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.Discussion.WebApi.dll"/>
+        <File Name="Microsoft.TeamFoundation.Git.Client.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.Git.Client.dll"/>
+        <File Name="Microsoft.TeamFoundation.Lab.Client.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.Lab.Client.dll"/>
+        <File Name="Microsoft.TeamFoundation.Lab.Common.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.Lab.Common.dll"/>
+        <File Name="Microsoft.TeamFoundation.Lab.TestIntegration.Client.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.Lab.TestIntegration.Client.dll"/>
+        <File Name="Microsoft.TeamFoundation.Lab.WorkflowIntegration.Client.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.Lab.WorkflowIntegration.Client.dll"/>
+        <File Name="Microsoft.TeamFoundation.Policy.WebApi.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.Policy.WebApi.dll"/>
+        <File Name="Microsoft.TeamFoundation.ProjectManagement.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.ProjectManagement.dll"/>
+        <File Name="Microsoft.TeamFoundation.SharePointReporting.Integration.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.SharePointReporting.Integration.dll"/>
+        <File Name="Microsoft.TeamFoundation.SourceControl.WebApi.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.SourceControl.WebApi.dll"/>
+        <File Name="Microsoft.TeamFoundation.Test.WebApi.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.Test.WebApi.dll"/>
+        <File Name="Microsoft.TeamFoundation.TestImpact.Client.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.TestImpact.Client.dll"/>
+        <File Name="Microsoft.TeamFoundation.TestManagement.Client.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.TestManagement.Client.dll"/>
+        <File Name="Microsoft.TeamFoundation.TestManagement.Common.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.TestManagement.Common.dll"/>
+        <File Name="Microsoft.TeamFoundation.TestManagement.WebApi.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.TestManagement.WebApi.dll"/>
+        <File Name="Microsoft.TeamFoundation.VersionControl.Client.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.VersionControl.Client.dll"/>
+        <File Name="Microsoft.TeamFoundation.VersionControl.Common.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.VersionControl.Common.dll"/>
+        <File Name="Microsoft.TeamFoundation.VersionControl.Common.Integration.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.VersionControl.Common.Integration.dll"/>
+        <File Name="Microsoft.TeamFoundation.Work.WebApi.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.Work.WebApi.dll"/>
+        <File Name="Microsoft.TeamFoundation.WorkItemTracking.Client.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.WorkItemTracking.Client.dll"/>
+        <File Name="Microsoft.TeamFoundation.WorkItemTracking.Client.DataStoreLoader.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.WorkItemTracking.Client.DataStoreLoader.dll"/>
+        <File Name="Microsoft.TeamFoundation.WorkItemTracking.Client.QueryLanguage.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.WorkItemTracking.Client.QueryLanguage.dll"/>
+        <File Name="Microsoft.TeamFoundation.WorkItemTracking.Common.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.WorkItemTracking.Common.dll"/>
+        <File Name="Microsoft.TeamFoundation.WorkItemTracking.Proxy.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.WorkItemTracking.Proxy.dll"/>
+        <File Name="Microsoft.TeamFoundation.WorkItemTracking.WebApi.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.TeamFoundation.WorkItemTracking.WebApi.dll"/>
+        <File Name="Microsoft.VisualStudio.Services.Client.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.VisualStudio.Services.Client.dll"/>
+        <File Name="Microsoft.VisualStudio.Services.Common.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.VisualStudio.Services.Common.dll"/>
+        <File Name="Microsoft.VisualStudio.Services.WebApi.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.VisualStudio.Services.WebApi.dll"/>
+        <File Name="Microsoft.WindowsAzure.Configuration.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.WindowsAzure.Configuration.dll"/>
+        <File Name="Newtonsoft.Json.dll" Source="$(var.TestCaseAutomator.TargetDir)Newtonsoft.Json.dll"/>
+        <File Name="System.IdentityModel.Tokens.Jwt.dll" Source="$(var.TestCaseAutomator.TargetDir)System.IdentityModel.Tokens.Jwt.dll"/>
+        <File Name="System.Net.Http.Formatting.dll" Source="$(var.TestCaseAutomator.TargetDir)System.Net.Http.Formatting.dll"/>
+        <File Name="System.Web.Http.dll" Source="$(var.TestCaseAutomator.TargetDir)System.Web.Http.dll"/>
+        <File Name="Microsoft.WITDataStore32.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.WITDataStore32.dll"/>
+        <File Name="Microsoft.WITDataStore64.dll" Source="$(var.TestCaseAutomator.TargetDir)Microsoft.WITDataStore64.dll"/>
+      </Component>
     
     </ComponentGroup>
     
-    <ComponentGroup Id="Plugins" Directory="PluginDir">
+    <ComponentGroup Id="Plugins">
       
       <Component Id="xUnitPlugin" Guid="4F0314BD-D727-48CF-855D-6E91E0771044" Directory="xUnitPluginDir">
         <File Id="xUnitPluginMainDll" Name="$(var.Plugins.xUnit.AutomationProvider.TargetFileName)" Source="$(var.Plugins.xUnit.AutomationProvider.TargetPath)" KeyPath="yes"/>
