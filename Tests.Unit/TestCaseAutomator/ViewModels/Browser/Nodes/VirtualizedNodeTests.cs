@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Windows.Threading;
 using SharpEssentials.Collections;
+using SharpEssentials.Controls.Mvvm.Commands;
 using SharpEssentials.Testing;
-using SharpEssentials.Testing.Controls.WPF;
 using TestCaseAutomator.ViewModels.Browser.Nodes;
 using Xunit;
 
@@ -95,12 +94,12 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels.Browser.Nodes
             Assert.False(couldExecuteAfterRefresh);
         }
 
-        [WpfTheory]
+        [Theory]
         [InlineData(false, false, 1)]
         [InlineData(true,  false, 2)]
         [InlineData(false, true,  2)]
         [InlineData(true,  true,  2)]
-        public void Test_Invalidation(bool shouldInvalidate, bool throwError, int expectedLoadCount)
+        public async Task Test_Invalidation(bool shouldInvalidate, bool throwError, int expectedLoadCount)
         {
             // Arrange.
             int loadCount = 0;
@@ -114,16 +113,11 @@ namespace Tests.Unit.TestCaseAutomator.ViewModels.Browser.Nodes
                 ShouldInvalidate = shouldInvalidate
             };
 
-            try
-            {
-                Dispatcher.CurrentDispatcher.Invoke(() =>
-                    underTest.ExpandedCommand.Execute(null));
-            }
-            catch (Exception) { }
+            try { await ((IAsyncCommand)underTest.ExpandedCommand).ExecuteAsync(null); }
+            catch (InvalidOperationException) { }
 
             // Act.
-            Dispatcher.CurrentDispatcher.Invoke(() =>
-                underTest.ExpandedCommand.Execute(null));
+            await ((IAsyncCommand)underTest.ExpandedCommand).ExecuteAsync(null);
 
 
             // Assert.
