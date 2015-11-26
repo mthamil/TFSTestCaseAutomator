@@ -40,25 +40,25 @@ namespace TestCaseAutomator.ViewModels.Browser.Nodes
 			set { _isSelected.Value = value; }
 		}
 
-		/// <see cref="INodeViewModel.IsSelected"/>
-		public bool IsExpanded
+        /// <see cref="INodeViewModel.IsExpanded"/>
+        public bool IsExpanded
 		{
 			get { return _isExpanded.Value; }
 			set { _isExpanded.Value = value; }
 		}
 
-		/// <see cref="INodeViewModel.IsSelected"/>
-		public bool IsEnabled
+        /// <see cref="INodeViewModel.IsEnabled"/>
+        public bool IsEnabled
 		{
 			get { return _isEnabled.Value; }
 			set { _isEnabled.Value = value; }
 		}
 
-		/// <see cref="INodeViewModel.IsSelected"/>
-		public virtual ICommand SelectedCommand { get; set; }
+        /// <see cref="INodeViewModel.SelectedCommand"/>
+        public virtual ICommand SelectedCommand { get; set; }
 
-		/// <see cref="INodeViewModel.IsSelected"/>
-		public virtual ICommand ExpandedCommand { get; set; }
+        /// <see cref="INodeViewModel.ExpandedCommand"/>
+        public virtual ICommand ExpandedCommand { get; set; }
 
         /// <see cref="INodeViewModel{TChild}.Children"/>
         public ICollection<TChild> Children => _children.Value;
