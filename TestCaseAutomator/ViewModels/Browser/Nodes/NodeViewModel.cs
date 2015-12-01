@@ -55,10 +55,10 @@ namespace TestCaseAutomator.ViewModels.Browser.Nodes
 		}
 
         /// <see cref="INodeViewModel.SelectedCommand"/>
-        public virtual ICommand SelectedCommand { get; set; }
+        public ICommand SelectedCommand { get; set; }
 
         /// <see cref="INodeViewModel.ExpandedCommand"/>
-        public virtual ICommand ExpandedCommand { get; set; }
+        public ICommand ExpandedCommand { get; set; }
 
         /// <see cref="INodeViewModel{TChild}.Children"/>
         public ICollection<TChild> Children => _children.Value;
