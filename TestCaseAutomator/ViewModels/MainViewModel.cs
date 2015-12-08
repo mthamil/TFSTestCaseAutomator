@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.TeamFoundation;
 using Microsoft.TeamFoundation.TestManagement.Client;
 using TestCaseAutomator.TeamFoundation;
@@ -221,19 +222,23 @@ namespace TestCaseAutomator.ViewModels
 		        await action();
 		        Status = null;
 		    }
-		    catch (TestObjectNotFoundException testObjectNotFoundEx)
+		    catch (TestObjectNotFoundException e)
 		    {
-		        errorMessage = testObjectNotFoundEx.Message;
+		        errorMessage = e.Message;
 		    }
-            catch (TeamFoundationServiceUnavailableException tfsUnavailableEx)
-            {
-                errorMessage = tfsUnavailableEx.Message;
-            }
-            catch (Exception e) when (e.InnerException != null &&
+		    catch (TeamFoundationServiceUnavailableException e)
+		    {
+		        errorMessage = e.Message;
+		    }
+		    catch (Exception e) when (e.InnerException != null &&
 		                              e.InnerException.GetType() == typeof(TeamFoundationServiceUnavailableException))
 		    {
 		        errorMessage = e.InnerException.Message;
 		    }
+		    catch (AdalException e)
+		    {
+                errorMessage = e.Message;
+            }
 		    finally
 		    {
                 if (errorMessage != null)
