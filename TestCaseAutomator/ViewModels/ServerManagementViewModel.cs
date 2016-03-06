@@ -14,7 +14,7 @@ namespace TestCaseAutomator.ViewModels
     {
         public ServerManagementViewModel(IEnumerable<Uri> knownUris) : this()
         {
-            knownUris.Select(Create).AddTo(All);
+            knownUris.Select(Create).ToSink(All);
             CurrentUri = All.Select(s => s.Uri).FirstOrDefault();
         }
 

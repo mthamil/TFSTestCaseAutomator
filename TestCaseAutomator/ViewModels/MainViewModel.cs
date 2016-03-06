@@ -47,8 +47,7 @@ namespace TestCaseAutomator.ViewModels
 
             ConnectCommand = Command.For(this)
 	                                .DependsOn(p => p.CanConnect)
-	                                .Asynchronously()
-	                                .Executes(ConnectAsync);
+	                                .ExecutesAsync(ConnectAsync);
             CloseCommand = new RelayCommand(OnClosing);
 
             PropertyChanged += OnPropertyChanged;
@@ -107,7 +106,7 @@ namespace TestCaseAutomator.ViewModels
         /// <summary>
         /// Command that forces a server refresh.
         /// </summary>
-        public ICommand ConnectCommand { get; }
+        public IAsyncCommand ConnectCommand { get; }
 
 		/// <summary>
 		/// Connects to the TFS server specified by <see cref="IServerManagement.CurrentUri"/>.

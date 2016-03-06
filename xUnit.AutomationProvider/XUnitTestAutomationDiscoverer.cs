@@ -59,7 +59,7 @@ namespace xUnit.AutomationProvider
             using (AssemblyHelper.SubscribeResolve())
             using (var sink = new DiscoveryMessageSink(message =>
                                     message.TestCases.Select(testCase => new XunitTestAutomation(testCase, message.TestAssembly))
-                                                     .AddTo(tests)))
+                                                     .ToSink(tests)))
             {
                 try
                 {

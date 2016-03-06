@@ -78,7 +78,7 @@ namespace MSTest.AutomationProvider
 	        var testSink = AppDomain.CurrentDomain.GetData<ITestSink>("testSink");
             ICollection<string> warnings;
             new AssemblyEnumerator().EnumerateAssembly(source, out warnings)
-                                    .AddTo(testSink.Tests);
+                                    .ToSink(testSink.Tests);
 	        AppDomain.CurrentDomain.GetData<AssemblyResolver>("resolver").Dispose();
 	    }
 
