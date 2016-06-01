@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCaseAutomator", "TestCaseAutomator\TestCaseAutomator.csproj", "{2B975523-4319-46BD-9200-5419A57C9FE4}"
 EndProject
@@ -52,6 +52,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{8FCCC1C0-B87A-4BE3-82AC-85B6F04ACC0A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugins.NUnit.AutomationProvider", "NUnit.AutomationProvider\Plugins.NUnit.AutomationProvider.csproj", "{0DD74BAF-3036-4A74-8EA2-B1AD8DE0F6F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugins.MSTestv2.AutomationProvider", "MSTestv2.AutomationProvider\Plugins.MSTestv2.AutomationProvider.csproj", "{8B279760-9C3C-4BE7-883A-2E6F62377DFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -281,6 +283,24 @@ Global
 		{0DD74BAF-3036-4A74-8EA2-B1AD8DE0F6F9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{0DD74BAF-3036-4A74-8EA2-B1AD8DE0F6F9}.Release|x86.ActiveCfg = Release|Any CPU
 		{0DD74BAF-3036-4A74-8EA2-B1AD8DE0F6F9}.Release|x86.Build.0 = Release|Any CPU
+		{8B279760-9C3C-4BE7-883A-2E6F62377DFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B279760-9C3C-4BE7-883A-2E6F62377DFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B279760-9C3C-4BE7-883A-2E6F62377DFB}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8B279760-9C3C-4BE7-883A-2E6F62377DFB}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8B279760-9C3C-4BE7-883A-2E6F62377DFB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8B279760-9C3C-4BE7-883A-2E6F62377DFB}.Debug|x86.Build.0 = Debug|Any CPU
+		{8B279760-9C3C-4BE7-883A-2E6F62377DFB}.Package|Any CPU.ActiveCfg = Package|Any CPU
+		{8B279760-9C3C-4BE7-883A-2E6F62377DFB}.Package|Any CPU.Build.0 = Package|Any CPU
+		{8B279760-9C3C-4BE7-883A-2E6F62377DFB}.Package|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8B279760-9C3C-4BE7-883A-2E6F62377DFB}.Package|Mixed Platforms.Build.0 = Release|Any CPU
+		{8B279760-9C3C-4BE7-883A-2E6F62377DFB}.Package|x86.ActiveCfg = Release|Any CPU
+		{8B279760-9C3C-4BE7-883A-2E6F62377DFB}.Package|x86.Build.0 = Release|Any CPU
+		{8B279760-9C3C-4BE7-883A-2E6F62377DFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B279760-9C3C-4BE7-883A-2E6F62377DFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B279760-9C3C-4BE7-883A-2E6F62377DFB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8B279760-9C3C-4BE7-883A-2E6F62377DFB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8B279760-9C3C-4BE7-883A-2E6F62377DFB}.Release|x86.ActiveCfg = Release|Any CPU
+		{8B279760-9C3C-4BE7-883A-2E6F62377DFB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -294,5 +314,6 @@ Global
 		{B667A48F-C77C-4612-82DC-DF701509DA08} = {78C65CCA-4CEE-4767-8EC0-BE4FE74B6A05}
 		{4AB0FC65-635E-46C2-B821-5B8C74DB7C8F} = {78C65CCA-4CEE-4767-8EC0-BE4FE74B6A05}
 		{0DD74BAF-3036-4A74-8EA2-B1AD8DE0F6F9} = {8FCCC1C0-B87A-4BE3-82AC-85B6F04ACC0A}
+		{8B279760-9C3C-4BE7-883A-2E6F62377DFB} = {8FCCC1C0-B87A-4BE3-82AC-85B6F04ACC0A}
 	EndGlobalSection
 EndGlobal
