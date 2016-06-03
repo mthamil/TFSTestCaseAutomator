@@ -53,7 +53,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{8FCC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugins.NUnit.AutomationProvider", "NUnit.AutomationProvider\Plugins.NUnit.AutomationProvider.csproj", "{0DD74BAF-3036-4A74-8EA2-B1AD8DE0F6F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugins.MSTestv2.AutomationProvider", "MSTestv2.AutomationProvider\Plugins.MSTestv2.AutomationProvider.csproj", "{8B279760-9C3C-4BE7-883A-2E6F62377DFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugins.MSTestV2.AutomationProvider", "MSTestV2.AutomationProvider\Plugins.MSTestV2.AutomationProvider.csproj", "{8B279760-9C3C-4BE7-883A-2E6F62377DFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
