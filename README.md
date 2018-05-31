@@ -1,6 +1,8 @@
 TFS Test Case Automator
 =======================
 
+**NOTE** [This project is obsolete due to support finally being added to Visual Studio.](http://www.deliveron.com/blog/test-case-association-xunit-nunit-and-mstestv2-tests-available-visual-studio-2017-1571/)
+
 TFS Test Case Automator is a desktop application that enables the association of Team Foundation Server Test Cases with automated tests.
 
 By default, it comes with a plugin enabling association of test cases with xUnit.net tests, but plugins can be written for any test framework
